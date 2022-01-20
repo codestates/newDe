@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "semistandard": "^16.0.1"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "test" : "npx semistandard --fix"
+  }
+}
