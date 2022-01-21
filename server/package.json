@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "env": "^0.0.2",
     "express": "^4.17.2",
+    "mysql2": "^2.3.3",
     "sequelize": "^6.13.0"
   },
   "devDependencies": {
