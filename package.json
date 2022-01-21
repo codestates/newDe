@@ -12,6 +12,7 @@
     }
   },
   "dependencies": {
+    "lint-staged": "^12.2.2",
     "pre-commit": "^1.2.2"
   }
 }

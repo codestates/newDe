@@ -8,15 +8,15 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-     queryInterface.addConstraint('reviews',{
-      fields:['item_id'],
+    queryInterface.addConstraint('reviews', {
+      fields: ['item_id'],
       type: 'foreign key',
       name: 'item_review_fk',
-      references:{
-        table:'items',
-        field:'id'
+      references: {
+        table: 'items',
+        field: 'id'
       }
-    })
+    });
   },
 
   async down (queryInterface, Sequelize) {
@@ -26,6 +26,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-     await queryInterface.dropTable('reviews');
+    await queryInterface.dropTable('reviews');
   }
 };

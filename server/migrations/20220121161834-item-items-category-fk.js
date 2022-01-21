@@ -8,15 +8,15 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-     queryInterface.addConstraint('items_categories',{
-      fields:['item_id'],
+    queryInterface.addConstraint('items_categories', {
+      fields: ['item_id'],
       type: 'foreign key',
       name: 'item_item_category_fk',
-      references:{
-        table:'items',
-        field:'id'
+      references: {
+        table: 'items',
+        field: 'id'
       }
-    })
+    });
   },
 
   async down (queryInterface, Sequelize) {
@@ -26,7 +26,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-     await queryInterface.dropTable('items_categories');
-
+    await queryInterface.dropTable('items_categories');
   }
 };
