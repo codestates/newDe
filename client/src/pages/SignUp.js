@@ -56,7 +56,7 @@ function SignUp () {
         // axios 성공시
 
         // axios 실패시
-        
+
       } else setCheckText({ ...checkText, nickname: '닉네임은 2~10글자 사이로 입력해 주세요.' });
     }
   };
@@ -75,7 +75,7 @@ function SignUp () {
   };
 
   const handleSignUp = () => {
-    if(
+    if (
       checkText.email === '사용 가능한 이메일 입니다.' &&
       checkText.nickname === '사용 가능한 닉네임 입니다.' &&
       checkText.password === '사용 가능한 비밀번호 입니다.' &&
@@ -89,9 +89,9 @@ function SignUp () {
       //   console.log(err);
       // })
     } else {
-      setCheckText({...checkText, submit : '입력사항을 모두 올바르게 입력해주세요.'})
+      setCheckText({ ...checkText, submit: '입력사항을 모두 올바르게 입력해주세요.' });
     }
-  }
+  };
 
   return (
     <div>
@@ -123,7 +123,7 @@ function SignUp () {
         <div>{checkText.passwordCheck}</div>
       </div>
       {/* 성공시 로그인 리다이렉트 */}
-      <button onClick={handleSignUp} >Sign Up</button>
+      <button onClick={handleSignUp}>Sign Up</button>
       <div>{checkText.submit}</div>
     </div>
   );
