@@ -1,7 +1,7 @@
-function Login() {
-    return (
-        <div>This is Login</div>
-    )
+function Login () {
+  return (
+    <div>This is Login</div>
+  );
 }
 
 export default Login;
