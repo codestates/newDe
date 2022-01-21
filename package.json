@@ -4,7 +4,6 @@
     "semistandard": "^16.0.1"
   },
   "scripts": {
-    "prepare": "husky install",
     "test": "semistandard --fix"
   },
   "dependencies": {
