@@ -6,6 +6,11 @@
   "scripts": {
     "test": "semistandard --fix"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "dependencies": {
     "pre-commit": "^1.2.2"
   }
