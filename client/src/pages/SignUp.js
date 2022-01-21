@@ -19,7 +19,8 @@ function SignUp () {
     email: '',
     nickname: '',
     password: '',
-    passwordCheck: ''
+    passwordCheck: '',
+    submit: ''
   });
 
   const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
@@ -67,6 +68,25 @@ function SignUp () {
     }
   };
 
+  const signUpHandler = () => {
+    if(
+      checkText.email === '사용 가능한 이메일 입니다.' &&
+      checkText.nickname === '사용 가능한 닉네임 입니다.' &&
+      checkText.password === '사용 가능한 비밀번호 입니다.' &&
+      checkText.passwordCheck === '비밀번호가 일치합니다.'
+    ) {
+      const sending = inputInfo;
+      delete sending.passwordCheck;
+      // axios.post('', sending, config).then((res) => {
+      //   //로그인창으로 리다이렉트
+      // }).catch(err => {
+      //   console.log(err);
+      // })
+    } else {
+      setCheckText({...checkText, submit : '입력사항을 모두 올바르게 입력해주세요.'})
+    }
+  }
+
   return (
     <div>
       {/* 안쪽 div 다 없애고 CSS로 처리하기 */}
@@ -98,6 +118,7 @@ function SignUp () {
       </div>
       {/* 성공시 로그인 리다이렉트 */}
       <button>Sign Up</button>
+      <div>{checkText.submit}</div>
     </div>
   );
 }
