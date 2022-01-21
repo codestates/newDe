@@ -43,22 +43,47 @@ function SignUp () {
   };
 
   const handleOnBlur = (event) => {
-    if (event.target.placeholder === 'email') {
-      if (regEmail.test(event.target.value)) {
-        // axios 성공시
+        // if(event.target.placeholder === 'Email') {
+    //     if(regEmail.test(event.target.value)) {
+    //         axios
+    //           .post('',{inputInfo.email}, config)
+    //           .then((res) => {
+    //               if(res.data.message === 'ok') {
+    //                 setCehckText({ ...checkText, email : '사용 가능한 이메일입니다.'})
+    //               } else {
+    //                 setCehckText({ ...checkText, email : '중복된 이메일입니다.'})
+    //               }
+    //           })
+    //          .catch((err) => {
+    //              console.log(err)
+    //           })
 
-        // axios 실패시
-
-      } else setCheckText({ ...checkText, email: '잘못된 이메일 형식입니다.' });
-    }
-    if (event.target.placeholder === 'nickname') {
-      if (regNickname.test(event.target.value)) {
-        // axios 성공시
-
-        // axios 실패시
-
-      } else setCheckText({ ...checkText, nickname: '닉네임은 2~10글자 사이로 입력해 주세요.' });
-    }
+    //     } else {
+    //         setCehckText({ ...checkText, email : '잘못된 이메일 형식입니다.'})
+    //     }
+    // }
+    // if(event.target.placeholder === 'nickname') {
+    //     if(regN.test(event.target.value)) {
+    //         axios
+    //           .post('',{inputInfo.nickname}, config)
+    //           .then((res) => {
+    //               if(res.data.message === 'ok') {
+    //                 setCehckText({ ...checkText, nickname : '사용 가능한 닉네임입니다.'})
+    //               } else {
+    //                 setCehckText({ ...checkText, nickname : '중복된 닉네임입니다.'})
+    //               }
+    //           })
+    //          .catch((err) => {
+    //              console.log(err)
+    //           })
+    //     } else {
+    //         setCehckText({ ...checkText, nickname : '닉네임은 2~10글자 사이로 입력해주세요.'})
+    //     }
+    // }
+      // 두 if 경우 모두 
+      // axios 성공시
+      // axios 실패시
+      // 로 나눠서 미리 짜기    
   };
 
   const handlePwBlur = (event) => {
