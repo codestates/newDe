@@ -45,12 +45,18 @@ function SignUp () {
   const handleOnBlur = (event) => {
     if (event.target.placeholder === 'email') {
       if (regEmail.test(event.target.value)) {
-        // axios
+        // axios 성공시
+
+        // axios 실패시
+
       } else setCheckText({ ...checkText, email: '잘못된 이메일 형식입니다.' });
     }
     if (event.target.placeholder === 'nickname') {
       if (regNickname.test(event.target.value)) {
-        // axios
+        // axios 성공시
+
+        // axios 실패시
+        
       } else setCheckText({ ...checkText, nickname: '닉네임은 2~10글자 사이로 입력해 주세요.' });
     }
   };
@@ -68,7 +74,7 @@ function SignUp () {
     }
   };
 
-  const signUpHandler = () => {
+  const handleSignUp = () => {
     if(
       checkText.email === '사용 가능한 이메일 입니다.' &&
       checkText.nickname === '사용 가능한 닉네임 입니다.' &&
@@ -117,7 +123,7 @@ function SignUp () {
         <div>{checkText.passwordCheck}</div>
       </div>
       {/* 성공시 로그인 리다이렉트 */}
-      <button>Sign Up</button>
+      <button onClick={handleSignUp} >Sign Up</button>
       <div>{checkText.submit}</div>
     </div>
   );
