@@ -11,6 +11,10 @@
   "dependencies": {
     "cors": "^2.8.5",
     "env": "^0.0.2",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "sequelize": "^6.13.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
   }
 }
