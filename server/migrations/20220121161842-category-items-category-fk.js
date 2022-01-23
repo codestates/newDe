@@ -8,7 +8,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    queryInterface.addConstraint('items_categories', {
+    queryInterface.addConstraint('itemsCategories', {
       fields: ['category_id'],
       type: 'foreign key',
       name: 'category_item_category_fk',
@@ -26,6 +26,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('items_categories');
+    await queryInterface.dropTable('itemsCategories');
   }
 };
