@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 app.post('/login', login);
 app.post('/logout', logout);
-app.get('/getitems', getitems);
+app.get('/getitems/:word', getitems);
 app.post('/signup', signup);
 app.delete('/dropout', dropout);
 app.use('/user', user);
