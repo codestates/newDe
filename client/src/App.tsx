@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/board' element={<Board />} />
-        <Route path='/contentView' element={<ContentView />} />
+        <Route path='/contentview' element={<ContentView />} />
         <Route path='/login' element={<Login />} />
         <Route path='/mainboard' element={<MainBoard />} />
         <Route path='/mypage' element={<MyPage />} />

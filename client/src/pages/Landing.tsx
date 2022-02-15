@@ -1,10 +1,19 @@
 //랜딩페이지 
-import react from 'react'
-function Landing () {
+
+import styled from 'styled-components';
+
+const MainDiv = styled.div`
+    background: papayawhip;
+`
+function Landing ():JSX.Element {
     return (
+        <MainDiv>
+
         <div>
             랜딩페이지입니다. 
         </div>
+        </MainDiv>
+        
 
 
 
