@@ -1,18 +1,17 @@
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-//import compression from 'compression';
+// import compression from 'compression';
+import 'dotenv/config';
 
 createConnection()
-    .then(res => {
-        //console.log(res);
-    })
-    .catch(err => {
-        console.log(err);
-    })
-
+  .then(() => {
+    console.log('Database Connected :)');
+  })
+  .catch((error) => console.log(error));
+  
 const PORT = 4000;
 
 const app = express();
