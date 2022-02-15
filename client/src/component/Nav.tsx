@@ -24,6 +24,7 @@ const Navi = styled.header`
 
 const MenubarBtn = styled.div`
 margin: 20px;
+margin-top: 10px;
 width: 50px;
 align-items: center;
 
@@ -94,17 +95,20 @@ margin: 5px;
 font-size: 100%;
 `
 
+interface Iprops {
+    modalhandler: any;
+
+}
 
 
 
-
-function Nav (props:any):JSX.Element  {
-    console.log(props.modal)
+function Nav (props:Iprops):JSX.Element  {
+    console.log(props.modalhandler)
     
     return (
         <Navi>
             <NavWrap>
-                <MenubarBtn onClick = {props.modal}><AiOutlineMenu size = "30px" color = "grey" /></MenubarBtn>
+                <MenubarBtn onClick = {props.modalhandler}><AiOutlineMenu size = "30px" color = "grey" /></MenubarBtn>
                 <LogoWrap><Link to = '/'><img src= "images/menubarlogo.png" width = "120px"></img></Link></LogoWrap>
             <LeftSection>
                 

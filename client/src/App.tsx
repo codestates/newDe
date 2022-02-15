@@ -14,14 +14,7 @@ const ContentWrap = styled.div`
 
 display: flex;`
 function App() {
-  type funcProps = {
-    modalHandler(): void 
-
-    
-
-     // 파라미터와 함수의 return이 없을 경우
- 
-  }
+  
   
 
   const [isModalOpened, setModal] = useState(false)
@@ -32,7 +25,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modal = {modalHandler}/>
+          <Nav modalhandler = {modalHandler}/>
           <ContentWrap>
             
           <Routes>
