@@ -6,6 +6,7 @@
     "sourceMap" : true,
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "jsx" : "react"
   },
   "include" : ["src/**/*"],
