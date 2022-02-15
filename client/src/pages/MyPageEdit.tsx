@@ -1,5 +1,5 @@
 //마이페이지 수정 
-function MyPageEdit () {
+function MyPageEdit ():JSX.Element {
 
     return (
         <div>

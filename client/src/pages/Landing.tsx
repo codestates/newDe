@@ -3,7 +3,11 @@
 import styled from 'styled-components';
 
 const MainDiv = styled.div`
-    background: papayawhip;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #F3F3F3;
+    
 `
 function Landing ():JSX.Element {
     return (
