@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
+import {AiOutlineMenu} from 'react-icons/ai'
+
 
 let isLogin = false //나중에 props나 redux등으로 받을것 
+let menuopened = true //위와 동일
 
 const Navi = styled.header`
     
@@ -20,18 +23,29 @@ const Navi = styled.header`
 `
 
 const MenubarBtn = styled.div`
-margin: 10px ;
-width: 40px;
-height: 70px;
+margin: 20px;
+width: 50px;
+align-items: center;
+
+
+
 
 `
 const NavWrap = styled.div`
 display: flex;
-background: white
+
 align-items: center;
 justify-content: center;
 
-margin: 2px ;`
+margin: 2px ;
+.btn {
+    text-decoration-line: none;
+    color: #34495E;
+    &:hover {
+      cursor: pointer;
+      outline: none;
+      color: black;
+    }`
 
 
 const LeftSection = styled.div`
@@ -84,17 +98,18 @@ font-size: 100%;
 
 
 
-function Nav ():JSX.Element  {
+function Nav (props:any):JSX.Element  {
+    console.log(props.modal)
     
     return (
         <Navi>
             <NavWrap>
-                <MenubarBtn><img src = "images/hamburgermenubar.png" width = "50px" ></img></MenubarBtn>
-                <LogoWrap><img src= "images/menubarlogo.png" width = "120px"></img></LogoWrap>
+                <MenubarBtn onClick = {props.modal}><AiOutlineMenu size = "30px" color = "grey" /></MenubarBtn>
+                <LogoWrap><Link to = '/'><img src= "images/menubarlogo.png" width = "120px"></img></Link></LogoWrap>
             <LeftSection>
                 
-                <LeftBtnWrap>Community</LeftBtnWrap>
-                <LeftBtnWrap>RoadMap</LeftBtnWrap>
+                <LeftBtnWrap><Link to ='/mainboard' className= 'btn'>Community</Link></LeftBtnWrap>
+                <LeftBtnWrap><Link to ='/roadmap' className= 'btn'>RoadMap</Link></LeftBtnWrap>
                 
             </LeftSection>
             
@@ -113,8 +128,11 @@ function Nav ():JSX.Element  {
         
             </NavWrap>
         
-
+            
         </Navi>
+        
+        
+        
         
         
     )

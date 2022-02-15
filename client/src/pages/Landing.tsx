@@ -13,9 +13,9 @@ function Landing ():JSX.Element {
     return (
         <MainDiv>
 
-        <div>
+        
             랜딩페이지입니다. 
-        </div>
+        
         </MainDiv>
         
 
