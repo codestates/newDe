@@ -1,5 +1,5 @@
 //마이페이지
-function MyPage () {
+function MyPage ():JSX.Element {
     return (
 
         <div>

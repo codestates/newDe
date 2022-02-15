@@ -1,6 +1,6 @@
 import react from 'react'
 
-function Login () {
+function Login ():JSX.Element {
 
     return  (
         <div>
