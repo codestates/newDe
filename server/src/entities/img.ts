@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable} from "typeorm";
+import {Content} from './content';
 
 @Entity()
 export class Img {
@@ -16,4 +17,8 @@ export class Img {
   
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToMany(()=> Content)
+    @JoinTable()
+    contents: Content[];
 }

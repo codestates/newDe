@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import {User} from "./user"
+import { Content } from "./content";
 
 @Entity()
 export class Comment {
@@ -19,4 +21,11 @@ export class Comment {
   
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(()=> User, user=> user.comments)
+    user: User;
+
+    @ManyToOne(()=> Content, content=> content.comments)
+    content: Content;
+
 }

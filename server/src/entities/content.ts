@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany} from "typeorm";
+import {User} from './user';
+import { Comment } from "./comment";
 
 @Entity()
 export class Content {
@@ -9,10 +11,7 @@ export class Content {
     title: string;
 
     @Column()
-    main: string;
-
-    @Column()
-    userId: number;
+    main: string;    
 
     @Column()
     like: number;
@@ -30,5 +29,12 @@ export class Content {
     createdAt: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt: Date; 
+    
+    @ManyToOne(() => User, user => user.contents)
+    user: User;   
+
+    @OneToMany(() => Comment, comment => comment.content)
+    comments:Comment[];
+
 }

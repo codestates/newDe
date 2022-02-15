@@ -9,7 +9,7 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 // import compression from 'compression';
-// import 'dotenv/config';
+require("dotenv/config");
 (0, typeorm_1.createConnection)()
     .then(() => {
     console.log('Database Connected :)');
