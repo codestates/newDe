@@ -4,7 +4,6 @@ import cors from 'cors';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 //import compression from 'compression';
-import 'dotenv/config';
 
 createConnection()
     .then(res => {
