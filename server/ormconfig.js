@@ -1,3 +1,5 @@
+
+
 module.exports = {
   type: 'mysql',
   host: process.env.DATABASE_HOST,
@@ -7,12 +9,12 @@ module.exports = {
   database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: false,
-  entities: ['./src/entities/**/*.ts'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
-  cli: {
-    entitiesDir: 'src/entities',
-    migrationsDir: 'src/migrations',
-    subscribersDir: 'src/subscriber',
-  }
+  entities: ['dist/entities/**/*.js'],
+  migrations: ['dist/migration/**/*.js'],
+  subscribers: ['dist/subscriber/**/*.js'],
+  // cli: {
+  //   entitiesDir: '/entities',
+  //   migrationsDir: 'src/migrations',
+  //   subscribersDir: 'src/subscriber',
+  // }
 }
