@@ -17,6 +17,9 @@ const PORT = 4000;
 const app = express();
 const logger = morgan('dev');
 
+app.use(express.json());
+// app.use(express.urlencoded({extended:false}))
+
 app.use(logger);
 app.use(cors({
     origin : true,

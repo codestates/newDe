@@ -18,6 +18,8 @@ require("dotenv/config");
 const PORT = 4000;
 const app = (0, express_1.default)();
 const logger = (0, morgan_1.default)('dev');
+app.use(express_1.default.json());
+// app.use(express.urlencoded({extended:false}))
 app.use(logger);
 app.use((0, cors_1.default)({
     origin: true,
