@@ -10,14 +10,18 @@ const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 // import compression from 'compression';
 require("dotenv/config");
+const PORT = 4000;
+const app = (0, express_1.default)();
+const logger = (0, morgan_1.default)('dev');
+// db connection
 (0, typeorm_1.createConnection)()
     .then(() => {
     console.log('Database Connected :)');
 })
     .catch((error) => console.log(error));
-const PORT = 4000;
-const app = (0, express_1.default)();
-const logger = (0, morgan_1.default)('dev');
+// middleware
+app.use(express_1.default.json()); //body parser(json)
+// app.use(express.urlencoded({extended:false})); //body parser(url)
 app.use(logger);
 app.use((0, cors_1.default)({
     origin: true,
