@@ -1,20 +1,43 @@
 import styled from 'styled-components';
+import {Link, useNavigate} from 'react-router-dom'
 
-const MenuWrap = styled.div`
+const ContainerWrap = styled.div`
 position: absolute;
 width: 30%;
-height: 90%;
-background: pink;
+background: lightgrey;
+
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     
-}`
+}
+.btn {
+    text-decoration-line: none;
+    color: #34495E;
+    &:hover {
+      cursor: pointer;
+      outline: none;
+      color: black;
+    }`
+const ParentMenuWrap = styled.div`
+
+text-align: center;
+`
+const ChileMenuWrap = styled.div`
+text-align: right;
+padding-right: 20%
+
+`
+
+
 
 function BoardModal ():JSX.Element  {
     return (
-        <MenuWrap>
-            여기는 게시판 목록 모달이다. 모바일 화면에서 클릭시 width = 100 % 
-        </MenuWrap>
+        <ContainerWrap>
+            <ParentMenuWrap><Link to = '/Board' className = 'btn'>Front</Link></ParentMenuWrap>
+            <ChileMenuWrap><Link to = '/Board' className = 'btn'>CSS</Link></ChileMenuWrap>
+            <ChileMenuWrap><Link to = '/Board' className = 'btn'>React</Link></ChileMenuWrap>
+            <ParentMenuWrap><Link to = '/Board' className = 'btn'>Back</Link></ParentMenuWrap>
+        </ContainerWrap>
     )
 }
 

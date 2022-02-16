@@ -9,9 +9,11 @@ const MainDiv = styled.div`
     background: #F3F3F3;
     
 `
-function Landing ():JSX.Element {
+function Landing (props:any):JSX.Element {
+    console.log(props)
+
     return (
-        <MainDiv>
+        <MainDiv onClick = {props.closemodal} >
 
         
             랜딩페이지입니다. 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 
 
-let isLogin = false //나중에 props나 redux등으로 받을것 
+let isLogin = true//나중에 props나 redux등으로 받을것 
 let menuopened = true //위와 동일
 
 const Navi = styled.header`
@@ -22,7 +22,7 @@ const Navi = styled.header`
     
 `
 
-const MenubarBtn = styled.div`
+const MenubarBtn = styled.header`
 margin: 20px;
 margin-top: 10px;
 width: 50px;
@@ -32,7 +32,7 @@ align-items: center;
 
 
 `
-const NavWrap = styled.div`
+const NavWrap = styled.header`
 display: flex;
 
 align-items: center;
@@ -49,7 +49,7 @@ margin: 2px ;
     }`
 
 
-const LeftSection = styled.div`
+const LeftSection = styled.header`
 display: flex;
 width: 70%;
 
@@ -62,7 +62,7 @@ margin : 1px
 }
 `;
 
-const RightSection = styled.div`
+const RightSection = styled.header`
 display: flex;
 width: 20%;
 align-items: center;
@@ -76,12 +76,12 @@ margin : 10px
 
 
 
-const LogoWrap = styled.div`
+const LogoWrap = styled.header`
 margin: 10px;
 width: 130px;
 height: 70px;`
 
-const LeftBtnWrap = styled.div`
+const LeftBtnWrap = styled.header`
 margin: 10px;
 font-size: 100%;
 @media ${(props)=> props.theme.mobile}{
@@ -90,7 +90,7 @@ font-size: 100%;
     font-size: 0;
 
 }`
-const RightBtnWrap = styled.div`
+const RightBtnWrap = styled.header`
 margin: 5px;
 font-size: 100%;
 `
@@ -120,12 +120,12 @@ function Nav (props:Iprops):JSX.Element  {
                 {isLogin ? 
                 <RightSection>
                     <RightBtnWrap>Logout</RightBtnWrap>
-                    <RightBtnWrap>Mypage</RightBtnWrap>
+                    <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
                 <RightSection>
-                    <RightBtnWrap>Login</RightBtnWrap>
-                    <RightBtnWrap>Join</RightBtnWrap>
+                    <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
+                    <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}
                 
             
