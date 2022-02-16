@@ -9,12 +9,12 @@ module.exports = {
   database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: false,
-  entities: ['dist/entities/*.{ts,js}'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
-  cli: {
-    entitiesDir: 'src/entities',
-    migrationsDir: 'src/migrations',
-    subscribersDir: 'src/subscriber',
-  }
+  entities: ['dist/entities/**/*.js'],
+  migrations: ['dist/migration/**/*.js'],
+  subscribers: ['dist/subscriber/**/*.js'],
+  // cli: {
+  //   entitiesDir: '/entities',
+  //   migrationsDir: 'src/migrations',
+  //   subscribersDir: 'src/subscriber',
+  // }
 }

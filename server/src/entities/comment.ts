@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
-import {User} from "./user"
+import { User } from "./user"
 import { Content } from "./content";
 
 @Entity()
@@ -25,7 +25,15 @@ export class Comment {
     @ManyToOne(()=> User, user=> user.comments)
     user: User;
 
+    @Column()
+    userId: Number   
+
     @ManyToOne(()=> Content, content=> content.comments)
     content: Content;
+
+    @Column()
+    contentId: Number 
+
+    
 
 }
