@@ -57,6 +57,7 @@ padding-left: 10px;
 const InputWrap = styled.input`
 margin: 2%;
 width: 80%;
+background-color: seashell;
 
 
 `
@@ -67,19 +68,27 @@ flex-direction: column;
 width: 80%;
 align-items: center;
 justify-content: center;
-background: coral;
 margin: 10px;
 `
 
 const BtnBox = styled.button`
+border: 1px solid black;
+border-radius: 3px;
 width: 60%;
-background: Peachpuff;
 margin: 5px;
+
 `
 
 
 
 function Login ():JSX.Element {
+    const navigate = useNavigate();
+    const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      };
 
     const [inputInfo, setInputInfo] = useState({
         email: '',
@@ -87,7 +96,7 @@ function Login ():JSX.Element {
     })
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -103,6 +112,26 @@ function Login ():JSX.Element {
         }
     
     }
+
+    const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
+        console.log(event.target)
+        const loginresult = await axios.post(
+            'https//localhost:8080/user/login', 
+            {email: inputInfo.email, password: inputInfo.password}, 
+            config)
+        
+    }
+
+    const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
+        console.log(event.target)
+        
+    }
+
+    const handleSignUpSubmit = () =>{
+        navigate('/signup')
+        
+    }
+
 
     return  (
         <MainContainer>
@@ -125,9 +154,9 @@ function Login ():JSX.Element {
                 
                 <BtnContainer>
                     
-                    <BtnBox>로그인</BtnBox>
-                    <BtnBox>카카오 로그인</BtnBox>
-                    <BtnBox>회원가입</BtnBox>
+                    <BtnBox onClick = {loginSubmit}>로그인</BtnBox>
+                    <BtnBox onClick = {kakaologinSubmit}>카카오 로그인</BtnBox>
+                    <BtnBox onClick = {handleSignUpSubmit}>회원가입</BtnBox>
 
                 </BtnContainer>
 
