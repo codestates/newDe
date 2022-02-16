@@ -142,13 +142,13 @@ function Login ():JSX.Element {
                     <img src = "images/biglogo.png" width= "100%"></img>
                 </LogoWrap>
                 <NameWrap>
-                    Email
+                    email
                 </NameWrap>
                 <InputWrap type = 'email' onChange = {handleInput} />
                     
                 
                 <NameWrap>
-                    Password
+                    password
                 </NameWrap>
                 <InputWrap type= 'password' />
                 
