@@ -189,7 +189,7 @@ function SignUp():JSX.Element {
         <SignUpContainer>
             
             <SignUpWrap>
-                여기는 회원가입박스입니다. 
+                
                 <LogoWrap>
                     <img src = "images/biglogo.png" width= "100%"></img>
                 </LogoWrap>

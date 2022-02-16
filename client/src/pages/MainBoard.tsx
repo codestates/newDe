@@ -1,9 +1,47 @@
 //메인 게시판
+import react from 'react'
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+
+
+const MainContainer = styled.div`
+display: flex;
+position: absolute;
+background : #F3F3F3;
+width: 100%;
+height: 100%;
+text-align: center;
+align-items: center;
+justify-content: center;
+
+
+`
+
+const BoardWrap = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 60%;
+background: brown;
+@media ${(props)=> props.theme.mobile}{
+    width: 100%;
+    height: 100%;
+
+}
+`
+
 function MainBoard():JSX.Element{
+
+    
     return(
-        <div>
-    게시판 메인페이지입니다. 프론트 엔드 하위게시판의 글들이 카테고리별로 분류되어 있습니다. . 
-        </div>
+        <MainContainer>
+    
+
+        <BoardWrap>게시판 영역입니다. </BoardWrap>
+        </MainContainer>
     )
         
 }
