@@ -4,8 +4,8 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 
 
-let isLogin = true//나중에 props나 redux등으로 받을것 
-let menuopened = true //위와 동일
+let isLogin = false//나중에 props나 redux등으로 받을것 
+
 
 const Navi = styled.header`
     
