@@ -21,9 +21,9 @@ function App() {
   function modalHandler () {
     setModal(!isModalOpened)
   }
-  function modalCloseHandler(){
-    setModal(false)
-  }
+
+  
+
   return (
     <div className="App">
       <ThemeProvider theme = {theme}>
@@ -32,7 +32,7 @@ function App() {
           <ContentWrap>
             
           <Routes>
-            <Route path='/' element={<Landing closemodal = {modalCloseHandler} />} />
+            <Route path='/' element={<Landing />} />
             <Route path='/board' element={<Board />} />
             <Route path='/contentview' element={<ContentView />} />
             <Route path='/login' element={<Login />} />
@@ -49,7 +49,7 @@ function App() {
       
           
           
-          {isModalOpened ? <BoardModal /> : null} 
+          {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
           </ContentWrap>
           
