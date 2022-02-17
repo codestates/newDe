@@ -70,7 +70,7 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     console.log(verify);
-    if (verify !== null) {
+    if (verify) {
         const userInfo = yield userRepository.findOne({
             where: { id: verify.userInfo.id }
         });
@@ -88,6 +88,8 @@ const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nickName, password } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     yield (0, typeorm_1.getConnection)()
         .createQueryBuilder()
         .update(user_1.User)
@@ -106,6 +108,8 @@ exports.editUser = editUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     yield userRepository.delete({ id: verify.userInfo.id });
     return res
         .clearCookie('accessToken')
@@ -131,6 +135,8 @@ exports.checkEmail = checkEmail;
 const checkPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { password } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     console.log(verify.userInfo);
     if (!password) {
         return res.status(400).json({ message: 'Bad Request' });
