@@ -68,7 +68,7 @@ const profile = async (req:Request, res:Response) => {
     console.log(verify)
 
     
-    if(verify !== null) {
+    if(verify) {
         const userInfo = await userRepository.findOne({
             where: { id : verify.userInfo.id }
         })
@@ -88,6 +88,8 @@ const editUser = async (req:Request, res:Response) => {
     const { nickName, password } = req.body;
     const verify = await authorizeToken(req, res)
     const userRepository = getRepository(User)
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
     
     await getConnection()
         .createQueryBuilder()
@@ -109,6 +111,8 @@ const editUser = async (req:Request, res:Response) => {
 const deleteUser = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res);
     const userRepository = getRepository(User);
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     await userRepository.delete({ id: verify.userInfo.id })
 
@@ -136,6 +140,8 @@ const checkEmail = async (req:Request, res:Response) => {
 const checkPassword = async (req:Request, res:Response) => {
     const { password } = req.body;
     const verify = await authorizeToken(req, res);
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     console.log(verify.userInfo)
 

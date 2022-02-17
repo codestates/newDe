@@ -36,7 +36,7 @@ function generateToken(userInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         return jwt.sign({
             userInfo
-        }, process.env.ACCESS_SECRET, { expiresIn: '1m' });
+        }, process.env.ACCESS_SECRET, { expiresIn: '2d' });
     });
 }
 exports.generateToken = generateToken;
