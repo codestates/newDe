@@ -41,6 +41,8 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { title, main, userId, parentCategory, childCategory } = req.body;
     const content = new content_1.Content();
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     //console.log(verify);
     content.title = title;
     content.main = main;
@@ -73,6 +75,8 @@ exports.allComment = allComment;
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { contentId, userId, main } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
     const comment = new comment_1.Comment();
     comment.contentId = contentId;
@@ -84,12 +88,14 @@ const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.createComment = createComment;
 const editComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    console.log(verify);
+    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
+    const { commentId, userId, main } = req.body;
+    const targetComment = yield commentRepository.findOne(commentId);
+    //console.log(verify);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    const { commentId, userId, main } = req.body;
-    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const targetComment = yield commentRepository.findOne(commentId);
+    if (targetComment.userId !== verify.userInfo.id)
+        return res.status(400).json({ message: 'different user' });
     targetComment.main = main;
     yield commentRepository.save(targetComment);
     res.status(200).json({ data: targetComment, message: 'comment mdified successfully' });
@@ -99,10 +105,13 @@ const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
     const commentId = req.params.commentId;
-    yield commentRepository.delete({ id: Number(commentId) });
-    return res
-        .status(200)
-        .json({ message: 'Deleted' });
+    const targetContent = yield commentRepository.findOne(commentId);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if (targetContent.userId !== verify.userInfo.id)
+        return res.status(400).json({ message: 'different user' });
+    yield commentRepository.delete(commentId);
+    return res.status(200).json({ message: 'Deleted' });
 });
 exports.deleteComment = deleteComment;
 //# sourceMappingURL=contentController.js.map
