@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counter'
+import urlReducer from '../features/url'
+
 
 export const store = configureStore({
   reducer: {
     count: counterReducer,
+    url: urlReducer,
   },
 })
 

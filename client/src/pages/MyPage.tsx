@@ -4,19 +4,27 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { amount, decrement, increment } from '../features/counter'
 
+
 function MyPage(){
     const [userId,setUserId] = useState('2')
     const [test,setTest]= useState('')
-    const URL:string='http://localhost:8080'
+    const URL= useAppSelector((state:RootState)=> state.url.url)
+    console.log(URL,'~~~')
+
+    const config = {
+        withCredentials: true
+    }
 
     useEffect(()=>{
         async function fetchData() {
-            const result = await axios.get(`${URL}/user/${userId}`)
-            console.log(result.data.data[0].main)
-            setTest(result.data.data[0].main)
+            const result = await axios.get(`${URL}/users`,config)
+            console.log(result.data.data.nickName)
+            setTest(result.data.data.nickName)
         }
         fetchData()
     },[])
+
+
     const count = useAppSelector((state: RootState) => state.count.value)
     const id = useAppSelector((state: RootState) => state.count.id)
     const dispatch = useAppDispatch()
