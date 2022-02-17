@@ -40,15 +40,9 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { title, main, parentCategory, childCategory } = req.body;
     const content = new content_1.Content();
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-<<<<<<< HEAD
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
     //console.log(verify);
-=======
-    console.log(verify);
-    if (!verify)
-        return res.status(403).json({ message: 'Invalid Accesstoken' });
->>>>>>> 3d6b5a642646be121dbc0d1882ab5756548ea88f
     content.title = title;
     content.main = main;
     content.userId = verify.userInfo.id;
