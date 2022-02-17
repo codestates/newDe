@@ -25,7 +25,15 @@ export class Comment {
     @ManyToOne(()=> User, user=> user.comments)
     user: User;
 
+    @Column()
+    userId: Number   
+
     @ManyToOne(()=> Content, content=> content.comments)
     content: Content;
+
+    @Column()
+    contentId: Number 
+
+    
 
 }

@@ -13,10 +13,10 @@ export class Content {
     @Column()
     main: string;    
 
-    @Column()
+    @Column({default:null})
     like: number;
 
-    @Column()
+    @Column({default:null})
     report: number;
 
     @Column()
@@ -32,7 +32,10 @@ export class Content {
     updatedAt: Date; 
     
     @ManyToOne(() => User, user => user.contents)
-    user: User;   
+    user: User;
+
+    @Column()
+    userId: Number   
 
     @OneToMany(() => Comment, comment => comment.content)
     comments:Comment[];
