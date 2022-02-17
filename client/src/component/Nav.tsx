@@ -97,20 +97,21 @@ font-size: 100%;
 
 interface Iprops {
     modalhandler: any;
+    modalcloser: any;
 
 }
 
 
 
 function Nav (props:Iprops):JSX.Element  {
-    console.log(props.modalhandler)
+    // console.log(props.modalhandler)
     
     return (
         <Navi>
             <NavWrap>
                 <MenubarBtn onClick = {props.modalhandler}><AiOutlineMenu size = "30px" color = "grey" /></MenubarBtn>
-                <LogoWrap><Link to = '/'><img src= "images/menubarlogo.png" width = "120px"></img></Link></LogoWrap>
-            <LeftSection>
+                <LogoWrap onClick = {props.modalcloser}><Link to = '/'><img src= "images/menubarlogo.png" width = "120px"></img></Link></LogoWrap>
+            <LeftSection onClick = {props.modalcloser}>
                 
                 <LeftBtnWrap><Link to ='/mainboard' className= 'btn'>Community</Link></LeftBtnWrap>
                 <LeftBtnWrap><Link to ='/roadmap' className= 'btn'>RoadMap</Link></LeftBtnWrap>
@@ -118,12 +119,12 @@ function Nav (props:Iprops):JSX.Element  {
             </LeftSection>
             
                 {isLogin ? 
-                <RightSection>
+                <RightSection onClick = {props.modalcloser}>
                     <RightBtnWrap>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
-                <RightSection>
+                <RightSection onClick = {props.modalcloser}>
                     <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
                     <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}

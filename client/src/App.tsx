@@ -22,13 +22,17 @@ function App() {
     setModal(!isModalOpened)
   }
 
+  function modalCloser(){
+    setModal(false)
+  }
+
   
 
   return (
     <div className="App">
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler}/>
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
           <ContentWrap>
             
           <Routes>

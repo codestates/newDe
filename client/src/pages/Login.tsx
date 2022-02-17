@@ -144,13 +144,13 @@ function Login ():JSX.Element {
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type = 'email' onChange = {handleInput} />
+                <InputWrap type = 'email' placeholder = '이메일을 입력해주세요' onChange = {handleInput} />
                     
                 
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type= 'password' />
+                <InputWrap type= 'password' placeholder = '비밀번호를 입력해주세요' />
                 
                 <BtnContainer>
                     

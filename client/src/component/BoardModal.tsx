@@ -12,7 +12,7 @@ const ContainerWrap = styled.div`
 border: 1px solid black;
 position: absolute;
 width: 30%;
-background: gainsboro;
+background: Whitesmoke;
 opacity: 90%;
 padding: 10px;
 
