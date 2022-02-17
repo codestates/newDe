@@ -31,7 +31,38 @@ background: brown;
     height: 100%;
 
 }
+
+
 `
+
+const BoardName = styled.div`
+
+width : 80%;
+text-align: left;
+background: yellow;
+font-size: 1.5rem;
+margin: 2%;
+`
+
+const ChildBoard = styled.div`
+display: flex;
+flex-direction: column;
+width: 90%;
+background: green;
+margin-top: 1%;
+align-items: center;
+text-align: center;
+
+`
+
+const ContentWrap = styled.div`
+width: 90%;
+background: white;
+margin: 0.5% 0.5% 0.5% 0.5% 
+
+
+`
+
 
 function MainBoard():JSX.Element{
 
@@ -40,7 +71,22 @@ function MainBoard():JSX.Element{
         <MainContainer>
     
 
-        <BoardWrap>게시판 영역입니다. </BoardWrap>
+        <BoardWrap>게시판 영역입니다. 
+            <BoardName>프론트 게시판</BoardName>
+            <ChildBoard>
+                <ContentWrap>글 1</ContentWrap>
+                <ContentWrap>글 2</ContentWrap>
+            </ChildBoard>
+
+            <BoardName>백엔드 게시판</BoardName>
+            <ChildBoard>
+                <ContentWrap>글 1</ContentWrap>
+                <ContentWrap>글 2</ContentWrap>
+            </ChildBoard>
+
+
+
+        </BoardWrap>
         </MainContainer>
     )
         
