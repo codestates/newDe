@@ -28,11 +28,11 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], User.prototype, "joinType", void 0);
 __decorate([
-    (0, typeorm_1.Column)('timestamp'),
+    (0, typeorm_1.Column)({ type: 'timestamp', default: null }),
     __metadata("design:type", String)
 ], User.prototype, "penalty", void 0);
 __decorate([

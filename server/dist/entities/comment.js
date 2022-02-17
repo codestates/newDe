@@ -40,11 +40,11 @@ __decorate([
     __metadata("design:type", Date)
 ], Comment.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments),
+    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments, { onDelete: 'CASCADE' }),
     __metadata("design:type", user_1.User)
 ], Comment.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => content_1.Content, content => content.comments),
+    (0, typeorm_1.ManyToOne)(() => content_1.Content, content => content.comments, { onDelete: 'CASCADE' }),
     __metadata("design:type", content_1.Content)
 ], Comment.prototype, "content", void 0);
 Comment = __decorate([

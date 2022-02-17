@@ -22,10 +22,10 @@ export class Comment {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(()=> User, user=> user.comments)
+    @ManyToOne(()=> User, user=> user.comments, { onDelete: 'CASCADE' })
     user: User;
 
-    @ManyToOne(()=> Content, content=> content.comments)
+    @ManyToOne(()=> Content, content=> content.comments, { onDelete: 'CASCADE' })
     content: Content;
 
 }

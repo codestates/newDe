@@ -31,7 +31,7 @@ export class Content {
     @UpdateDateColumn()
     updatedAt: Date; 
     
-    @ManyToOne(() => User, user => user.contents)
+    @ManyToOne(() => User, user => user.contents, { onDelete: 'CASCADE' })
     user: User;   
 
     @OneToMany(() => Comment, comment => comment.content)

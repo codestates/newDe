@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.editComment = exports.reportComment = exports.deleteContent = exports.deleteComment = exports.editContent = exports.getContentDetail = exports.createContent = exports.createComment = exports.allContent = exports.allComment = exports.reportContent = exports.recommentContent = void 0;
+const recommentContent = (req, res) => res.send("recommentContent");
+exports.recommentContent = recommentContent;
+const reportContent = (req, res) => res.send("reportContent");
+exports.reportContent = reportContent;
+const allContent = (req, res) => res.send("allContent");
+exports.allContent = allContent;
+const createContent = (req, res) => res.send("createContent");
+exports.createContent = createContent;
+const getContentDetail = (req, res) => res.send("getContentDetail");
+exports.getContentDetail = getContentDetail;
+const editContent = (req, res) => res.send("editContent");
+exports.editContent = editContent;
+const deleteContent = (req, res) => res.send("deleteContent");
+exports.deleteContent = deleteContent;
+const reportComment = (req, res) => res.send("reportComment");
+exports.reportComment = reportComment;
+const allComment = (req, res) => res.send("allComment");
+exports.allComment = allComment;
+const createComment = (req, res) => res.send("createComment");
+exports.createComment = createComment;
+const editComment = (req, res) => res.send("editComment");
+exports.editComment = editComment;
+const deleteComment = (req, res) => res.send("deleteComment");
+exports.deleteComment = deleteComment;
+//# sourceMappingURL=contentController.js.map

@@ -13,10 +13,10 @@ export class User {
     @Column()
     email: string;
 
-    @Column()
+    @Column({default:null})
     joinType: string;
 
-    @Column('timestamp')
+    @Column({type:'timestamp', default:null})
     penalty: string;
 
     @Column()

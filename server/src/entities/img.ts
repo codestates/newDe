@@ -14,11 +14,11 @@ export class Img {
 
     @CreateDateColumn()
     created_at: Date;
-  
+
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToMany(()=> Content)
+    @ManyToMany(()=> Content )
     @JoinTable()
     contents: Content[];
 }
