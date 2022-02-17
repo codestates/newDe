@@ -34,14 +34,15 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.recommentContent = recommentContent;
 const reportContent = (req, res) => res.send("reportContent");
 exports.reportContent = reportContent;
-const allContent = (req, res) => {
-};
+const allContent = (req, res) => res.send("allContent");
 exports.allContent = allContent;
 const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, main, userId, parentCategory, childCategory } = req.body;
+    const { title, main, parentCategory, childCategory } = req.body;
     const content = new content_1.Content();
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    //console.log(verify);
+    console.log(verify);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     content.title = title;
     content.main = main;
     content.userId = verify.userInfo.id;
@@ -54,9 +55,44 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.createContent = createContent;
 const getContentDetail = (req, res) => res.send("getContentDetail");
 exports.getContentDetail = getContentDetail;
-const editContent = (req, res) => res.send("editContent");
+const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title, main, parentCategory, childCategory } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const targetContent = yield ContentRepository.findOne({ id: Number(req.params.contentid) });
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if (!targetContent)
+        return res.status(400).json({ message: 'Bad Content' });
+    if (!title || !main || !parentCategory || !childCategory)
+        return res.status(400).json({ message: 'Bad Request' });
+    if (targetContent.userId !== verify.userInfo.id)
+        return res.status(400).json({ message: 'different user' });
+    targetContent.title = title;
+    targetContent.main = main;
+    targetContent.parentCategory = parentCategory;
+    targetContent.childCategory = childCategory;
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(content_1.Content)
+        .set(targetContent)
+        .where({ id: targetContent.id })
+        .execute();
+    console.log(targetContent);
+    return res.status(200).json({ message: "edit success" });
+});
 exports.editContent = editContent;
-const deleteContent = (req, res) => res.send("deleteContent");
+const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const targetContent = yield ContentRepository.findOne({ id: Number(req.params.contentid) });
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if (targetContent.userId !== verify.userInfo.id)
+        return res.status(400).json({ message: 'different user' });
+    yield ContentRepository.delete(req.params.contentid);
+    return res.status(200).json({ message: 'Deleted' });
+});
 exports.deleteContent = deleteContent;
 // Comment
 const reportComment = (req, res) => {

@@ -26,16 +26,18 @@ const recommentContent = async (req:Request, res:Response) => {
 
     res.status(200).json({ message: "succes" })
 }
-const reportContent = (req:Request, res:Response) => res.send("reportContent");
-const allContent = (req:Request, res:Response) => {
 
-};
+const reportContent = (req:Request, res:Response) => res.send("reportContent");
+const allContent = (req:Request, res:Response) => res.send("allContent");
+
 const createContent = async (req:Request, res:Response) => {
-    const { title, main, userId, parentCategory, childCategory } = req.body
+    const { title, main, parentCategory, childCategory } = req.body
     const content = new Content()
 
     const verify = await authorizeToken(req, res);
-    //console.log(verify);
+    console.log(verify);
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     content.title = title;
     content.main = main;
@@ -48,17 +50,56 @@ const createContent = async (req:Request, res:Response) => {
 
     await ContentRepository.save(content);
     return res.status(201).json({ message: 'Succes'})
-    
 };
 
 const getContentDetail = (req:Request, res:Response) => res.send("getContentDetail");
-const editContent = (req:Request, res:Response) => res.send("editContent");
-const deleteContent = (req:Request, res:Response) => res.send("deleteContent");
+
+const editContent = async (req:Request, res:Response) => {
+    const { title, main, parentCategory, childCategory } = req.body;
+    const verify = await authorizeToken(req, res);
+    const ContentRepository = getRepository(Content); 
+    const targetContent = await ContentRepository.findOne({ id: Number(req.params.contentid) });
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+    if(!targetContent) return res.status(400).json({ message: 'Bad Content' });
+    if(!title || !main || !parentCategory || !childCategory) return res.status(400).json({ message: 'Bad Request' });
+    if(targetContent.userId !== verify.userInfo.id ) return res.status(400).json({ message: 'different user' })
+
+    targetContent.title = title;
+    targetContent.main = main;
+    targetContent.parentCategory = parentCategory;
+    targetContent.childCategory = childCategory;
+
+    await getConnection()
+        .createQueryBuilder()
+        .update(Content)
+        .set(targetContent)      
+        .where({ id: targetContent.id })
+        .execute();
+
+        console.log(targetContent)
+
+    return res.status(200).json({ message: "edit success" })
+};
+
+const deleteContent = async (req:Request, res:Response) => {
+    const verify = await authorizeToken(req, res);
+    const ContentRepository = getRepository(Content); 
+    const targetContent = await ContentRepository.findOne({ id: Number(req.params.contentid) });
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+    if(targetContent.userId !== verify.userInfo.id ) return res.status(400).json({ message: 'different user' })
+
+    await ContentRepository.delete(req.params.contentid)
+
+    return res.status(200).json({ message: 'Deleted' })
+};
 
 // Comment
 const reportComment = (req:Request, res:Response) => {    
     res.send("reportComment");
 }
+
 const allComment = async (req:Request, res:Response) => {     
     const contentId = req.params.contentId;
 
@@ -68,6 +109,7 @@ const allComment = async (req:Request, res:Response) => {
 
     res.status(200).json({data: comments, message : 'ok'});
 }
+
 const createComment = async (req:Request, res:Response) => {
     const {contentId, userId, main} = req.body;
 
@@ -85,6 +127,7 @@ const createComment = async (req:Request, res:Response) => {
 
     res.status(201).json({data : comment, message:'comment registered successfully' });
 }
+
 const editComment = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res);
     console.log(verify);
