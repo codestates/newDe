@@ -24,11 +24,11 @@ __decorate([
     __metadata("design:type", String)
 ], Comment.prototype, "main", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: null }),
+    (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Comment.prototype, "like", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: null }),
+    (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Comment.prototype, "report", void 0);
 __decorate([
