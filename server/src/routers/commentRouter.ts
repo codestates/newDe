@@ -4,11 +4,11 @@ import { reportComment, allComment, createComment, editComment, deleteComment } 
 const commentRouter = express.Router()
 
 commentRouter.post("/", createComment)
+commentRouter.patch("/", editComment)
 commentRouter.patch("/report", reportComment)
 commentRouter.get("/:contentId", allComment)
 commentRouter
-    .route("/:commentId")
-    .patch(editComment)
+    .route("/:commentId")    
     .delete(deleteComment)
 
 

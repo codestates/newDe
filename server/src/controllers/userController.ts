@@ -61,6 +61,7 @@ const signup = async (req:Request, res:Response) => {
 
 const profile = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res)
+    
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 

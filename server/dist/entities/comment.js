@@ -24,12 +24,12 @@ __decorate([
     __metadata("design:type", String)
 ], Comment.prototype, "main", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Comment.prototype, "like", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
 ], Comment.prototype, "report", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
@@ -40,7 +40,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Comment.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments),
+    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments, { onDelete: 'CASCADE' }),
     __metadata("design:type", user_1.User)
 ], Comment.prototype, "user", void 0);
 __decorate([
