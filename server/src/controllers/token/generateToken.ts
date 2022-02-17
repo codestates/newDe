@@ -9,6 +9,6 @@ export async function  generateToken(userInfo) {
             userInfo
         },
         process.env.ACCESS_SECRET,
-        { expiresIn: '2d' },
+        { expiresIn: '1m' },
     ) 
 }

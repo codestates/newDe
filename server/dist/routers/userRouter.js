@@ -7,10 +7,10 @@ const express_1 = __importDefault(require("express"));
 const userController_js_1 = require("../controllers/userController.js");
 const userRouter = express_1.default.Router();
 userRouter.get("/logout", userController_js_1.logout);
-userRouter.get("/email", userController_js_1.checkEmail);
+userRouter.post("/email", userController_js_1.checkEmail);
 userRouter.post("/password", userController_js_1.checkPassword);
 userRouter
-    .route("/:id")
+    .route("/")
     .get(userController_js_1.profile)
     .patch(userController_js_1.editUser)
     .delete(userController_js_1.deleteUser);
