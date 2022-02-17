@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createQueryBuilder, getRepository, getConnection } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, getMongoRepository } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { Comment } from "../entities/comment";
@@ -35,9 +35,8 @@ const createContent = async (req:Request, res:Response) => {
     const content = new Content()
 
     const verify = await authorizeToken(req, res);
-    console.log(verify);
-
-    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
+    //console.log(verify);
 
     content.title = title;
     content.main = main;
@@ -114,6 +113,7 @@ const createComment = async (req:Request, res:Response) => {
     const {contentId, userId, main} = req.body;
 
     const verify = await authorizeToken(req, res);
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
 
     const commentRepository = getRepository(Comment);
 
@@ -130,33 +130,35 @@ const createComment = async (req:Request, res:Response) => {
 
 const editComment = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res);
-    console.log(verify);
-    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
-
+    const commentRepository = getRepository(Comment);
     const {commentId, userId, main} = req.body;
 
-    const commentRepository = getRepository(Comment);
-
     const targetComment = await commentRepository.findOne(commentId);
+
+    //console.log(verify);
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if(targetComment.userId !== verify.userInfo.id) return res.status(400).json({ message: 'different user'});
 
     targetComment.main = main;
 
     await commentRepository.save(targetComment);
 
-    res.status(200).json({data : targetComment, message : 'comment mdified successfully'});
+    res.status(200).json({ data : targetComment, message : 'comment mdified successfully' });
 }
 
 const deleteComment = async (req:Request, res:Response) => {
-    const verify = await authorizeToken(req, res);
+    const verify = await authorizeToken(req, res);    
     const commentRepository = getRepository(Comment);
+    const commentId = req.params.commentId;  
 
-    const commentId = req.params.commentId;
+    const targetContent = await commentRepository.findOne(commentId)    
 
-    await commentRepository.delete( {id : Number(commentId) })
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if(targetContent.userId !== verify.userInfo.id) return res.status(400).json({ message: 'different user' })
 
-    return res
-        .status(200)
-        .json({ message: 'Deleted' })
+    await commentRepository.delete( commentId )
+
+    return res.status(200).json({ message: 'Deleted' })
 };
 
 

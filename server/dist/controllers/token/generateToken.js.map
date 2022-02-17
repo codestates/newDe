@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+{"version":3,"file":"generateToken.js","sourceRoot":"","sources":["../../../src/controllers/token/generateToken.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,kDAAmC;AACnC,+CAAgC;AAGhC,MAAM,CAAC,MAAM,EAAE,CAAA;AAEf,SAAsB,aAAa,CAAC,QAAa;;QAC7C,OAAO,GAAG,CAAC,IAAI,CACX;YACI,QAAQ;SACX,EACD,OAAO,CAAC,GAAG,CAAC,aAAa,EACzB,EAAE,SAAS,EAAE,IAAI,EAAE,CACtB,CAAA;IACL,CAAC;CAAA;AARD,sCAQC"}
+=======
 {"version":3,"file":"generateToken.js","sourceRoot":"","sources":["../../../src/controllers/token/generateToken.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,kDAAmC;AACnC,+CAAgC;AAGhC,MAAM,CAAC,MAAM,EAAE,CAAA;AAEf,SAAuB,aAAa,CAAC,QAAa;;QAC9C,OAAO,GAAG,CAAC,IAAI,CACX;YACI,QAAQ;SACX,EACD,OAAO,CAAC,GAAG,CAAC,aAAa,EACzB,EAAE,SAAS,EAAE,IAAI,EAAE,CACtB,CAAA;IACL,CAAC;CAAA;AARD,sCAQC"}
+>>>>>>> 3d6b5a642646be121dbc0d1882ab5756548ea88f

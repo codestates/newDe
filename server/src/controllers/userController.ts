@@ -24,6 +24,7 @@ const login = async (req:Request, res:Response) => {
 
         if(userInfo) {
             const token = await generateToken(userInfo);
+            // console.log(token);
             res.cookie('accessToken', token);
             res.status(200).json({ data : userInfo, message: 'Login Success'})
         } else {
