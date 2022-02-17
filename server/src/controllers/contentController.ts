@@ -1,15 +1,35 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { Comment } from "../entities/comment";
-import { generateToken } from './token/generateToken';
 import { authorizeToken } from './token/authorizeToken';
 
-//Content
-const recommentContent = (req:Request, res:Response) => res.send("recommentContent");
+const recommentContent = async (req:Request, res:Response) => {
+    const { contentId } = req.body;
+    const verify = await authorizeToken(req, res)
+
+    const ContentRepository = getRepository(Content)
+
+    const contentInfo = await ContentRepository.findOne({
+        where: { id : contentId }
+    })
+
+    await getConnection()
+    .createQueryBuilder()
+    .update(Content)
+    .set({
+        like: contentInfo.like + 1
+    })
+    .where({ id : contentId })
+    .execute();
+
+    res.status(200).json({ message: "succes" })
+}
 const reportContent = (req:Request, res:Response) => res.send("reportContent");
-const allContent = (req:Request, res:Response) => res.send("allContent");
+const allContent = (req:Request, res:Response) => {
+
+};
 const createContent = async (req:Request, res:Response) => {
     const { title, main, userId, parentCategory, childCategory } = req.body
     const content = new Content()
@@ -26,10 +46,8 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     
 
-    if(verify) {
-        await ContentRepository.save(content);
-        return res.status(201).json({ message: 'Succes'})
-    }
+    await ContentRepository.save(content);
+    return res.status(201).json({ message: 'Succes'})
     
 };
 

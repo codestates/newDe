@@ -4,7 +4,7 @@ import { profile, editUser, deleteUser, logout, checkEmail, checkPassword } from
 const userRouter = express.Router()
 
 userRouter.get("/logout", logout);
-userRouter.get("/email", checkEmail)
+userRouter.post("/email", checkEmail)
 userRouter.post("/password", checkPassword);
 userRouter
     .route("/")

@@ -14,12 +14,33 @@ const typeorm_1 = require("typeorm");
 const content_1 = require("../entities/content");
 const comment_1 = require("../entities/comment");
 const authorizeToken_1 = require("./token/authorizeToken");
+<<<<<<< HEAD
 //Content
 const recommentContent = (req, res) => res.send("recommentContent");
+=======
+const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { contentId } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const contentInfo = yield ContentRepository.findOne({
+        where: { id: contentId }
+    });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(content_1.Content)
+        .set({
+        like: contentInfo.like + 1
+    })
+        .where({ id: contentId })
+        .execute();
+    res.status(200).json({ message: "succes" });
+});
+>>>>>>> 8ce57c85c839d1c510b3ed420fcccc817f7c5928
 exports.recommentContent = recommentContent;
 const reportContent = (req, res) => res.send("reportContent");
 exports.reportContent = reportContent;
-const allContent = (req, res) => res.send("allContent");
+const allContent = (req, res) => {
+};
 exports.allContent = allContent;
 const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, userId, parentCategory, childCategory } = req.body;
@@ -32,10 +53,16 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.parentCategory = parentCategory;
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+<<<<<<< HEAD
     if (verify) {
         yield ContentRepository.save(content);
         return res.status(201).json({ message: 'Succes' });
     }
+=======
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    yield ContentRepository.save(content);
+    return res.status(201).json({ message: 'Succes' });
+>>>>>>> 8ce57c85c839d1c510b3ed420fcccc817f7c5928
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => res.send("getContentDetail");
