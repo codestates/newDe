@@ -15,22 +15,44 @@ height: 100%;
 text-align: center;
 align-items: center;
 justify-content: center;
+<<<<<<< HEAD
 `
 //로그인 컨테이너
 const LoginContainer = styled.div`
+=======
+
+
+`
+//로그인 컨테이너
+const LoginContainer = styled.div`
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 display: flex;
 flex-direction: column;
 align-items: center;
 width: 40%;
+<<<<<<< HEAD
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
+=======
+
+
+@media ${(props)=> props.theme.mobile}{
+    width: 100%;
+    height: 100%;
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 }
 `
 //로고부분 
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 aligh-items: center;
 text-align: center;`
 
@@ -40,6 +62,10 @@ const NameWrap = styled.div`
 margin: 4;
 width: 80%;
 text-align: left;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 padding-left: 10px;
 ` 
 
@@ -50,6 +76,11 @@ const InputWrap = styled.input`
 margin: 2%;
 width: 80%;
 background-color: seashell;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 `
 
 const BtnContainer = styled.div`
@@ -66,6 +97,10 @@ border: 1px solid black;
 border-radius: 3px;
 width: 60%;
 margin: 5px;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6247427a2d2ae334f4364e6b7e977f8dda4550f9
 `
 
 

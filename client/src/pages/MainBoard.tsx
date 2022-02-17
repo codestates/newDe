@@ -1,3 +1,4 @@
+//메인 게시판
 import react from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -15,6 +16,8 @@ height: 100%;
 text-align: center;
 align-items: center;
 justify-content: center;
+
+
 `
 
 const BoardWrap = styled.div`
@@ -22,15 +25,21 @@ display: flex;
 flex-direction: column;
 align-items: center;
 width: 80%;
+
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
+
 }
+
+
 `
 
 const BoardName = styled.div`
+
 width : 80%;
 text-align: left;
+
 font-size: 1.5rem;
 margin: 2%;
 margin-top: 5%;
@@ -52,6 +61,8 @@ justify-content: center;
 width: 90%;
 align-items: center;
 margin: 0.5% 0.5% 0.5% 0.5%
+
+
 `
 
 const Contenttitle = styled.div`

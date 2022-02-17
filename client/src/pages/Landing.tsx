@@ -4,6 +4,7 @@ const MainDiv = styled.div`
     position: absolute;
     display:block;
     background: ;
+    text-align: 
     font-size: 3rem;
 `
 function Landing ():JSX.Element {
