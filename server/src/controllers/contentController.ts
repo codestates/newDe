@@ -21,10 +21,8 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const verify = await authorizeToken(req, res)
 
-    if(verify) {
-        await ContentRepository.save(content);
-        return res.status(201).json({ message: 'Succes'})
-    }
+    await ContentRepository.save(content);
+    return res.status(201).json({ message: 'Succes'})
     
 };
 const getContentDetail = (req:Request, res:Response) => res.send("getContentDetail");

@@ -7,7 +7,7 @@ userRouter.get("/logout", logout);
 userRouter.get("/email", checkEmail)
 userRouter.post("/password", checkPassword);
 userRouter
-    .route("/:id")
+    .route("/")
     .get(profile)
     .patch(editUser)
     .delete(deleteUser)
