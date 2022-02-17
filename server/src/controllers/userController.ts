@@ -1,35 +1,4 @@
 import { Request, Response } from "express";
-<<<<<<< HEAD
-import { getRepository, Repository } from "typeorm";
-import { User } from "../entities/user";
-
-const login = (req:Request, res:Response) => res.send("Login");
-const logout = (req:Request, res:Response) => res.send("Log out");
-
-const signup = async (req:Request, res:Response) => {
-    const { email, password, nickName } = req.body;
-    
-    const user = new User();
-    user.email = email;
-    user.password = password;
-    user.nickName = nickName;
-
-    const userRepository = getRepository(User);
-
-    const check = await userRepository.find({ email:email });
-    if(check) {
-        await userRepository.save(user);
-        res.status(201).send('sign up');
-    }
-    else {
-        res.status(400).send("conflict");
-    }    
-}
-
-const profile = (req:Request, res:Response) => {
-    console.log(req.params.id)
-    res.send(`profile ${req.params.id}`)
-=======
 import { getRepository } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content"
@@ -107,7 +76,6 @@ const profile = async (req:Request, res:Response) => {
     })
 
     return res.status(201).json({ data: {...userInfo, content: userContent} })
->>>>>>> 37b837b0ce1f1304abfc7d18fc4b2c0d4c8646dd
 }
 
 const editUser = (req:Request, res:Response) => res.send("Edit User");

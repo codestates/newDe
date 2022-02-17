@@ -44,15 +44,11 @@ __decorate([
     __metadata("design:type", user_1.User)
 ], Comment.prototype, "user", void 0);
 __decorate([
-<<<<<<< HEAD
-    (0, typeorm_1.ManyToOne)(() => content_1.Content, content => content.comments, { onDelete: 'CASCADE' }),
-=======
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Comment.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => content_1.Content, content => content.comments),
->>>>>>> 37b837b0ce1f1304abfc7d18fc4b2c0d4c8646dd
     __metadata("design:type", content_1.Content)
 ], Comment.prototype, "content", void 0);
 __decorate([

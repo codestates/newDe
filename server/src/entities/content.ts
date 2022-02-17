@@ -31,16 +31,11 @@ export class Content {
     @UpdateDateColumn()
     updatedAt: Date; 
     
-<<<<<<< HEAD
-    @ManyToOne(() => User, user => user.contents, { onDelete: 'CASCADE' })
-    user: User;   
-=======
     @ManyToOne(() => User, user => user.contents)
     user: User;
 
     @Column()
     userId: Number   
->>>>>>> 37b837b0ce1f1304abfc7d18fc4b2c0d4c8646dd
 
     @OneToMany(() => Comment, comment => comment.content)
     comments:Comment[];

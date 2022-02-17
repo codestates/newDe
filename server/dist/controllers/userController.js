@@ -12,33 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkPassword = exports.checkEmail = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
-<<<<<<< HEAD
-const login = (req, res) => res.send("Login");
-exports.login = login;
-const logout = (req, res) => res.send("Log out");
-exports.logout = logout;
-const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, nickName } = req.body;
-    const user = new user_1.User();
-    user.email = email;
-    user.password = password;
-    user.nickName = nickName;
-    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    const check = yield userRepository.find({ email: email });
-    if (check) {
-        yield userRepository.save(user);
-        res.status(201).send('sign up');
-    }
-    else {
-        res.status(400).send("conflict");
-    }
-});
-exports.signup = signup;
-const profile = (req, res) => {
-    console.log(req.params.id);
-    res.send(`profile ${req.params.id}`);
-};
-=======
 const content_1 = require("../entities/content");
 const generateToken_1 = require("./token/generateToken");
 const authorizeToken_1 = require("./token/authorizeToken");
@@ -104,7 +77,6 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return res.status(201).json({ data: Object.assign(Object.assign({}, userInfo), { content: userContent }) });
 });
->>>>>>> 37b837b0ce1f1304abfc7d18fc4b2c0d4c8646dd
 exports.profile = profile;
 const editUser = (req, res) => res.send("Edit User");
 exports.editUser = editUser;
