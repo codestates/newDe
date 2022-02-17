@@ -10,11 +10,11 @@ export class Comment {
     @Column()
     main: string;
 
-    @Column()
+    @Column({default:0})
     like: number;
 
-    @Column()
-    report: string;
+    @Column({default:0})
+    report: number;
 
     @CreateDateColumn()
     created_at: Date;
@@ -22,7 +22,7 @@ export class Comment {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(()=> User, user=> user.comments)
+    @ManyToOne(()=> User, user=> user.comments, { onDelete: 'CASCADE' })
     user: User;
 
     @Column()

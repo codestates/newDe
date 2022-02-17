@@ -10,11 +10,12 @@ module.exports = {
   synchronize: true,
   logging: false,
   entities: ['dist/entities/**/*.js'],
-  migrations: ['dist/migration/**/*.js'],
-  subscribers: ['dist/subscriber/**/*.js'],
-  // cli: {
-  //   entitiesDir: '/entities',
-  //   migrationsDir: 'src/migrations',
-  //   subscribersDir: 'src/subscriber',
-  // }
+  // migrationsTableName: "migrations",
+  migrations: ['dist/migrations/**/*.js'],
+  subscribers: ['dist/subscribers/**/*.js'],
+  cli: {
+    entitiesDir: 'src/entities',
+    migrationsDir: 'src/migrations',
+    subscribersDir: 'src/subscribers',
+  }
 }

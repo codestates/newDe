@@ -13,10 +13,10 @@ export class Content {
     @Column()
     main: string;    
 
-    @Column({default:null})
+    @Column({default:0})
     like: number;
 
-    @Column({default:null})
+    @Column({default:0})
     report: number;
 
     @Column()

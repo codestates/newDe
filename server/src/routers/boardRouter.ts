@@ -16,4 +16,4 @@ boardRouter
     .delete(deleteContent)
 
 
-export default boardRouter
+export default boardRouter  

@@ -31,6 +31,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         if (userInfo) {
             const token = yield (0, generateToken_1.generateToken)(userInfo);
+            // console.log(token);
             res.cookie('accessToken', token);
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
@@ -68,22 +69,84 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    console.log(verify.userInfo);
+    console.log(verify);
+    if (verify) {
+        const userInfo = yield userRepository.findOne({
+            where: { id: verify.userInfo.id }
+        });
+        const userContent = yield ContentRepository.find({
+            where: { userId: userInfo.id }
+        });
+        return res.status(201).json({ data: Object.assign(Object.assign({}, userInfo), { content: userContent }) });
+    }
+    else {
+        return res.status(400).json({ message: 'Invalid Accesstoken' });
+    }
+});
+exports.profile = profile;
+const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nickName, password } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(user_1.User)
+        .set({
+        nickName: nickName,
+        password: password
+    })
+        .where({ id: verify.userInfo.id })
+        .execute();
     const userInfo = yield userRepository.findOne({
         where: { id: verify.userInfo.id }
     });
-    const userContent = yield ContentRepository.find({
-        where: { userId: userInfo.id }
-    });
-    return res.status(201).json({ data: Object.assign(Object.assign({}, userInfo), { content: userContent }) });
+    return res.status(200).json({ data: userInfo });
 });
-exports.profile = profile;
-const editUser = (req, res) => res.send("Edit User");
 exports.editUser = editUser;
-const deleteUser = (req, res) => res.send("Delete");
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    yield userRepository.delete({ id: verify.userInfo.id });
+    return res
+        .clearCookie('accessToken')
+        .status(200)
+        .json({ message: 'Deleted' });
+});
 exports.deleteUser = deleteUser;
-const checkEmail = (req, res) => res.send("checkEmail");
+const checkEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    if (!email) {
+        return res.status(400).json({ message: 'Bad Request' });
+    }
+    else {
+        const userInfo = yield userRepository.findOne({ email: email });
+        if (userInfo) {
+            return res.status(409).json({ message: 'Account already exisits' });
+        }
+        return res.status(200).json({ message: 'email available' });
+    }
+});
 exports.checkEmail = checkEmail;
-const checkPassword = (req, res) => res.send("checkPassword");
+const checkPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { password } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    console.log(verify.userInfo);
+    if (!password) {
+        return res.status(400).json({ message: 'Bad Request' });
+    }
+    if (verify.userInfo.password !== password) {
+        return res.status(400).json({ message: 'incorrect password' });
+    }
+    else {
+        return res.status(200).json({ message: 'password correct!' });
+    }
+});
 exports.checkPassword = checkPassword;
 //# sourceMappingURL=userController.js.map
