@@ -24,12 +24,12 @@ __decorate([
     __metadata("design:type", String)
 ], Comment.prototype, "main", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", Number)
 ], Comment.prototype, "like", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ default: null }),
+    __metadata("design:type", Number)
 ], Comment.prototype, "report", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),

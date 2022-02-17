@@ -10,11 +10,11 @@ export class Comment {
     @Column()
     main: string;
 
-    @Column()
+    @Column({default:null})
     like: number;
 
-    @Column()
-    report: string;
+    @Column({default:null})
+    report: number;
 
     @CreateDateColumn()
     created_at: Date;

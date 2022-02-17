@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content"
 import { generateToken } from './token/generateToken'
@@ -61,6 +61,7 @@ const signup = async (req:Request, res:Response) => {
 
 const profile = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res)
+    
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
     
