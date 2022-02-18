@@ -135,7 +135,7 @@ function SignUp():JSX.Element {
         console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                'https://localhost:8080/check/email', 
+                'https://localhost:4000/checkemail', 
                 {email: inputInfo.email}, config
             )
 
@@ -168,7 +168,7 @@ function SignUp():JSX.Element {
 
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         if(checkText.email === '사용 가능한 이메일입니다.' && 
         checkText.passwordCheck === '비밀번호가 일치합니다.' && 
         inputInfo.nickname){
@@ -177,6 +177,8 @@ function SignUp():JSX.Element {
                 nickname: inputInfo.nickname, 
                 password: inputInfo.password
             }
+            const submitresult = await axios.post("http://localhost4000/signup", sendingInfo, config)
+            
             
 
         }

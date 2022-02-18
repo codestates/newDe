@@ -96,7 +96,7 @@ function Login ():JSX.Element {
     })
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        // console.log(event.target.value)
+        console.log(event.target.value)
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -114,12 +114,14 @@ function Login ():JSX.Element {
     }
 
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(event.target)
+        
+        // console.log(inputInfo.email)
+        // console.log(inputInfo.password)
         const loginresult = await axios.post(
-            'https//localhost:8080/user/login', 
+            'http://localhost:4000/login', 
             {email: inputInfo.email, password: inputInfo.password}, 
             config)
-        
+        navigate('/mainboard')
     }
 
     const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
@@ -144,13 +146,13 @@ function Login ():JSX.Element {
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type = 'email' placeholder = '이메일을 입력해주세요' onChange = {handleInput} />
+                <InputWrap type = 'email' placeholder = 'email' onChange = {handleInput} />
                     
                 
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type= 'password' placeholder = '비밀번호를 입력해주세요' />
+                <InputWrap type= 'password' placeholder = 'password' onChange= {handleInput} />
                 
                 <BtnContainer>
                     

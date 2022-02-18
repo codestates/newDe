@@ -29,10 +29,8 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    if (verify) {
-        yield ContentRepository.save(content);
-        return res.status(201).json({ message: 'Succes' });
-    }
+    yield ContentRepository.save(content);
+    return res.status(201).json({ message: 'Succes' });
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => res.send("getContentDetail");
