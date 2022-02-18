@@ -1,59 +1,38 @@
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { amount, decrement, increment } from '../features/counter'
+import { useAppSelector } from '../store/hooks'
+import Loader from '../component/Loader'
 
 
-function MyPage(){
-    const [userId,setUserId] = useState('2')
-    const [test,setTest]= useState('')
-    const URL= useAppSelector((state:RootState)=> state.url.url)
-    console.log(URL,'~~~')
+function MyPage() {
+    const [userInfo, setUserInfo] = useState<any>({})
+    const [loading, setLoading] = useState(false)
+    const URL = useAppSelector((state: RootState) => state.url.url)
 
-    const config = {
-        withCredentials: true
+    async function fetchData() {
+        try {
+            setLoading(true)
+            const result = await axios.get(`${URL}/users`, { withCredentials: true })
+            setUserInfo(result.data.data)
+        } catch (e) {
+            console.log(e)
+        }
+        setLoading(false)
     }
 
-    useEffect(()=>{
-        async function fetchData() {
-            const result = await axios.get(`${URL}/users`,config)
-            console.log(result.data.data.nickName)
-            setTest(result.data.data.nickName)
-        }
+    useEffect(() => {
         fetchData()
-    },[])
+    }, [])
 
-
-    const count = useAppSelector((state: RootState) => state.count.value)
-    const id = useAppSelector((state: RootState) => state.count.id)
-    const dispatch = useAppDispatch()
+    if (loading) return <Loader type="spin" color="#999999" />
     return (
         <div>
-            {test}
             <div>
-                <button onClick={()=>dispatch(increment())}>Increment</button>
-                <button onClick={()=>dispatch(decrement())}>Decrement</button>
-                <button onClick={()=>dispatch(amount({id:2,value:2}))}>id change</button>
-                <div>{count}</div>
-                <div>{id}</div>
+                <div>{userInfo.nickName}</div>
             </div>
         </div>
     )
 }
 
 export default MyPage;
-
-
-// {data: {
-// id, 
-// nickname, 
-// email, 
-// jointype, 
-// status, 
-// createdAt, 
-// updatedAt, 
-// content : 
-// [{id, parentCategory, childCategory, title, nickname, replyCount, like, createdAt }, 
-// {id, parentCategory, childCategory, title, nickname, replyCount, like, createdAt }
-// ]},
