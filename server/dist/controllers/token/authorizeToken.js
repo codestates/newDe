@@ -37,7 +37,7 @@ function authorizeToken(req, res) {
         const JWT = req.cookies.accessToken;
         const data = jwt.verify(JWT, process.env.ACCESS_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(403).json({ message: 'Invalid Accesstoken' });
+                return null;
             }
             else {
                 return decoded;

@@ -49,12 +49,10 @@ const ChildBoard = styled.div`
 display: flex;
 flex-direction: column;
 width: 90%;
-
 margin-top: 1%;
 align-items: center;
 text-align: center;
 margin-bottom: 5%;
-
 `
 
 const ContentWrap = styled.div`
@@ -69,7 +67,6 @@ margin: 0.5% 0.5% 0.5% 0.5%
 
 const Contenttitle = styled.div`
 width: 70%;
-
 text-align: left;`
 
 

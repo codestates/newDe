@@ -1,14 +1,29 @@
 //마이페이지 수정 
-function MyPageEdit ():JSX.Element {
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
+
+function MyPageEdit () {
+
+
+  
     return (
+
         <div>
-            정보 수정 창 입니다. 
+          <div>
+            <input type='email' placeholder='email' disabled />
+            <input type='text' placeholder='nickname' />
+            <input type='password' placeholder='password' />
+          </div>
+          <br />
+          <div>
+            <button className='modifyBtn' >수정</button>
+            <span style={{ color: 'red' }}></span>
+          </div>
         </div>
 
-
-    )
-        
-}
+    );
+  }
 
 export default MyPageEdit

@@ -46,18 +46,10 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/writing' element={<Writing />} />
             <Route path='/roadmap' element={<RoadMap />} />
-
-
-
           </Routes>
-      
-          
-          
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
           </ContentWrap>
-          
-          
         </BrowserRouter>
       </ThemeProvider>
       

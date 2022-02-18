@@ -37,7 +37,6 @@ width: 40%;
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
-
 aligh-items: center;
 text-align: center;`
 
@@ -47,7 +46,6 @@ const NameWrap = styled.div`
 margin: 4;
 width: 80%;
 text-align: left;
-
 padding-left: 10px;
 ` 
 
@@ -76,7 +74,6 @@ border: 1px solid black;
 border-radius: 3px;
 width: 60%;
 margin: 5px;
-
 `
 
 
@@ -114,14 +111,14 @@ function Login ():JSX.Element {
     }
 
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        
-        // console.log(inputInfo.email)
-        // console.log(inputInfo.password)
+        console.log(inputInfo)
         const loginresult = await axios.post(
             'http://localhost:4000/login', 
             {email: inputInfo.email, password: inputInfo.password}, 
-            config)
-        navigate('/mainboard')
+            config).then(el=>{
+                navigate('/MyPage')
+            })
+        
     }
 
     const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
