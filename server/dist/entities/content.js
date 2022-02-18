@@ -36,11 +36,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Content.prototype, "report", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Content.prototype, "parentCategory", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Content.prototype, "childCategory", void 0);
 __decorate([
@@ -52,7 +52,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Content.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.contents),
+    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.contents, { cascade: true }),
     __metadata("design:type", user_1.User)
 ], Content.prototype, "user", void 0);
 __decorate([
