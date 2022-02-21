@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { RootState } from '../store'
 import axios from 'axios';
 
 //배경
@@ -79,6 +81,7 @@ margin: 5px;
 
 
 function Login ():JSX.Element {
+    const URL= useAppSelector((state:RootState)=> state.url.url)
     const navigate = useNavigate();
     const config = {
         headers: {
@@ -113,7 +116,7 @@ function Login ():JSX.Element {
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
         console.log(inputInfo)
         const loginresult = await axios.post(
-            'http://localhost:4000/login', 
+            `${URL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 navigate('/MyPage')

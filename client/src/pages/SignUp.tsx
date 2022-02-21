@@ -2,6 +2,8 @@ import react from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -91,6 +93,7 @@ margin: 2%;
 
 function SignUp():JSX.Element {
     const navigate = useNavigate();
+    const URL= useAppSelector((state:RootState)=> state.url.url)
 
     const config = {
         headers: {
@@ -135,7 +138,7 @@ function SignUp():JSX.Element {
         console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                'https://localhost:4000/checkemail', 
+                `${URL}/check/email`, 
                 {email: inputInfo.email}, config
             )
 
