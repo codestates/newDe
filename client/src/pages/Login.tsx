@@ -96,7 +96,7 @@ function Login ():JSX.Element {
     })
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        // console.log(event.target.value)
+        console.log(event.target.value)
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -146,13 +146,13 @@ function Login ():JSX.Element {
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type = 'email' placeholder = '이메일을 입력해주세요' onChange = {handleInput} />
+                <InputWrap type = 'email' placeholder = 'email' onChange = {handleInput} />
                     
                 
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type= 'password' placeholder = '비밀번호를 입력해주세요' onChange = {handleInput}/>
+                <InputWrap type= 'password' placeholder = 'password' onChange= {handleInput} />
                 
                 <BtnContainer>
                     
