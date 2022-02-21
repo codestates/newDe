@@ -13,8 +13,8 @@ exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = ex
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
-const generateToken_1 = require("./token/generateToken");
-const authorizeToken_1 = require("./token/authorizeToken");
+const generateToken_1 = require("../middleware/token/generateToken");
+const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = new user_1.User();
