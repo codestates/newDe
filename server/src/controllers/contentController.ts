@@ -173,7 +173,14 @@ const allComment = async (req:Request, res:Response) => {
 
     const commentRepository = getRepository(Comment);
     
-    const comments = await commentRepository.find({where : {contentId : contentId}});
+    //const comments = await commentRepository.find({where : {contentId : contentId}});
+
+    const comments = await commentRepository
+        .createQueryBuilder('comment')
+        .select('comment', 'comments.nickname')
+        .leftJoin('comment.user', 'comments')
+        .where('comment.contentId = :contentId', {contentId})
+        .getMany();
 
     res.status(200).json({data: comments, message : 'ok'});
 }

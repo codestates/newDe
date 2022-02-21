@@ -165,7 +165,13 @@ exports.deleteContent = deleteContent;
 const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const contentId = req.params.contentId;
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const comments = yield commentRepository.find({ where: { contentId: contentId } });
+    //const comments = await commentRepository.find({where : {contentId : contentId}});
+    const comments = yield commentRepository
+        .createQueryBuilder('comment')
+        .select('comment', 'comments.nickname')
+        .leftJoin('comment.user', 'comments')
+        .where('comment.contentId = :contentId', { contentId })
+        .getMany();
     res.status(200).json({ data: comments, message: 'ok' });
 });
 exports.allComment = allComment;
