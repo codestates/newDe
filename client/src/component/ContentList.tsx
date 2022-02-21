@@ -19,7 +19,8 @@ margin: 0.5% 0.5% 0.5% 0.5%
 
 const Contenttitle = styled.div`
 width: 70%;
-text-align: left;`
+text-align: left;
+cursor:pointer;`
 
 
 const Contentusersec = styled.div`
@@ -38,14 +39,21 @@ interface ListCompo {
 }
 
 
+
 //props로 글 제목, 글 번호, 글쓴이 추천수 등 가져올것 
 function ContentList(props: ListCompo):JSX.Element {
     // console.log(props)
+    const navigate = useNavigate();
+    function clickHandler(){
+        navigate(`/${props.id}`)
+
+    }
+
 
     return (
         <ContentWrap>
             
-            <Contenttitle>{props.title}</Contenttitle>
+            <Contenttitle onClick = {clickHandler}>{props.title}</Contenttitle>
             <Contentusersec>{props.user}</Contentusersec>
             <Contentlike>{props.like}</Contentlike>
             
