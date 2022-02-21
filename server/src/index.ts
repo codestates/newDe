@@ -28,11 +28,9 @@ createConnection()
   
 // middleware
 app.use(express.json()); //body parser(json)
-app.use(express.urlencoded({extended:false})); //body parser(url)
 
 app.use(cookieParser());
 app.use(express.urlencoded({extended:false}))
-
 // app.use(express.static(__dirname+'/../src/imageStorage'));
 app.use(express.static(__dirname+'/../src/imageStorage'));
 // app.use(express.static('.'));

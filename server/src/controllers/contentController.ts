@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createQueryBuilder, getRepository, getConnection, getMongoRepository } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, getMongoRepository, MoreThanOrEqual } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { Comment } from "../entities/comment";
@@ -9,6 +9,8 @@ import { Query } from "typeorm/driver/Query";
 const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;
     const verify = await authorizeToken(req, res)
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     const ContentRepository = getRepository(Content)
 
@@ -25,10 +27,9 @@ const recommentContent = async (req:Request, res:Response) => {
     .where({ id : contentId })
     .execute();
 
-    res.status(200).json({ message: "succes" })
+    res.status(200).json({ message: "success" })
 }
 
-const reportContent = (req:Request, res:Response) => res.send("reportContent");
 const allContent = async (req:Request, res:Response) => { 
     
     const { searching, parentCategory, childCategory, page } = req.query;
@@ -106,7 +107,24 @@ const createContent = async (req:Request, res:Response) => {
     return res.status(201).json({ message: 'Succes'})
 };
 
-const getContentDetail = (req:Request, res:Response) => res.send("getContentDetail");
+const getContentDetail = async (req:Request, res:Response) => {
+    const { contentid } = req.params;
+
+    console.log(contentid)
+
+    const payload = await getRepository(Content)
+    .createQueryBuilder('content')
+    .select(['content', 'contents.nickname'])
+    .leftJoin('content.user', 'contents')
+    .where('content.id = :id',{ id : contentid })
+    .getOne();     
+
+    console.log(payload)
+
+    if(!payload) return res.status(404).json({ data : [], message: "no Content" })
+
+    return res.status(200).json({ data : payload, message: "ok" })
+};
 
 const editContent = async (req:Request, res:Response) => {
     const { title, main, parentCategory, childCategory } = req.body;
@@ -150,10 +168,6 @@ const deleteContent = async (req:Request, res:Response) => {
 };
 
 // Comment
-const reportComment = (req:Request, res:Response) => {    
-    res.send("reportComment");
-}
-
 const allComment = async (req:Request, res:Response) => {     
     const contentId = req.params.contentId;
 
@@ -193,7 +207,7 @@ const createComment = async (req:Request, res:Response) => {
 const editComment = async (req:Request, res:Response) => {
     const verify = await authorizeToken(req, res);
     const commentRepository = getRepository(Comment);
-    const {commentId, userId, main} = req.body;
+    const {commentId, main} = req.body;
 
     const targetComment = await commentRepository.findOne(commentId);
 
@@ -203,7 +217,10 @@ const editComment = async (req:Request, res:Response) => {
 
     targetComment.main = main;
 
+    console.log(main)
+    
     await commentRepository.save(targetComment);
+    console.log(targetComment)
 
     res.status(200).json({ data : targetComment, message : 'comment mdified successfully' });
 }
@@ -223,6 +240,78 @@ const deleteComment = async (req:Request, res:Response) => {
     return res.status(200).json({ message: 'Deleted' })
 };
 
+// report
+const reportContent = async (req:Request, res:Response) => {
+    const { contentId } = req.body;
+    const verify = await authorizeToken(req, res)
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+
+    const ContentRepository = getRepository(Content)
+
+    const contentInfo = await ContentRepository.findOne({
+        where: { id : contentId }
+    })
+
+    await getConnection()
+    .createQueryBuilder()
+    .update(Content)
+    .set({
+        report: contentInfo.report + 1
+    })
+    .where({ id : contentId })
+    .execute();
+
+    res.status(200).json({ message: "success" })
+};
+
+const reportComment = async (req:Request, res:Response) => {    
+    const { commentId } = req.body;
+    const verify = await authorizeToken(req, res)
+
+    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+
+    const commentRepository = getRepository(Comment);
+
+    const commentInfo = await commentRepository.findOne({
+        where: { id : commentId }
+    })
+
+    await getConnection()
+    .createQueryBuilder()
+    .update(Comment)
+    .set({
+        report: commentInfo.report + 1
+    })
+    .where({ id : commentId })
+    .execute();
+
+    console.log(commentInfo)
+    console.log(commentInfo.report)
+
+    res.status(200).json({ message: "success" })
+}
+
+const getReportedContent = async (req:Request, res:Response) => {
+    const ContentRepository = getRepository(Content)
+
+    const contents = await ContentRepository.find({
+        report: MoreThanOrEqual(5)
+    })
+
+    res.status(200).json({ data: contents, message: "ok" })
+}
+
+const getReportedComment = async (req:Request, res:Response) => {
+    const CommentRepository = getRepository(Comment)
+
+    const comments = await CommentRepository.find({
+        report: MoreThanOrEqual(5)
+    })
+
+    res.status(200).json({ data: comments, message: "ok" })
+}
+
 
 export {
     recommentContent,
@@ -236,5 +325,7 @@ export {
     deleteComment,
     deleteContent,
     reportComment,
-    editComment
+    editComment,
+    getReportedContent,
+    getReportedComment
 }

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editComment = exports.reportComment = exports.deleteContent = exports.deleteComment = exports.editContent = exports.getContentDetail = exports.createContent = exports.createComment = exports.allContent = exports.allComment = exports.reportContent = exports.recommentContent = void 0;
+exports.getReportedComment = exports.getReportedContent = exports.editComment = exports.reportComment = exports.deleteContent = exports.deleteComment = exports.editContent = exports.getContentDetail = exports.createContent = exports.createComment = exports.allContent = exports.allComment = exports.reportContent = exports.recommentContent = void 0;
 const typeorm_1 = require("typeorm");
 const content_1 = require("../entities/content");
 const comment_1 = require("../entities/comment");
@@ -17,6 +17,8 @@ const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { contentId } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const contentInfo = yield ContentRepository.findOne({
         where: { id: contentId }
@@ -29,11 +31,9 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
     })
         .where({ id: contentId })
         .execute();
-    res.status(200).json({ message: "succes" });
+    res.status(200).json({ message: "success" });
 });
 exports.recommentContent = recommentContent;
-const reportContent = (req, res) => res.send("reportContent");
-exports.reportContent = reportContent;
 const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { searching, parentCategory, childCategory, page } = req.query;
     // query check
@@ -107,7 +107,20 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     return res.status(201).json({ message: 'Succes' });
 });
 exports.createContent = createContent;
-const getContentDetail = (req, res) => res.send("getContentDetail");
+const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { contentid } = req.params;
+    console.log(contentid);
+    const payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+        .createQueryBuilder('content')
+        .select(['content', 'contents.nickname'])
+        .leftJoin('content.user', 'contents')
+        .where('content.id = :id', { id: contentid })
+        .getOne();
+    console.log(payload);
+    if (!payload)
+        return res.status(404).json({ data: [], message: "no Content" });
+    return res.status(200).json({ data: payload, message: "ok" });
+});
 exports.getContentDetail = getContentDetail;
 const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, parentCategory, childCategory } = req.body;
@@ -149,10 +162,6 @@ const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.deleteContent = deleteContent;
 // Comment
-const reportComment = (req, res) => {
-    res.send("reportComment");
-};
-exports.reportComment = reportComment;
 const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const contentId = req.params.contentId;
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
@@ -183,7 +192,7 @@ exports.createComment = createComment;
 const editComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const { commentId, userId, main } = req.body;
+    const { commentId, main } = req.body;
     const targetComment = yield commentRepository.findOne(commentId);
     //console.log(verify);
     if (!verify)
@@ -191,7 +200,9 @@ const editComment = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     if (targetComment.userId !== verify.userInfo.id)
         return res.status(400).json({ message: 'different user' });
     targetComment.main = main;
+    console.log(main);
     yield commentRepository.save(targetComment);
+    console.log(targetComment);
     res.status(200).json({ data: targetComment, message: 'comment mdified successfully' });
 });
 exports.editComment = editComment;
@@ -208,4 +219,63 @@ const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     return res.status(200).json({ message: 'Deleted' });
 });
 exports.deleteComment = deleteComment;
+// report
+const reportContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { contentId } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const contentInfo = yield ContentRepository.findOne({
+        where: { id: contentId }
+    });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(content_1.Content)
+        .set({
+        report: contentInfo.report + 1
+    })
+        .where({ id: contentId })
+        .execute();
+    res.status(200).json({ message: "success" });
+});
+exports.reportContent = reportContent;
+const reportComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { commentId } = req.body;
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
+    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
+    const commentInfo = yield commentRepository.findOne({
+        where: { id: commentId }
+    });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(comment_1.Comment)
+        .set({
+        report: commentInfo.report + 1
+    })
+        .where({ id: commentId })
+        .execute();
+    console.log(commentInfo);
+    console.log(commentInfo.report);
+    res.status(200).json({ message: "success" });
+});
+exports.reportComment = reportComment;
+const getReportedContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const contents = yield ContentRepository.find({
+        report: (0, typeorm_1.MoreThanOrEqual)(5)
+    });
+    res.status(200).json({ data: contents, message: "ok" });
+});
+exports.getReportedContent = getReportedContent;
+const getReportedComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const CommentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
+    const comments = yield CommentRepository.find({
+        report: (0, typeorm_1.MoreThanOrEqual)(5)
+    });
+    res.status(200).json({ data: comments, message: "ok" });
+});
+exports.getReportedComment = getReportedComment;
 //# sourceMappingURL=contentController.js.map

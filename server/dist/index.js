@@ -27,7 +27,6 @@ const logger = (0, morgan_1.default)('dev');
     .catch((error) => console.log(error));
 // middleware
 app.use(express_1.default.json()); //body parser(json)
-app.use(express_1.default.urlencoded({ extended: false })); //body parser(url)
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.urlencoded({ extended: false }));
 // app.use(express.static(__dirname+'/../src/imageStorage'));
