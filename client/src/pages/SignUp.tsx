@@ -6,6 +6,8 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { useState } from 'react';
 import axios from 'axios';
+import { URL } from '../url'
+
 
 const SignUpContainer = styled.div`
 display: flex;
@@ -93,7 +95,6 @@ margin: 2%;
 
 function SignUp():JSX.Element {
     const navigate = useNavigate();
-    const URL= useAppSelector((state:RootState)=> state.url.url)
 
     const config = {
         headers: {

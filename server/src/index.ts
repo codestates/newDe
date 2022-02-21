@@ -47,6 +47,13 @@ app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/board", boardRouter);
 app.use("/comment", commentRouter);
+app.post('/users/check',(req,res)=>{
+  if(req.body.password==='1234'){
+    res.status(200).json({message:'password correct'})
+  } else {
+    res.status(200).send('ol')
+  }
+})
 
 
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);

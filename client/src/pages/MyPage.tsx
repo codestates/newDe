@@ -3,18 +3,52 @@ import axios from 'axios'
 import { RootState } from '../store'
 import { useAppSelector } from '../store/hooks'
 import Loader from '../component/Loader'
+import { URL } from '../url'
+import styled from 'styled-components'
+import Edit from '../component/editPassword'
+import { useNavigate } from 'react-router-dom';
 
 
 function MyPage() {
     const [userInfo, setUserInfo] = useState<any>({})
     const [loading, setLoading] = useState(false)
-    const URL = useAppSelector((state: RootState) => state.url.url)
+    const [isOpen, setIsOpen] = useState(false);
+    const [checkText, setCheckText] = useState('')
+    const [text, setText] = useState('')
+
+    const navigate = useNavigate();
+    const handleModal = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const config = {
+        headers: { "Content-type": "application/json" },
+        withCredentials: true
+    }
+    const onChange = (e: any) => {
+        setText(e.target.value)
+    }
+    async function passwordCheck() {
+        try {
+            setLoading(true)
+            const res = await axios.post(`${URL}/users/check`, { password: text }, config)
+            if (res.data.message === 'password correct') {
+                navigate('/mypageedit')
+            } else {
+                setCheckText('wrong password')
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        setLoading(false)
+    }
+
 
     async function fetchData() {
         try {
             setLoading(true)
-            const result = await axios.get(`${URL}/users`, { withCredentials: true })
-            setUserInfo(result.data.data)
+            const res = await axios.get(`${URL}/users`, { withCredentials: true })
+            setUserInfo(res.data.data)
         } catch (e) {
             console.log(e)
         }
@@ -23,6 +57,10 @@ function MyPage() {
 
     useEffect(() => {
         fetchData()
+        return ()=> {
+            setIsOpen(false)
+            setLoading(false)
+        }
     }, [])
 
     if (loading) return <Loader type="spin" color="#999999" />
@@ -30,6 +68,13 @@ function MyPage() {
         <div>
             <div>
                 <div>{userInfo.nickName}</div>
+                <button type='button' onClick={handleModal}>modal open</button>
+                <Edit visible={isOpen} onClose={handleModal}>
+                    <div>current password</div>
+                    <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
+                    <span><button onClick={passwordCheck}>submit</button></span>
+                    <div>{checkText}</div>
+                </Edit>
             </div>
         </div>
     )

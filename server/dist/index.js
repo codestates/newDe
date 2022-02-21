@@ -43,6 +43,14 @@ app.use("/", globalRouter_1.default);
 app.use("/users", userRouter_1.default);
 app.use("/board", boardRouter_1.default);
 app.use("/comment", commentRouter_1.default);
+app.post('/users/check', (req, res) => {
+    if (req.body.password === '1234') {
+        res.status(200).json({ message: 'password correct' });
+    }
+    else {
+        res.status(200).send('ol');
+    }
+});
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
 app.listen(PORT, handleListening);
 //# sourceMappingURL=index.js.map

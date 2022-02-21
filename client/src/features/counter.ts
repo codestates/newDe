@@ -24,7 +24,6 @@ export const counterSlice = createSlice({
       state.value -= 1
       state.id -= 2
     },
-    
     amount: (state, action: PayloadAction<CounterState>) => {
       state.value = action.payload.value
       state.id = action.payload.id

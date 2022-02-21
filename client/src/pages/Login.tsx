@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
 import axios from 'axios';
+import { URL } from '../url'
+
 
 //배경
 const MainContainer = styled.div`
@@ -81,7 +83,6 @@ margin: 5px;
 
 
 function Login ():JSX.Element {
-    const URL= useAppSelector((state:RootState)=> state.url.url)
     const navigate = useNavigate();
     const config = {
         headers: {
