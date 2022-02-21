@@ -104,8 +104,7 @@ const editUser = async (req:Request, res:Response) => {
         .update(User)
         .set(userInfo)
         .where({ id : verify.userInfo.id })
-        .execute();
-        
+        .execute();  
     
 
     return res.status(200).json({ data: userInfo })
