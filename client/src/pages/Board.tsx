@@ -79,15 +79,18 @@ margin: 0.5% 0.5% 0.5% 0.5%
 
 const Contenttitle = styled.div`
 width: 70%;
+font-weight: bold;
 text-align: left;`
 
 
 const Contentusersec = styled.div`
 width: 10%;
+font-weight: bold;
 `
 
 const Contentlike = styled.div`
 width: 10%;
+font-weight: bold;
 `
 
 
@@ -108,14 +111,15 @@ const WritingBtn = styled.button`
 
 const NameSec = styled.div`
 width: 80%;
+font-weight: bold;
 `
-function Board():JSX.Element {
+function Board(props: any):JSX.Element {
 //역시 axios로 해당 게시판 글들 긁어와서 렌더링 query값이 없으면 기본 1페이지, query로 페이지 생각
 
 const nowURL = new URL(window.location.href); //URL값 따오기 
 // console.log(nowURL)
-const firstCategory = nowURL.searchParams.get('firstCategory');
-const secondCategory = nowURL.searchParams.get('secondCategory'); //각각의 카테고리를 얻었음 
+const ParentCategory = nowURL.searchParams.get('parentcategory');
+const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
@@ -137,7 +141,7 @@ const datatoList = dummy.map((el)=>{
 
         <BoardWrap>
             <BoardName>
-                <NameSec>게시판 이름 </NameSec>
+                <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
                 
                 <WritingBtn><Link to = '/writing' className = 'btn'>글쓰기</Link></WritingBtn>
 

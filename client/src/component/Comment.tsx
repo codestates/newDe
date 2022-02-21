@@ -46,7 +46,7 @@ function Comment(props: any):JSX.Element {
     return (
         <CommentContainer>
             <UpperWrap>
-                <UserPart>글쓴이</UserPart>
+                <UserPart>댓글쓴이</UserPart>
                 <CommentBtn>수정</CommentBtn>
                 <CommentBtn>삭제</CommentBtn>
             
