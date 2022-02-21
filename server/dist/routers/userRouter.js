@@ -7,8 +7,7 @@ const express_1 = __importDefault(require("express"));
 const userController_js_1 = require("../controllers/userController.js");
 const userRouter = express_1.default.Router();
 userRouter.get("/logout", userController_js_1.logout);
-userRouter.post("/email", userController_js_1.checkEmail);
-userRouter.post("/password", userController_js_1.checkPassword);
+userRouter.post("/check", userController_js_1.checkInfo);
 userRouter
     .route("/")
     .get(userController_js_1.profile)

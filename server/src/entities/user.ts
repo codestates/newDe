@@ -8,7 +8,7 @@ export class User {
     id: number;
 
     @Column()
-    nickName: string;
+    nickname: string;
 
     @Column()
     email: string;
