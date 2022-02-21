@@ -1,7 +1,7 @@
 import express from 'express';
 import { login, signup } from '../controllers/userController.js';
 import saveImage from '../controllers/imageController.js';
-import upload from '../middleware/token/multer.js';
+import upload from '../middleware/multer.js';
 
 const globalRouter = express.Router();
 
