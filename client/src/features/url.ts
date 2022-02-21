@@ -5,7 +5,7 @@ export interface UrlState {
   }
   
   const initialState = {
-    url:'http://localhost:4000'
+    url:'http://ec2-13-125-217-154.ap-northeast-2.compute.amazonaws.com'
   } as UrlState
   
   export const url = createSlice({

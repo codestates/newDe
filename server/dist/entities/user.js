@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => content_1.Content, content => content.user, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.OneToMany)(() => content_1.Content, content => content.user),
     __metadata("design:type", Array)
 ], User.prototype, "contents", void 0);
 __decorate([

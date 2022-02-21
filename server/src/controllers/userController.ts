@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection } from "typeorm";
 import { User } from "../entities/user";
-import { Content } from "../entities/content"
-import { generateToken } from './token/generateToken'
-import { authorizeToken } from './token/authorizeToken'
+import { Content } from "../entities/content";
+import { generateToken } from './token/generateToken';
+import { authorizeToken } from './token/authorizeToken';
 
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;
@@ -92,19 +92,21 @@ const editUser = async (req:Request, res:Response) => {
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
     
-    await getConnection()
-        .createQueryBuilder()
-        .update(User)
-        .set({
-            nickName: nickName,
-            password: password
-        })
-        .where({ id : verify.userInfo.id })
-        .execute();
-        
     const userInfo = await userRepository.findOne({
         where: { id : verify.userInfo.id }
     })
+    
+    userInfo.nickName = nickName || userInfo.nickName;
+    userInfo.password = password || userInfo.password;
+
+    await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set(userInfo)
+        .where({ id : verify.userInfo.id })
+        .execute();
+        
+    
 
     return res.status(200).json({ data: userInfo })
 };
