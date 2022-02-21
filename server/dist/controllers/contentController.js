@@ -34,7 +34,24 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.recommentContent = recommentContent;
 const reportContent = (req, res) => res.send("reportContent");
 exports.reportContent = reportContent;
-const allContent = (req, res) => res.send("allContent");
+const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searching, parentCategory, childCategory, page } = req.query;
+    // query check
+    if (!parentCategory || !page)
+        return res.status(404).json({ message: 'Bad Request' });
+    const payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+        .createQueryBuilder('content')
+        .select(['content', 'contents.nickname'])
+        .leftJoin('content.user', 'contents')
+        .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+        .getMany();
+    //http://localhost:4000/board?parentCategory=Front&page=1
+    payload.reverse();
+    console.log(payload);
+    // console.log(contents[0].createdAt)
+    // console.log(contents)
+    return res.send("ok");
+});
 exports.allContent = allContent;
 const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, parentCategory, childCategory } = req.body;

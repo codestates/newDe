@@ -36,11 +36,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Content.prototype, "report", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Content.prototype, "parentCategory", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Content.prototype, "childCategory", void 0);
 __decorate([

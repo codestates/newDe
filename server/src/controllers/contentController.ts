@@ -28,7 +28,31 @@ const recommentContent = async (req:Request, res:Response) => {
 }
 
 const reportContent = (req:Request, res:Response) => res.send("reportContent");
-const allContent = (req:Request, res:Response) => res.send("allContent");
+
+const allContent = async (req:Request, res:Response) => { 
+    const { searching, parentCategory, childCategory, page } = req.query;
+
+    // query check
+    if(!parentCategory || !page) return res.status(404).json({ message: 'Bad Request' });
+
+    const payload = await getRepository(Content)
+        .createQueryBuilder('content')
+        .select(['content','contents.nickname'])
+        .leftJoin('content.user', 'contents')
+        .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
+        .getMany()
+
+        // http://localhost:4000/board?parentCategory=Front&page=1
+
+    payload.reverse()
+
+    console.log(payload)
+
+    // console.log(contents[0].createdAt)
+    // console.log(contents)
+
+    return res.send( "ok" )
+}
 
 const createContent = async (req:Request, res:Response) => {
     const { title, main, parentCategory, childCategory } = req.body
@@ -46,7 +70,6 @@ const createContent = async (req:Request, res:Response) => {
     
     const ContentRepository = getRepository(Content)
     
-
     await ContentRepository.save(content);
     return res.status(201).json({ message: 'Succes'})
 };
