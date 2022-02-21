@@ -34,10 +34,61 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.recommentContent = recommentContent;
 const reportContent = (req, res) => res.send("reportContent");
 exports.reportContent = reportContent;
-const allContent = (req, res) => {
-    const { searching, firstCategory, secondCategory, page } = req.query;
-    res.send("allContent");
-};
+const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searching, parentCategory, childCategory, page } = req.query;
+    // query check
+    if (!parentCategory || !page)
+        return res.status(404).json({ message: 'no essential query' });
+    //find payload with searching and category
+    let payload = null;
+    if (!searching) {
+        if (!childCategory) {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+                .getMany();
+        }
+        else {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+                .getMany();
+        }
+    }
+    else {
+        if (!childCategory) {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+                .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
+                .getMany();
+        }
+        else {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+                .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
+                .getMany();
+        }
+    }
+    payload.reverse();
+    //pagenation
+    const pageCount = Math.floor(payload.length / 5) + 1;
+    if (pageCount < Number(page) || Number(page) < 1)
+        return res.status(404).json({ message: 'page query out of range' });
+    payload = payload.filter((el, idx) => {
+        return Math.floor(idx / 5) + 1 === Number(page);
+    });
+    return res.status(200).json({ data: payload, pageCount, message: 'ok' });
+});
 exports.allContent = allContent;
 const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, parentCategory, childCategory } = req.body;

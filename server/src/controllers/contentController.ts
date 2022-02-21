@@ -4,6 +4,7 @@ import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { Comment } from "../entities/comment";
 import { authorizeToken } from '../middleware/token/authorizeToken';
+import { Query } from "typeorm/driver/Query";
 
 const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;
@@ -28,12 +29,61 @@ const recommentContent = async (req:Request, res:Response) => {
 }
 
 const reportContent = (req:Request, res:Response) => res.send("reportContent");
-const allContent = (req:Request, res:Response) => { 
-    const { searching, firstCategory, secondCategory, page } = req.query;
-
+const allContent = async (req:Request, res:Response) => { 
     
+    const { searching, parentCategory, childCategory, page } = req.query;
+    // query check
+    if(!parentCategory || !page) return res.status(404).json({message:'no essential query'}); 
 
-    res.send("allContent"); 
+    //find payload with searching and category
+    let payload = null;
+    if(!searching) {
+        if(!childCategory) {
+            payload = await getRepository(Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
+                .getMany();     
+        } else {
+            payload = await getRepository(Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory',{ childCategory : childCategory })
+                .getMany();
+        }
+    } else {
+        if(!childCategory) {
+            payload = await getRepository(Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
+                .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
+                .getMany();     
+        } else {
+            payload = await getRepository(Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory',{ childCategory : childCategory })
+                .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
+                .getMany();
+        }
+    }
+    payload.reverse();
+    
+    //pagenation
+    const pageCount = Math.floor(payload.length/5)+1;
+
+    if(pageCount < Number(page) || Number(page) < 1) return res.status(404).json({message : 'page query out of range'});
+    payload = payload.filter((el:object, idx:number) => {
+        return Math.floor(idx/5)+1 === Number(page);
+    })    
+
+    return res.status(200).json({data : payload, pageCount, message : 'ok'}); 
+
 }
 
 const createContent = async (req:Request, res:Response) => {
