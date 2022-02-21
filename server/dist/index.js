@@ -45,4 +45,5 @@ app.use("/board", boardRouter_1.default);
 app.use("/comment", commentRouter_1.default);
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
 app.listen(PORT, handleListening);
+//haha
 //# sourceMappingURL=index.js.map

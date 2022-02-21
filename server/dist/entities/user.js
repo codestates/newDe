@@ -22,7 +22,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "nickName", void 0);
+], User.prototype, "nickname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
