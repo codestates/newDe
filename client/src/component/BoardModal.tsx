@@ -58,21 +58,21 @@ function BoardModal (props:any):JSX.Element  {
     return (
         <Background onClick = {props.modalHandler}>
             <ContainerWrap>
-            <ParentMenuWrap><Link to = '/Board' className = 'btn'>Front</Link></ParentMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>HTML</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>CSS</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>JavaScript</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>React</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>기타</Link></ChildMenuWrap>
+            <ParentMenuWrap><Link to = '/board?firstcategory=front' className = 'btn'>Front</Link></ParentMenuWrap>
+            <ChildMenuWrap><Link to = '/board?firstcategory=front&secondcategory=html' className = 'btn'>HTML</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board?firstcategory=front&secondcategory=css' className = 'btn'>CSS</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board?firstcategory=front&secondcategory=javascript' className = 'btn'>JavaScript</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board?firstcategory=front&secondcategory=react' className = 'btn'>React</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board?firstcategory=front&secondcategory=other' className = 'btn'>기타</Link></ChildMenuWrap>
             
-            <ParentMenuWrap><Link to = '/Board' className = 'btn'>Back</Link></ParentMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>PHP</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>Node.js</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>JavaScript</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>Java</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>Python</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>서버</Link></ChildMenuWrap>
-            <ChildMenuWrap><Link to = '/Board' className = 'btn'>기타</Link></ChildMenuWrap>
+            <ParentMenuWrap><Link to = '/board' className = 'btn'>Back</Link></ParentMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>PHP</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>Node.js</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>JavaScript</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>Java</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>Python</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>서버</Link></ChildMenuWrap>
+            <ChildMenuWrap><Link to = '/board' className = 'btn'>기타</Link></ChildMenuWrap>
         
         
         </ContainerWrap>
