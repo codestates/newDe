@@ -75,11 +75,11 @@ const allContent = async (req:Request, res:Response) => {
     payload.reverse();
     
     //pagenation
-    const pageCount = Math.floor(payload.length/5)+1;
+    const pageCount = Math.floor(payload.length/10)+1;
 
     if(pageCount < Number(page) || Number(page) < 1) return res.status(404).json({message : 'page query out of range'});
     payload = payload.filter((el:object, idx:number) => {
-        return Math.floor(idx/5)+1 === Number(page);
+        return Math.floor(idx/10)+1 === Number(page);
     })    
 
     return res.status(200).json({data : payload, pageCount, message : 'ok'}); 
@@ -159,13 +159,20 @@ const allComment = async (req:Request, res:Response) => {
 
     const commentRepository = getRepository(Comment);
     
-    const comments = await commentRepository.find({where : {contentId : contentId}});
+    //const comments = await commentRepository.find({where : {contentId : contentId}});
+
+    const comments = await commentRepository
+        .createQueryBuilder('comment')
+        .select('comment', 'comments.nickname')
+        .leftJoin('comment.user', 'comments')
+        .where('comment.contentId = :contentId', {contentId})
+        .getMany();
 
     res.status(200).json({data: comments, message : 'ok'});
 }
 
 const createComment = async (req:Request, res:Response) => {
-    const {contentId, userId, main} = req.body;
+    const {contentId, main} = req.body;
 
     const verify = await authorizeToken(req, res);
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' });
@@ -175,7 +182,7 @@ const createComment = async (req:Request, res:Response) => {
     const comment = new Comment();
 
     comment.contentId = contentId;
-    comment.userId = userId;
+    comment.userId = verify.userInfo.id;
     comment.main = main;
 
     await commentRepository.save(comment);
