@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPassword = exports.checkEmail = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
+exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
@@ -46,13 +46,13 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.logout = logout;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, nickName, password } = req.body;
+    const { email, nickname, password } = req.body;
     const user = new user_1.User();
     user.email = email;
-    user.nickName = nickName;
+    user.nickname = nickname;
     user.password = password;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    if (!email || !nickName || !password) {
+    if (!email || !nickname || !password) {
         return res.status(400).json({ message: 'Bad Request' });
     }
     else {
@@ -61,7 +61,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(409).json({ message: 'Account already exists' });
         }
         yield userRepository.save(user);
-        return res.status(201).json({ message: 'Succes' });
+        return res.status(201).json({ message: 'Success' });
     }
 });
 exports.signup = signup;
@@ -85,23 +85,22 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.profile = profile;
 const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nickName, password } = req.body;
+    const { nickname, password } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    yield (0, typeorm_1.getConnection)()
-        .createQueryBuilder()
-        .update(user_1.User)
-        .set({
-        nickName: nickName,
-        password: password
-    })
-        .where({ id: verify.userInfo.id })
-        .execute();
     const userInfo = yield userRepository.findOne({
         where: { id: verify.userInfo.id }
     });
+    userInfo.nickname = nickname || userInfo.nickname;
+    userInfo.password = password || userInfo.password;
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(user_1.User)
+        .set(userInfo)
+        .where({ id: verify.userInfo.id })
+        .execute();
     return res.status(200).json({ data: userInfo });
 });
 exports.editUser = editUser;
@@ -117,36 +116,35 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         .json({ message: 'Deleted' });
 });
 exports.deleteUser = deleteUser;
-const checkEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.body;
+const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, nickname, password } = req.body;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    if (!email) {
-        return res.status(400).json({ message: 'Bad Request' });
-    }
-    else {
+    if (email) {
         const userInfo = yield userRepository.findOne({ email: email });
         if (userInfo) {
             return res.status(409).json({ message: 'Account already exisits' });
         }
         return res.status(200).json({ message: 'email available' });
     }
+    if (password) {
+        const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+        if (!verify)
+            return res.status(403).json({ message: 'Invalid Accesstoken' });
+        if (verify.userInfo.password !== password) {
+            return res.status(400).json({ message: 'incorrect password' });
+        }
+        else {
+            return res.status(200).json({ message: 'password correct!' });
+        }
+    }
+    if (nickname) {
+        const userInfo = yield userRepository.findOne({ nickname: nickname });
+        if (userInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' });
+        }
+        return res.status(200).json({ message: 'nickname available' });
+    }
+    return res.status(404).json({ message: 'Bad Request' });
 });
-exports.checkEmail = checkEmail;
-const checkPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { password } = req.body;
-    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    if (!verify)
-        return res.status(403).json({ message: 'Invalid Accesstoken' });
-    console.log(verify.userInfo);
-    if (!password) {
-        return res.status(400).json({ message: 'Bad Request' });
-    }
-    if (verify.userInfo.password !== password) {
-        return res.status(400).json({ message: 'incorrect password' });
-    }
-    else {
-        return res.status(200).json({ message: 'password correct!' });
-    }
-});
-exports.checkPassword = checkPassword;
+exports.checkInfo = checkInfo;
 //# sourceMappingURL=userController.js.map

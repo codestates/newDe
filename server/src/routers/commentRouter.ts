@@ -7,9 +7,7 @@ commentRouter.post("/", createComment)
 commentRouter.patch("/", editComment)
 commentRouter.patch("/report", reportComment)
 commentRouter.get("/:contentId", allComment)
-commentRouter
-    .route("/:commentId")    
-    .delete(deleteComment)
+commentRouter.delete("/:commentId", deleteComment)
 
 
 export default commentRouter

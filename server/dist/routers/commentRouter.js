@@ -10,8 +10,6 @@ commentRouter.post("/", contentController_js_1.createComment);
 commentRouter.patch("/", contentController_js_1.editComment);
 commentRouter.patch("/report", contentController_js_1.reportComment);
 commentRouter.get("/:contentId", contentController_js_1.allComment);
-commentRouter
-    .route("/:commentId")
-    .delete(contentController_js_1.deleteComment);
+commentRouter.delete("/:commentId", contentController_js_1.deleteComment);
 exports.default = commentRouter;
 //# sourceMappingURL=commentRouter.js.map
