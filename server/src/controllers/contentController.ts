@@ -29,7 +29,9 @@ const recommentContent = async (req:Request, res:Response) => {
 
 const reportContent = (req:Request, res:Response) => res.send("reportContent");
 const allContent = (req:Request, res:Response) => { 
+    const { searching, firstCategory, secondCategory, page } = req.query;
 
+    
 
     res.send("allContent"); 
 }
@@ -50,7 +52,6 @@ const createContent = async (req:Request, res:Response) => {
     
     const ContentRepository = getRepository(Content)
     
-
     await ContentRepository.save(content);
     return res.status(201).json({ message: 'Succes'})
 };

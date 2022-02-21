@@ -35,6 +35,7 @@ exports.recommentContent = recommentContent;
 const reportContent = (req, res) => res.send("reportContent");
 exports.reportContent = reportContent;
 const allContent = (req, res) => {
+    const { searching, firstCategory, secondCategory, page } = req.query;
     res.send("allContent");
 };
 exports.allContent = allContent;
