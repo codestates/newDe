@@ -100,7 +100,7 @@ function MainBoard():JSX.Element{
 
         })
 
-    console.log(datatoList)
+ 
 
     return(
         <MainContainer>

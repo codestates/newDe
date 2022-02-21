@@ -135,7 +135,7 @@ function SignUp():JSX.Element {
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
         // console.log(event.target.value)
         let newemail = event.target.value
-        console.log(regEmail.test(newemail))
+        // console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
                 `${URL}/check/email`, 

@@ -65,6 +65,13 @@ width: 10%;
 margin: 1%;
 background-color: yellow;
 `
+const WriterSec = styled.div`
+width: 90%;
+background: aquamarine;
+
+`
+
+
 const MainContent = styled.div`
 width: 90%;
 height: 50%;
@@ -96,6 +103,7 @@ function ContentView ():JSX.Element {
                         <ContentBtn>수정</ContentBtn>
                         <ContentBtn>삭제</ContentBtn>
                     </TitleWrap>
+                    <WriterSec>글작성자</WriterSec>
                     <MainContent>글 내용입니다 내용내용</MainContent>
                     
                 </ContentWrap>
@@ -104,7 +112,7 @@ function ContentView ():JSX.Element {
                     <Comment />
                 </CommentWrap>
                 <WritingBox>
-                    <WriteComment />
+                <WriteComment />
                 </WritingBox>
                 
                 
