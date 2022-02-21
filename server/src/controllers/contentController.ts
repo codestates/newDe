@@ -3,7 +3,7 @@ import { createQueryBuilder, getRepository, getConnection, getMongoRepository } 
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { Comment } from "../entities/comment";
-import { authorizeToken } from './token/authorizeToken';
+import { authorizeToken } from '../middleware/token/authorizeToken';
 
 const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;

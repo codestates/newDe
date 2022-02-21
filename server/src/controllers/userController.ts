@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content"
-import { generateToken } from './token/generateToken'
-import { authorizeToken } from './token/authorizeToken'
+import { generateToken } from '../middleware/token/generateToken'
+import { authorizeToken } from '../middleware/token/authorizeToken'
 
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;

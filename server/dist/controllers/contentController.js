@@ -13,7 +13,7 @@ exports.editComment = exports.reportComment = exports.deleteContent = exports.de
 const typeorm_1 = require("typeorm");
 const content_1 = require("../entities/content");
 const comment_1 = require("../entities/comment");
-const authorizeToken_1 = require("./token/authorizeToken");
+const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { contentId } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
