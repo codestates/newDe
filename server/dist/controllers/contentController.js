@@ -81,11 +81,11 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     payload.reverse();
     //pagenation
-    const pageCount = Math.floor(payload.length / 5) + 1;
+    const pageCount = Math.floor(payload.length / 10) + 1;
     if (pageCount < Number(page) || Number(page) < 1)
         return res.status(404).json({ message: 'page query out of range' });
     payload = payload.filter((el, idx) => {
-        return Math.floor(idx / 5) + 1 === Number(page);
+        return Math.floor(idx / 10) + 1 === Number(page);
     });
     return res.status(200).json({ data: payload, pageCount, message: 'ok' });
 });
@@ -156,19 +156,25 @@ exports.reportComment = reportComment;
 const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const contentId = req.params.contentId;
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const comments = yield commentRepository.find({ where: { contentId: contentId } });
+    //const comments = await commentRepository.find({where : {contentId : contentId}});
+    const comments = yield commentRepository
+        .createQueryBuilder('comment')
+        .select('comment', 'comments.nickname')
+        .leftJoin('comment.user', 'comments')
+        .where('comment.contentId = :contentId', { contentId })
+        .getMany();
     res.status(200).json({ data: comments, message: 'ok' });
 });
 exports.allComment = allComment;
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { contentId, userId, main } = req.body;
+    const { contentId, main } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
     const comment = new comment_1.Comment();
     comment.contentId = contentId;
-    comment.userId = userId;
+    comment.userId = verify.userInfo.id;
     comment.main = main;
     yield commentRepository.save(comment);
     res.status(201).json({ data: comment, message: 'comment registered successfully' });
