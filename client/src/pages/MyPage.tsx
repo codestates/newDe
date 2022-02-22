@@ -12,6 +12,7 @@ function MyPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
+    console.log(text)
 
     const navigate = useNavigate();
     const handleModal = () => {
@@ -29,7 +30,7 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.post(`${URL}/user/check`, { password: text }, config)
-            if (res.data.message === 'password correct') {
+            if (res.data.message === 'password correct!') {
                 navigate('/mypageedit')
             } else {
                 setCheckText('wrong password')

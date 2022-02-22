@@ -7,10 +7,6 @@ import { authorizeToken } from '../middleware/token/authorizeToken';
 
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;
-    const user = new User();
-
-    user.email = email;
-    user.password = password;
 
     const userRepository = getRepository(User)
 
@@ -66,7 +62,7 @@ const profile = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 
-    console.log(verify)
+    
 
     
     if(verify) {
@@ -135,19 +131,23 @@ const checkInfo = async (req:Request, res:Response) => {
         }
         return res.status(200).json({ message: 'email available'})
     } 
-
+    
     if(password) {
         const verify = await authorizeToken(req, res);
-
         if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+        const userRepository = getRepository(User);
 
-        if(verify.userInfo.password !== password) {
-            return res.status(400).json({ message: 'incorrect password' });
+        const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
+
+        
+        
+        if(userInfo.password === password) {
+            return res.status(400).json({ message: 'password correct!' });
         } else {
-            return res.status(200).json({ message: 'password correct!' })
+            return res.status(200).json({ message: 'incorrect password' })
         }
     } 
-
+    
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
