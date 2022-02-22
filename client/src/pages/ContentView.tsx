@@ -94,6 +94,10 @@ background: Goldenrod;
 `
 
 function ContentView ():JSX.Element {
+    const nowURL = new URL(window.location.href); //URL값 따오기 
+    const path = nowURL.pathname.slice(1)
+    console.log(path)
+
     return (
         <MainContainer>
             <PageWrap>
