@@ -104,7 +104,7 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     
     await ContentRepository.save(content);
-    return res.status(201).json({ message: 'Succes'})
+    return res.status(201).json({ message: 'Success'})
 };
 
 const getContentDetail = async (req:Request, res:Response) => {

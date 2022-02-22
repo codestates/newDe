@@ -116,8 +116,14 @@ const deleteUser = async (req:Request, res:Response) => {
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
-    await userRepository.delete({ id: verify.userInfo.id })
+    const targetUser = await userRepository.findOne(verify.userInfo.id);
 
+    targetUser.nickname = null;
+    targetUser.email = null;
+    targetUser.password = null;
+
+    await userRepository.save(targetUser);
+    
     return res
         .clearCookie('accessToken')
         .status(200)
