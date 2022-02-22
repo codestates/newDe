@@ -82,13 +82,8 @@ margin: 5px;
 
 
 
-<<<<<<< HEAD
-function Login ():JSX.Element {
-
-=======
 function Login (props: any):JSX.Element {
-    const URL= useAppSelector((state:RootState)=> state.url.url)
->>>>>>> e36758763a5fb160acf17bc9d525d2c241ec3e29
+    
     const navigate = useNavigate();
     const config = {
         headers: {
