@@ -18,6 +18,7 @@ const PORT = 4000;
 const app = express();
 const logger = morgan('dev');
 
+
 // db connection
 createConnection()
   .then(() => {
@@ -27,10 +28,12 @@ createConnection()
   
 // middleware
 app.use(express.json()); //body parser(json)
-// app.use(express.urlencoded({extended:false})); //body parser(url)
 
 app.use(cookieParser());
-// app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({extended:false}))
+// app.use(express.static(__dirname+'/../src/imageStorage'));
+app.use(express.static(__dirname+'/../src/imageStorage'));
+// app.use(express.static('.'));
 
 app.use(logger);
 app.use(cors({
@@ -54,5 +57,5 @@ const handleListening = () => console.log(`Server Listening on port http://local
 app.listen(PORT, handleListening);
 
 
-
+//haha
 
