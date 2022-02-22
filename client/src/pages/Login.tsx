@@ -80,7 +80,7 @@ margin: 5px;
 
 
 
-function Login ():JSX.Element {
+function Login (props: any):JSX.Element {
     const URL= useAppSelector((state:RootState)=> state.url.url)
     const navigate = useNavigate();
     const config = {
@@ -95,8 +95,9 @@ function Login ():JSX.Element {
         password: ''
     })
 
+
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value)
+        
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -114,11 +115,12 @@ function Login ():JSX.Element {
     }
 
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(inputInfo)
+        // console.log(inputInfo)
         const loginresult = await axios.post(
             `${URL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
+                props.loginhandler()
                 navigate('/MyPage')
             })
         

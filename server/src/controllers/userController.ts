@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection } from "typeorm";
 import { User } from "../entities/user";
-import { Content } from "../entities/content"
-import { generateToken } from './token/generateToken'
-import { authorizeToken } from './token/authorizeToken'
+import { Content } from "../entities/content";
+import { generateToken } from '../middleware/token/generateToken';
+import { authorizeToken } from '../middleware/token/authorizeToken';
 
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;
@@ -38,16 +38,16 @@ const logout = async (req:Request, res:Response) => {
 }
 
 const signup = async (req:Request, res:Response) => {
-    const { email, nickName, password } = req.body;
+    const { email, nickname, password } = req.body;
     const user = new User();
 
     user.email = email;
-    user.nickName = nickName;
+    user.nickname = nickname;
     user.password = password;
 
     const userRepository = getRepository(User)
 
-    if(!email || !nickName || !password) {
+    if(!email || !nickname || !password) {
         return res.status(400).json({ message: 'Bad Request' });
     } else {
         const userInfo = await userRepository.findOne({ email : email });
@@ -56,7 +56,7 @@ const signup = async (req:Request, res:Response) => {
             return res.status(409).json({ message: 'Account already exists' });
         }
         await userRepository.save(user);
-        return res.status(201).json({ message: 'Succes'})
+        return res.status(201).json({ message: 'Success'})
     }
 }
 
@@ -86,25 +86,26 @@ const profile = async (req:Request, res:Response) => {
 }
 
 const editUser = async (req:Request, res:Response) => {
-    const { nickName, password } = req.body;
+    const { nickname, password } = req.body;
     const verify = await authorizeToken(req, res)
     const userRepository = getRepository(User)
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
-    
-    await getConnection()
-        .createQueryBuilder()
-        .update(User)
-        .set({
-            nickName: nickName,
-            password: password
-        })
-        .where({ id : verify.userInfo.id })
-        .execute();
-        
+
     const userInfo = await userRepository.findOne({
         where: { id : verify.userInfo.id }
     })
+
+    userInfo.nickname = nickname || userInfo.nickname;
+    userInfo.password = password || userInfo.password;
+
+    await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set(userInfo)
+        .where({ id : verify.userInfo.id })
+        .execute();
+        
 
     return res.status(200).json({ data: userInfo })
 };
@@ -122,40 +123,42 @@ const deleteUser = async (req:Request, res:Response) => {
         .status(200)
         .json({ message: 'Deleted' })
 };
-const checkEmail = async (req:Request, res:Response) => {
-    const { email } = req.body;
+
+const checkInfo = async (req:Request, res:Response) => {
+    const { email, nickname, password } = req.body;
     const userRepository = getRepository(User);
 
-    if(!email) {
-        return res.status(400).json({ message: 'Bad Request' });
-    } else {
+    if(email) {
         const userInfo = await userRepository.findOne({ email : email });
-
         if (userInfo) {
             return res.status(409).json({ message: 'Account already exisits' })
         }
-
         return res.status(200).json({ message: 'email available'})
-    }
+    } 
+
+    if(password) {
+        const verify = await authorizeToken(req, res);
+
+        if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+
+        if(verify.userInfo.password !== password) {
+            return res.status(400).json({ message: 'incorrect password' });
+        } else {
+            return res.status(200).json({ message: 'password correct!' })
+        }
+    } 
+
+    if(nickname) {
+        const userInfo = await userRepository.findOne({ nickname : nickname });
+        if (userInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' })
+        }
+        return res.status(200).json({ message: 'nickname available'})
+    } 
+
+    return res.status(404).json({ message: 'Bad Request' })
 };
-const checkPassword = async (req:Request, res:Response) => {
-    const { password } = req.body;
-    const verify = await authorizeToken(req, res);
 
-    if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
-
-    console.log(verify.userInfo)
-
-    if(!password) {
-        return res.status(400).json({ message: 'Bad Request'})
-    }
-
-    if(verify.userInfo.password !== password) {
-        return res.status(400).json({ message: 'incorrect password' });
-    } else {
-        return res.status(200).json({ message: 'password correct!' })
-    }
-};
 
 export {
     login,
@@ -164,6 +167,5 @@ export {
     profile,
     editUser,
     deleteUser,
-    checkEmail,
-    checkPassword
+    checkInfo
 };

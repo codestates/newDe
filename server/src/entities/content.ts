@@ -19,10 +19,10 @@ export class Content {
     @Column({default:0})
     report: number;
 
-    @Column()
+    @Column({default:null})
     parentCategory: string;
 
-    @Column()
+    @Column({default:null})
     childCategory: string;
 
     @CreateDateColumn()
