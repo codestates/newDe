@@ -82,8 +82,13 @@ margin: 5px;
 
 
 
+<<<<<<< HEAD
 function Login ():JSX.Element {
 
+=======
+function Login (props: any):JSX.Element {
+    const URL= useAppSelector((state:RootState)=> state.url.url)
+>>>>>>> e36758763a5fb160acf17bc9d525d2c241ec3e29
     const navigate = useNavigate();
     const config = {
         headers: {
@@ -97,8 +102,9 @@ function Login ():JSX.Element {
         password: ''
     })
 
+
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        // console.log(event.target.value)
+        
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -116,11 +122,12 @@ function Login ():JSX.Element {
     }
 
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(inputInfo)
+        // console.log(inputInfo)
         const loginresult = await axios.post(
             `${URL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
+                props.loginhandler()
                 navigate('/MyPage')
             })
         
@@ -148,13 +155,13 @@ function Login ():JSX.Element {
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type = 'email' placeholder = '이메일을 입력해주세요' onChange = {handleInput} />
+                <InputWrap type = 'email' placeholder = 'email' onChange = {handleInput} />
                     
                 
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type= 'password' placeholder = '비밀번호를 입력해주세요' onChange = {handleInput}/>
+                <InputWrap type= 'password' placeholder = 'password' onChange= {handleInput} />
                 
                 <BtnContainer>
                     

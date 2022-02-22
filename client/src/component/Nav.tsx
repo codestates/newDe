@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 
 
-let isLogin = false//나중에 props나 redux등으로 받을것 
+// let isLogin = false//나중에 props나 redux등으로 받을것 
 
 
 const Navi = styled.header`
@@ -93,11 +93,14 @@ font-size: 100%;
 const RightBtnWrap = styled.header`
 margin: 5px;
 font-size: 100%;
+cursor: pointer;
 `
 
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
+    islogin: boolean;
+    logouthandler: any;
 
 }
 
@@ -118,9 +121,9 @@ function Nav (props:Iprops):JSX.Element  {
                 
             </LeftSection>
             
-                {isLogin ? 
+                {props.islogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {props.logouthandler}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
