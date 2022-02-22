@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 });
 
 app.use("/", globalRouter);
-app.use("/users", userRouter);
+app.use("/user", userRouter);
 app.use("/board", boardRouter);
 app.use("/comment", commentRouter);
 
