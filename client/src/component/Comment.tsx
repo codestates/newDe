@@ -42,6 +42,7 @@ margin: 1%;
 `
 //props로 댓글 내용, 글쓴이등 가져와 
 function Comment(props: any):JSX.Element {
+    console.log(props)
 
     return (
         <CommentContainer>
@@ -52,7 +53,7 @@ function Comment(props: any):JSX.Element {
             
 
             </UpperWrap>
-            <CommentContent>댓글내용</CommentContent>
+            <CommentContent>{props.main}</CommentContent>
         
         
         </CommentContainer>
