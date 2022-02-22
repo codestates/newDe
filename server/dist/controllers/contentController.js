@@ -104,7 +104,7 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     yield ContentRepository.save(content);
-    return res.status(201).json({ message: 'Succes' });
+    return res.status(201).json({ message: 'Success' });
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

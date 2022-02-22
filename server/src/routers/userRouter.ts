@@ -9,6 +9,8 @@ userRouter
     .route("/")
     .get(profile)
     .patch(editUser)
-    .delete(deleteUser)
+userRouter.patch("/delete", deleteUser)
+
+    
 
 export default userRouter
