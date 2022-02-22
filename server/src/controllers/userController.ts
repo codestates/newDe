@@ -152,7 +152,7 @@ const checkInfo = async (req:Request, res:Response) => {
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' })
+            return res.status(200).json({ message: 'nickname already exisits' })
         }
         return res.status(200).json({ message: 'nickname available'})
     } 

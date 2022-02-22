@@ -140,7 +140,7 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' });
+            return res.status(200).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }
