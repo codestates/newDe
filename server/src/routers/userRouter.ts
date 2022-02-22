@@ -1,11 +1,10 @@
 import express from 'express';
-import { profile, editUser, deleteUser, logout, checkEmail, checkPassword } from '../controllers/userController.js';
+import { profile, editUser, deleteUser, logout, checkInfo } from '../controllers/userController.js';
 
 const userRouter = express.Router()
 
 userRouter.get("/logout", logout);
-userRouter.post("/email", checkEmail)
-userRouter.post("/password", checkPassword);
+userRouter.post("/check", checkInfo)
 userRouter
     .route("/")
     .get(profile)

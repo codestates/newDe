@@ -18,6 +18,7 @@ const PORT = 4000;
 const app = express();
 const logger = morgan('dev');
 
+
 // db connection
 createConnection()
   .then(() => {
@@ -27,10 +28,14 @@ createConnection()
   
 // middleware
 app.use(express.json()); //body parser(json)
-// app.use(express.urlencoded({extended:false})); //body parser(url)
+app.use(express.urlencoded({extended:false})); //body parser(url)
 
 app.use(cookieParser());
-// app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({extended:false}))
+
+// app.use(express.static(__dirname+'/../src/imageStorage'));
+app.use(express.static(__dirname+'/../src/imageStorage'));
+// app.use(express.static('.'));
 
 app.use(logger);
 app.use(cors({
@@ -47,13 +52,7 @@ app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/board", boardRouter);
 app.use("/comment", commentRouter);
-app.post('/users/check',(req,res)=>{
-  if(req.body.password==='1234'){
-    res.status(200).json({message:'password correct'})
-  } else {
-    res.status(200).send('ol')
-  }
-})
+
 
 
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
@@ -61,5 +60,5 @@ const handleListening = () => console.log(`Server Listening on port http://local
 app.listen(PORT, handleListening);
 
 
-
+//haha
 
