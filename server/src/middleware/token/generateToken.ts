@@ -5,6 +5,8 @@ import { User } from "../../entities/user"
 dotenv.config()
 
 export async function  generateToken(userInfo:User) {
+    delete userInfo.password
+
     return jwt.sign(
         {
             userInfo

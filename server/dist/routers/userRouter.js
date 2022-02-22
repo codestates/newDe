@@ -11,7 +11,7 @@ userRouter.post("/check", userController_js_1.checkInfo);
 userRouter
     .route("/")
     .get(userController_js_1.profile)
-    .patch(userController_js_1.editUser)
-    .delete(userController_js_1.deleteUser);
+    .patch(userController_js_1.editUser);
+userRouter.patch("/delete", userController_js_1.deleteUser);
 exports.default = userRouter;
 //# sourceMappingURL=userRouter.js.map
