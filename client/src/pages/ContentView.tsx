@@ -140,7 +140,7 @@ const getComment = async () => {
     const datatoComment = commentlist.map((el:any)=>{
         return (
             <CommentWrap key = {el.id}>
-                <Comment id = {el.id} main = {el.main} userid={el.userId}  />
+                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname}  />
 
             </CommentWrap>
         )
