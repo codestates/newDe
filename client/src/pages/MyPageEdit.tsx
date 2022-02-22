@@ -3,10 +3,13 @@ import { URL } from '../url'
 import { useState } from 'react'
 import Loader from '../component/Loader'
 import { text } from 'stream/consumers';
+import { useNavigate } from 'react-router-dom';
 
 
 function MyPageEdit() {
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate();
+
     const [checkInfo, setCheckInfo] = useState({
         nickname: '',
         password: '',
@@ -40,10 +43,10 @@ function MyPageEdit() {
             if (regNickname.test(e.target.value)) {
                 axios.post(`${URL}/user/check`, { nickname: checkInfo.nickname }, config)
                     .then(res => {
-                        if (res.data.message === 'nickname available') {
-                            setText({ ...text, nickname: '사용가능한 닉네임 입니다' })
-                        } else {
+                        if (res.data.message === 'nickname already exisits') {
                             setText({ ...text, nickname: '중복된 닉네임 입니다' })
+                        } else {
+                            setText({ ...text, nickname: '사용가능한 닉네임 입니다' })
                         }
                     }).catch(err => {
                         console.log(err)
@@ -113,6 +116,7 @@ function MyPageEdit() {
             <input type='password' placeholder='checkPassword' value={checkInfo.checkPassword} onChange={onChange} onBlur={handleOnBlur} />
             <div>{text.checkPassword}</div>
             <button onClick={fatchData}>수정 완료</button>
+            <button onClick={()=> navigate('/mypage')}>수정 취소</button>
         </div>
     );
 }

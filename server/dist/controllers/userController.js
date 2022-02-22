@@ -129,16 +129,16 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
         if (userInfo.password === password) {
-            return res.status(400).json({ message: 'password correct!' });
+            return res.status(200).json({ message: 'password correct!' });
         }
         else {
-            return res.status(200).json({ message: 'incorrect password' });
+            return res.status(400).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' });
+            return res.status(200).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }
