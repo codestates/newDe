@@ -62,7 +62,7 @@ const profile = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 
-    console.log(verify)
+    
 
     
     if(verify) {
@@ -123,7 +123,7 @@ const deleteUser = async (req:Request, res:Response) => {
 const checkInfo = async (req:Request, res:Response) => {
     const { email, nickname, password } = req.body;
     const userRepository = getRepository(User);
-
+    
     if(email) {
         const userInfo = await userRepository.findOne({ email : email });
         if (userInfo) {
@@ -139,7 +139,7 @@ const checkInfo = async (req:Request, res:Response) => {
 
         const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
 
-        console.log(userInfo)
+        
         
         if(userInfo.password === password) {
             return res.status(400).json({ message: 'password correct!' });

@@ -66,7 +66,6 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    console.log(verify);
     if (verify) {
         const userInfo = yield userRepository.findOne({
             where: { id: verify.userInfo.id }
@@ -129,7 +128,6 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(403).json({ message: 'Invalid Accesstoken' });
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
-        console.log(userInfo);
         if (userInfo.password === password) {
             return res.status(400).json({ message: 'password correct!' });
         }

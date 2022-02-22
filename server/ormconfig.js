@@ -13,6 +13,8 @@ module.exports = {
   // migrationsTableName: "migrations",
   migrations: ['dist/migrations/**/*.js'],
   subscribers: ['dist/subscribers/**/*.js'],
+  seeds: ['src/database/seeds/**/*.seed.ts'],  // seed파일들을 생성할 경로
+  factories: ['src/database/factories/**/*.factory.ts'],
   cli: {
     entitiesDir: 'src/entities',
     migrationsDir: 'src/migrations',
