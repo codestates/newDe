@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { RootState } from '../store'
-import { useAppSelector } from '../store/hooks'
 import Loader from '../component/Loader'
 import { URL } from '../url'
-import styled from 'styled-components'
 import Edit from '../component/editPassword'
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +28,7 @@ function MyPage() {
     async function passwordCheck() {
         try {
             setLoading(true)
-            const res = await axios.post(`${URL}/users/check`, { password: text }, config)
+            const res = await axios.post(`${URL}/user/check`, { password: text }, config)
             if (res.data.message === 'password correct') {
                 navigate('/mypageedit')
             } else {
@@ -47,7 +44,7 @@ function MyPage() {
     async function fetchData() {
         try {
             setLoading(true)
-            const res = await axios.get(`${URL}/users`, { withCredentials: true })
+            const res = await axios.get(`${URL}/user`, { withCredentials: true })
             setUserInfo(res.data.data)
         } catch (e) {
             console.log(e)

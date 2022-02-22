@@ -137,7 +137,7 @@ function SignUp():JSX.Element {
         console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                `${URL}/users/check`, 
+                `${URL}/user/check`, 
                 {email: inputInfo.email}, config
             )
 

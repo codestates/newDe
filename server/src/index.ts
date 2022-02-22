@@ -28,11 +28,9 @@ createConnection()
   
 // middleware
 app.use(express.json()); //body parser(json)
-app.use(express.urlencoded({extended:false})); //body parser(url)
 
 app.use(cookieParser());
 app.use(express.urlencoded({extended:false}))
-
 // app.use(express.static(__dirname+'/../src/imageStorage'));
 app.use(express.static(__dirname+'/../src/imageStorage'));
 // app.use(express.static('.'));
@@ -49,7 +47,7 @@ app.get('/', (req, res) => {
 });
 
 app.use("/", globalRouter);
-app.use("/users", userRouter);
+app.use("/user", userRouter);
 app.use("/board", boardRouter);
 app.use("/comment", commentRouter);
 
