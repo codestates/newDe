@@ -168,7 +168,7 @@ const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     //const comments = await commentRepository.find({where : {contentId : contentId}});
     const comments = yield commentRepository
         .createQueryBuilder('comment')
-        .select('comment', 'comments.nickname')
+        .select(['comment', 'comments.nickname'])
         .leftJoin('comment.user', 'comments')
         .where('comment.contentId = :contentId', { contentId })
         .getMany();
