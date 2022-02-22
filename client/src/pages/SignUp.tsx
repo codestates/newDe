@@ -1,11 +1,9 @@
 import react from 'react'
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { useState } from 'react';
 import axios from 'axios';
+import { URL } from '../url'
+import { useNavigate } from 'react-router';
 
 const SignUpContainer = styled.div`
 display: flex;
@@ -92,8 +90,9 @@ margin: 2%;
 `
 
 function SignUp():JSX.Element {
-    const navigate = useNavigate();
-    const URL= useAppSelector((state:RootState)=> state.url.url)
+
+
+    const navigate = useNavigate()
 
     const config = {
         headers: {
@@ -138,7 +137,7 @@ function SignUp():JSX.Element {
         // console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                `${URL}/check/email`, 
+                `${URL}/user/check`, 
                 {email: inputInfo.email}, config
             )
 
@@ -171,7 +170,7 @@ function SignUp():JSX.Element {
 
     }
 
-    const handleSubmit = async() => {
+    async function handleSubmit(){
         if(checkText.email === '사용 가능한 이메일입니다.' && 
         checkText.passwordCheck === '비밀번호가 일치합니다.' && 
         inputInfo.nickname){
@@ -180,8 +179,16 @@ function SignUp():JSX.Element {
                 nickname: inputInfo.nickname, 
                 password: inputInfo.password
             }
-            const submitresult = await axios.post("http://localhost4000/signup", sendingInfo, config)
-            
+            try{
+                const result = await axios.post(`${URL}/signup`,sendingInfo,config)
+                if(result.data.message==='Success'){
+                    alert('회원가입 성공!')
+                    navigate('/login')
+                }
+                
+            }catch (err){
+                console.log(err)
+            }
             
 
         }
