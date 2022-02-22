@@ -17,9 +17,6 @@ const generateToken_1 = require("../middleware/token/generateToken");
 const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = new user_1.User();
-    user.email = email;
-    user.password = password;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!email || !password) {
         return res.status(400).json({ message: 'Fail' });
@@ -130,11 +127,14 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
         if (!verify)
             return res.status(403).json({ message: 'Invalid Accesstoken' });
-        if (verify.userInfo.password !== password) {
-            return res.status(400).json({ message: 'incorrect password' });
+        const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+        const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
+        console.log(userInfo);
+        if (userInfo.password === password) {
+            return res.status(400).json({ message: 'password correct!' });
         }
         else {
-            return res.status(200).json({ message: 'password correct!' });
+            return res.status(200).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {

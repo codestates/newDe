@@ -34,6 +34,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 function generateToken(userInfo) {
     return __awaiter(this, void 0, void 0, function* () {
+        delete userInfo.password;
         return jwt.sign({
             userInfo
         }, process.env.ACCESS_SECRET, { expiresIn: '2d' });
