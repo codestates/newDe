@@ -122,6 +122,7 @@ const deleteUser = async (req:Request, res:Response) => {
 
 const checkInfo = async (req:Request, res:Response) => {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = getRepository(User);
     
     if(email) {
@@ -139,12 +140,12 @@ const checkInfo = async (req:Request, res:Response) => {
 
         const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
 
-        
+        console.log(userInfo);
         
         if(userInfo.password === password) {
-            return res.status(400).json({ message: 'password correct!' });
+            return res.status(200).json({ message: 'password correct!' });
         } else {
-            return res.status(200).json({ message: 'incorrect password' })
+            return res.status(400).json({ message: 'incorrect password' })
         }
     } 
     
