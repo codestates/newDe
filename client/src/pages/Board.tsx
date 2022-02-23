@@ -151,16 +151,14 @@ const datatoList = contentlist.map((el:any)=>{
 
 
 const getListData = async () =>{
-    const nowURL = new URL(window.location.href); //URL값 따오기 
+    //URL값 따오기 
 // console.log(nowURL)
-    const Parent = nowURL.searchParams.get('parentcategory');
-    const Child = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
     
     
 
     
-    const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${Parent}&${Child ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    console.log(listData.data.data)
+    const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
+    // console.log(listData.data.data)
     setList(listData.data.data)
     
     
@@ -175,7 +173,7 @@ useEffect(()=>{
     setLoading(false)
     
 
-},[])
+},[ParentCategory, ChildCategory])
 
 
 
