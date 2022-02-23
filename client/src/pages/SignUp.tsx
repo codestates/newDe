@@ -2,7 +2,7 @@ import react from 'react'
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
-import { URL } from '../url'
+import { apiURL } from '../url'
 import { useNavigate } from 'react-router';
 
 const SignUpContainer = styled.div`
@@ -137,7 +137,7 @@ function SignUp():JSX.Element {
         // console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                `${URL}/user/check`, 
+                `${apiURL}/user/check`, 
                 {email: inputInfo.email}, config
             )
 
