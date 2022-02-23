@@ -159,7 +159,8 @@ const getListData = async () =>{
     
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
     // console.log(listData.data.data)
-    setList(listData.data.data)
+    try{setList(listData.data.data)}
+    catch{console.log("error!")}
     
     
     
