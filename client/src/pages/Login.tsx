@@ -128,9 +128,10 @@ function Login (props: any):JSX.Element {
         
     }
 
-    const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
-        window.location.assign('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c36499545a48326c9793ab10769efa75&redirect_uri=http://localhost:3000/callback');
-        
+    const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
+        await window.location.assign('http://localhost:4000/kakao');
+        // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
+
     }
 
     const handleSignUpSubmit = () =>{
