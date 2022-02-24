@@ -32,22 +32,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.kakaologin = void 0;
+const typeorm_1 = require("typeorm");
+const user_1 = require("../../entities/user");
 const dotenv = __importStar(require("dotenv"));
 const axios_1 = __importDefault(require("axios"));
 dotenv.config();
 const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
     const KAKAO_GRANT_TYPE = "authorization_code";
+    // 요청이 잘못된 경우, 다음 에러메시지를 반환한다.
     let code = req.query.code;
+    if (!code)
+        return res.status(400).json({ message: 'Bad Request!' });
     try {
         const result = yield axios_1.default.post(`${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${KAKAO_GRANT_TYPE}&client_secret=${process.env.KAKAO_CLIENT_SECRET}&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.KAKAO_REDIRECT_URI}&code=${code}`);
+        const token = result.data.access_token;
         const userInfo = yield axios_1.default.get('https://kapi.kakao.com/v2/user/me', {
             headers: {
                 Authorization: `Bearer ${result.data.access_token}`
             }
         });
-        const token = result.data.access_token;
-        res.status(200).cookie('accessToken', token).redirect('http://localhost:3000');
+        let kakaoInfo = userInfo.data;
+        const user = new user_1.User();
+        user.email = kakaoInfo.kakao_account.email;
+        user.nickname = '';
+        user.password = '';
+        const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+        const kakaoEmail = yield userRepository.findOne({ email: kakaoInfo.kakao_account.email });
+        //쿼리문 읽어서 모달창 띄우기
+        if (kakaoEmail) {
+            return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
+        }
+        //  let count = 1
+        //  let nickname = kakaoInfo.properties.nickname
+        //  while(true) {
+        //      const kakaoNickname = await userRepository.findOne({ nickname : nickname });
+        //      console.log(kakaoNickname)
+        //     if(kakaoNickname) {
+        //         count++
+        //     } else {
+        //         user.nickname = nickname.slice(0,nickname.length-1) + count
+        //         break;
+        //     }
+        //  }
+        yield userRepository.save(user);
+        return res
+            .status(201)
+            .cookie('accessToken', token)
+            .redirect('http://localhost:3000');
     }
     catch (e) {
         console.log(e);

@@ -46,14 +46,20 @@ const signup = async (req:Request, res:Response) => {
     if(!email || !nickname || !password) {
         return res.status(400).json({ message: 'Bad Request' });
     } else {
-        const userInfo = await userRepository.findOne({ email : email });
+        const emailInfo = await userRepository.findOne({ email : email });
+        const nicknameInfo = await userRepository.findOne({ nickname : nickname });
 
-        if(userInfo) {
+        if(emailInfo) {
             return res.status(409).json({ message: 'Account already exists' });
         }
+
+        if (nicknameInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' })
+        }
+
         await userRepository.save(user);
         return res.status(201).json({ message: 'Success'})
-    }
+    } 
 }
 
 const profile = async (req:Request, res:Response) => {
@@ -62,9 +68,6 @@ const profile = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 
-    
-
-    
     if(verify) {
         const userInfo = await userRepository.findOne({
             where: { id : verify.userInfo.id }
@@ -156,7 +159,7 @@ const checkInfo = async (req:Request, res:Response) => {
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
-            return res.status(200).json({ message: 'nickname already exisits' })
+            return res.status(409).json({ message: 'nickname already exisits' })
         }
         return res.status(200).json({ message: 'nickname available'})
     } 
