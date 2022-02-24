@@ -35,6 +35,7 @@ const kakaologin = async (req:Request, res:Response) => {
          user.nickname = ''
          user.password = ''
 
+
          const userRepository = getRepository(User)
          const kakaoEmail = await userRepository.findOne({ email : kakaoInfo.kakao_account.email });
 
@@ -42,9 +43,9 @@ const kakaologin = async (req:Request, res:Response) => {
 
          //쿼리문 읽어서 모달창 띄우기
          
-         if(kakaoEmail) {
-              return res.status(409).redirect('http://localhost:3000/login?islogin=fail')
-            }
+        //  if(kakaoEmail) {
+        //       return res.status(409).redirect('http://localhost:3000/login?islogin=fail')
+        //     }
 
          let count = 1
          let nickname = kakaoInfo.properties.nickname

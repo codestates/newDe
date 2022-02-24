@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection, MoreThanOrEqual } from "typeorm";
-import { User } from "../entities/user";
 import { Content } from "../entities/content";
-import { Comment } from "../entities/comment";
 import { authorizeToken } from '../middleware/token/authorizeToken';
 
 

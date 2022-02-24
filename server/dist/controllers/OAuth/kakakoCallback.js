@@ -60,9 +60,9 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const kakaoEmail = yield userRepository.findOne({ email: kakaoInfo.kakao_account.email });
         //쿼리문 읽어서 모달창 띄우기
-        if (kakaoEmail) {
-            return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
-        }
+        //  if(kakaoEmail) {
+        //       return res.status(409).redirect('http://localhost:3000/login?islogin=fail')
+        //     }
         let count = 1;
         let nickname = kakaoInfo.properties.nickname;
         while (true) {
