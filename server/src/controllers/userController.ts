@@ -5,6 +5,10 @@ import { Content } from "../entities/content";
 import { generateToken } from '../middleware/token/generateToken';
 import { authorizeToken } from '../middleware/token/authorizeToken';
 
+const oauth = async (req:Request, res:Response) => {
+    res.send('ouath');
+}
+
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;
 
@@ -166,6 +170,7 @@ const checkInfo = async (req:Request, res:Response) => {
 
 
 export {
+    oauth,
     login,
     logout,
     signup,

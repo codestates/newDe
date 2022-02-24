@@ -87,7 +87,7 @@ function Login (props: any):JSX.Element {
     const navigate = useNavigate();
     const config = {
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         withCredentials: true
       };
