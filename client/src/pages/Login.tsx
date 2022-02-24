@@ -41,7 +41,7 @@ width: 40%;
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
-aligh-items: center;
+align-items: center;
 text-align: center;`
 
 
