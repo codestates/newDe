@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList} from '../component';
+import {ContentList, PageNav} from '../component';
 import { apiURL } from '../url'
 
 
@@ -96,11 +96,11 @@ font-weight: bold;
 `
 
 
-const PageNav = styled.div`
+const PageNavWrap = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-background: red;
+
 `
 
 const PageSec = styled.button`
@@ -114,6 +114,23 @@ const WritingBtn = styled.button`
 const NameSec = styled.div`
 width: 80%;
 font-weight: bold;
+`
+
+const SearchingWrap = styled.div`
+display: flex;
+width: 50%;
+margin: 3%;
+`
+
+const InputWrap = styled.input`
+margin: 2%;
+width: 80%;
+background-color: seashell;
+
+
+`
+const SearchBtn = styled.button`
+margin: 1%;
 `
 function Board(props: any):JSX.Element {
 //역시 axios로 해당 게시판 글들 긁어와서 렌더링 query값이 없으면 기본 1페이지, query로 페이지 생각
@@ -136,6 +153,8 @@ const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
 const [searching, setSearchWord] = useState('') //검색어
+const [inputInfo, setInputInfo] = useState('')
+const [maxpage, setMax] = useState(1)
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
@@ -144,10 +163,9 @@ const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
         <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
     </ContentWrap>)
-    
-
-
     })
+
+    
 
 
 const getListData = async () =>{
@@ -158,14 +176,33 @@ const getListData = async () =>{
 
     
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    // console.log(listData.data.data)
-    try{setList(listData.data.data)}
+    // console.log(listData.data.pageCount)
+    try{
+        setList(listData.data.data)
+        setMax(listData.data.pageCount)
+        
+    }
     catch{console.log("error!")}
     
     
     
 }
 
+
+const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
+    setInputInfo(event.target.value)
+}
+
+const handleSubmit = () =>{
+    // console.log(inputInfo)
+    setSearchWord(inputInfo)
+}
+
+const handlePage = (el:number) =>{
+    setPage(el)
+    // console.log(nowpage)
+
+}
 
 useEffect(()=>{
     setLoading(true);
@@ -174,7 +211,7 @@ useEffect(()=>{
     setLoading(false)
     
 
-},[ParentCategory, ChildCategory])
+},[ParentCategory, ChildCategory, searching, nowpage])
 
 
 
@@ -209,11 +246,10 @@ useEffect(()=>{
 
 
         </BoardWrap>
-        <PageNav>
-            <PageSec>1</PageSec>
-            <PageSec>2</PageSec>
-            <PageSec>3</PageSec>
-        </PageNav>
+        <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
+        <PageNavWrap>
+            <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler= {handlePage}/>            
+        </PageNavWrap>
         </MainContainer>
     )
     

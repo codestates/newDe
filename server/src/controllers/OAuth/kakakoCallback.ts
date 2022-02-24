@@ -2,7 +2,11 @@ import { createQueryBuilder, getRepository, getConnection, Brackets } from "type
 import { Request, Response } from 'express';
 import { User } from '../../entities/user';
 import * as dotenv from 'dotenv'
+import * as jwt from "jsonwebtoken"
 import axios from 'axios';
+import { sign } from "crypto";
+import { generateToken } from '../../middleware/token/generateToken'
+
 
 dotenv.config()
 
@@ -25,20 +29,20 @@ const kakaologin = async (req:Request, res:Response) => {
                 Authorization: `Bearer ${token}` 
              }
          });
+
+
          let kakaoInfo = userInfo.data
-         console.log(userInfo)
 
          const user = new User();
 
          user.email = kakaoInfo.kakao_account.email
          user.nickname = ''
          user.password = ''
-         user.kakao = true;
+         user.kakao = true
+
 
          const userRepository = getRepository(User)
          const kakaoEmail = await userRepository.findOne({ email : kakaoInfo.kakao_account.email });
-
-        
 
          //쿼리문 읽어서 모달창 띄우기
          
@@ -46,14 +50,15 @@ const kakaologin = async (req:Request, res:Response) => {
               return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
             }
          if(kakaoEmail && kakaoEmail.kakao) {
-              return res.status(201).cookie('kakaoAccessToken', token).redirect('http://localhost:3000');
+             const accessToken = await generateToken(kakaoEmail) 
+              return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000');
          }
+
          let count = 1
          let nickname = kakaoInfo.properties.nickname
 
          while(true) {
              const kakaoNickname = await userRepository.findOne({ nickname : nickname });
-             console.log(kakaoNickname)
 
             if(kakaoNickname) {
                 if(count === 1) nickname += count++;
@@ -64,12 +69,15 @@ const kakaologin = async (req:Request, res:Response) => {
          }
 
          user.nickname = nickname;
-         await userRepository.save(user)
-         
+
+         const kakaoUser = await userRepository.save(user)
+         const accessToken = await generateToken(kakaoUser)
+
+         console.log(accessToken)
 
         return res
             .status(201)
-            .cookie('kakaoAccessToken', token)
+            .cookie('accessToken', accessToken)
             .redirect('http://localhost:3000')
     }
 
