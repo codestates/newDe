@@ -115,6 +115,24 @@ const NameSec = styled.div`
 width: 80%;
 font-weight: bold;
 `
+
+const SearchingWrap = styled.div`
+display: flex;
+width: 50%;
+background: red;
+margin: 3%;
+`
+
+const InputWrap = styled.input`
+margin: 2%;
+width: 80%;
+background-color: seashell;
+
+
+`
+const SearchBtn = styled.button`
+margin: 1%;
+`
 function Board(props: any):JSX.Element {
 //역시 axios로 해당 게시판 글들 긁어와서 렌더링 query값이 없으면 기본 1페이지, query로 페이지 생각
 const config = {
@@ -136,6 +154,7 @@ const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
 const [searching, setSearchWord] = useState('') //검색어
+const [inputInfo, setInputInfo] = useState('')
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
@@ -167,6 +186,15 @@ const getListData = async () =>{
 }
 
 
+const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
+    setInputInfo(event.target.value)
+}
+
+const handleSubmit = () =>{
+    console.log(inputInfo)
+    setSearchWord(inputInfo)
+}
+
 useEffect(()=>{
     setLoading(true);
     
@@ -174,7 +202,7 @@ useEffect(()=>{
     setLoading(false)
     
 
-},[ParentCategory, ChildCategory])
+},[ParentCategory, ChildCategory, searching])
 
 
 
@@ -209,6 +237,7 @@ useEffect(()=>{
 
 
         </BoardWrap>
+        <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNav>
             <PageSec>1</PageSec>
             <PageSec>2</PageSec>
