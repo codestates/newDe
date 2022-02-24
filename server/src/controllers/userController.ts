@@ -1,11 +1,26 @@
 import { Request, Response } from "express";
-import { createQueryBuilder, getRepository, getConnection } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, MetadataAlreadyExistsError } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { generateToken } from '../middleware/token/generateToken';
 import { authorizeToken } from '../middleware/token/authorizeToken';
+import axios from 'axios';
 
 const oauth = async (req:Request, res:Response) => {
+    const clientID = process.env.KAKAO_CLIENT_ID;
+    const clientSecret = process.env.KAKAO_CLIENT_SECRET
+    const authorizationCode = req.body.authorizationCode;
+
+    if(!authorizationCode) {
+        res.status(404).json({data : null, message : 'not authorized'});
+    }
+
+    const kakaoResponse = await axios.post(
+        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_secret=${clientSecret}&client_id=${clientID}&redirect_uri=http://localhost:3000/callback&code=${authorizationCode}`
+    );
+
+    console.log(kakaoResponse)
+
     res.send('ouath');
 }
 

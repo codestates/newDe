@@ -8,13 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
+exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = exports.oauth = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
 const generateToken_1 = require("../middleware/token/generateToken");
 const authorizeToken_1 = require("../middleware/token/authorizeToken");
+const axios_1 = __importDefault(require("axios"));
+const oauth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const clientID = process.env.KAKAO_CLIENT_ID;
+    const clientSecret = process.env.KAKAO_CLIENT_SECRET;
+    const authorizationCode = req.body.authorizationCode;
+    if (!authorizationCode) {
+        res.status(404).json({ data: null, message: 'not authorized' });
+    }
+    const kakaoResponse = yield axios_1.default.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_secret=${clientSecret}&client_id=${clientID}&redirect_uri=http://localhost:3000/callback&code=${authorizationCode}`);
+    console.log(kakaoResponse);
+    res.send('ouath');
+});
+exports.oauth = oauth;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
