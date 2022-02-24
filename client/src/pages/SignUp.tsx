@@ -109,12 +109,14 @@ function SignUp(): JSX.Element {
 
     const [checkText, setCheckText] = useState({
         email: '',
-        password: '',
+        nickname:'',
         passwordCheck: '',
         submit: ''
     });
     const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-    const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,20}/
+    const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
+    // const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
+    
 
 
 
@@ -157,14 +159,30 @@ function SignUp(): JSX.Element {
         }
     }
 
-    const passwordcheck = (event: react.FocusEvent<HTMLInputElement>) => {
-        if (event.target.placeholder === 'password') {
-            if (regPassword.test(event.target.value)) {
-                setCheckText({ ...checkText, password: '사용가능한 비밀번호 입니다' })
-            } else {
-                setCheckText({ ...checkText, password: '8~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
+    const nicknamecheck = async (event: react.FocusEvent<HTMLInputElement>)=> {
+        let newnickname = event.target.value
+
+        if(regNickname.test(newnickname)){
+            const checknickname = await axios.post(
+                `${apiURL}/user/check`, {nickname: inputInfo.nickname}, config
+            )
+            if(checknickname.data.message === 'nickname available'){
+                setCheckText({...checkText, nickname: '사용 가능한 닉네임입니다.'})
             }
+            else {
+                setCheckText({...checkText, nickname: '이미 사용중인 닉네임입니다.'})
+            }
+            
+
         }
+        else{
+            setCheckText({...checkText, nickname: '잘못된 닉네임 형식입니다.'})
+        }
+        
+    }
+
+    const passwordcheck = (event: react.FocusEvent<HTMLInputElement>) => {
+       
         if (!inputInfo.password) {
             setCheckText({ ...checkText, passwordCheck: '비밀번호를 입력해주세요.' })
         }
@@ -177,18 +195,19 @@ function SignUp(): JSX.Element {
 
     }
 
-    async function handleSubmit() {
-        if (checkText.email === '사용 가능한 이메일입니다.' &&
-            checkText.passwordCheck === '비밀번호가 일치합니다.' &&
-            inputInfo.nickname) {
+    async function handleSubmit(){
+        if(checkText.email === '사용 가능한 이메일입니다.' && 
+        checkText.nickname === '사용 가능한 닉네임입니다.' &&
+        checkText.passwordCheck === '비밀번호가 일치합니다.' && 
+        inputInfo.nickname){
             const sendingInfo = {
                 email: inputInfo.email,
                 nickname: inputInfo.nickname,
                 password: inputInfo.password
             }
-            try {
-                const result = await axios.post(`${URL}/signup`, sendingInfo, config)
-                if (result.data.message === 'Success') {
+            try{
+                const result = await axios.post(`${apiURL}/signup`,sendingInfo,config)
+                if(result.data.message==='Success'){
                     alert('회원가입 성공!')
                     navigate('/login')
                 }
@@ -221,17 +240,15 @@ function SignUp(): JSX.Element {
                 <NameWrap>
                     닉네임
                 </NameWrap>
-                <InputWrap type='nickname' placeholder='nickname' onChange={handleInput} />
+                <InputWrap type= 'nickname' placeholder = 'nickname' onChange ={handleInput} onBlur = {nicknamecheck}  />
                 <CheckWrap>
-                    ㅤ
+                {checkText.nickname ? checkText.nickname : "ㅤ" } 
                 </CheckWrap>
                 <NameWrap>
                     password
                 </NameWrap>
                 <InputWrap type='password' placeholder='password' value={inputInfo.password} onChange={handleInput} onBlur={passwordcheck} />
                 <CheckWrap>
-                    {checkText.password}
-                    ㅤ
                 </CheckWrap>
                 <NameWrap>
                     password 확인
