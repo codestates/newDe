@@ -1,5 +1,3 @@
-
-
 module.exports = {
   type: 'mysql',
   host: process.env.DATABASE_HOST,
