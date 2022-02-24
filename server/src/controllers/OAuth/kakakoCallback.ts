@@ -1,4 +1,4 @@
-import { createQueryBuilder, getRepository, getConnection } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, Brackets } from "typeorm";
 import { Request, Response } from 'express';
 import { User } from '../../entities/user';
 import * as dotenv from 'dotenv'
@@ -46,23 +46,22 @@ const kakaologin = async (req:Request, res:Response) => {
               return res.status(409).redirect('http://localhost:3000/login?islogin=fail')
             }
 
-        //  let count = 1
-        //  let nickname = kakaoInfo.properties.nickname
+         let count = 1
+         let nickname = kakaoInfo.properties.nickname
 
-        //  while(true) {
-        //      const kakaoNickname = await userRepository.findOne({ nickname : nickname });
-        //      console.log(kakaoNickname)
+         while(true) {
+             const kakaoNickname = await userRepository.findOne({ nickname : nickname });
+             console.log(kakaoNickname)
 
-        //     if(kakaoNickname) {
-        //         count++
-        //     } else {
-        //         user.nickname = nickname.slice(0,nickname.length-1) + count
+            if(kakaoNickname) {
+                if(count === 1) nickname += count++;
+                else nickname = nickname.slice(0, nickname.length-1) + count++;                
+            } else {                
+                break;
+            }
+         }
 
-        //         break;
-        //     }
-        //  }
-
-        
+         user.nickname = nickname;
          await userRepository.save(user)
          
 
