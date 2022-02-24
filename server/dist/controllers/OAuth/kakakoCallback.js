@@ -63,18 +63,22 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (kakaoEmail) {
             return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
         }
-        //  let count = 1
-        //  let nickname = kakaoInfo.properties.nickname
-        //  while(true) {
-        //      const kakaoNickname = await userRepository.findOne({ nickname : nickname });
-        //      console.log(kakaoNickname)
-        //     if(kakaoNickname) {
-        //         count++
-        //     } else {
-        //         user.nickname = nickname.slice(0,nickname.length-1) + count
-        //         break;
-        //     }
-        //  }
+        let count = 1;
+        let nickname = kakaoInfo.properties.nickname;
+        while (true) {
+            const kakaoNickname = yield userRepository.findOne({ nickname: nickname });
+            console.log(kakaoNickname);
+            if (kakaoNickname) {
+                if (count === 1)
+                    nickname += count++;
+                else
+                    nickname = nickname.slice(0, nickname.length - 1) + count++;
+            }
+            else {
+                break;
+            }
+        }
+        user.nickname = nickname;
         yield userRepository.save(user);
         return res
             .status(201)
