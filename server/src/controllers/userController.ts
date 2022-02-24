@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createQueryBuilder, getRepository, getConnection } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, MetadataAlreadyExistsError } from "typeorm";
 import { User } from "../entities/user";
 import { Content } from "../entities/content";
 import { generateToken } from '../middleware/token/generateToken';
@@ -166,7 +166,6 @@ const checkInfo = async (req:Request, res:Response) => {
 
     return res.status(404).json({ message: 'Bad Request' })
 };
-
 
 export {
     login,

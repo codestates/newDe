@@ -5,6 +5,9 @@ import {Nav, BoardModal} from './component';
 import {ThemeProvider} from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
+import { Cookies } from 'react-cookie';
+import react, { useEffect } from 'react'
+
 
 
 // let isModalOpened = true
@@ -14,6 +17,9 @@ const ContentWrap = styled.div`
 
 display: flex;`
 function App() {
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken")
+  // console.log(cookies.get("accessToken"))
   
   const [isLogin, setlogin] = useState(false)
 

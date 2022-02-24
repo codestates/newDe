@@ -8,6 +8,8 @@ const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;
     const verify = await authorizeToken(req, res)
 
+    
+
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     const ContentRepository = getRepository(Content)

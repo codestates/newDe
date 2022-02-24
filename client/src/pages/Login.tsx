@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
 import axios from 'axios';
-import { URL } from '../url'
+import { apiURL } from '../url'
 
 
 //배경
@@ -41,7 +41,7 @@ width: 40%;
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
-aligh-items: center;
+align-items: center;
 text-align: center;`
 
 
@@ -87,7 +87,7 @@ function Login (props: any):JSX.Element {
     const navigate = useNavigate();
     const config = {
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         withCredentials: true
       };
@@ -119,7 +119,7 @@ function Login (props: any):JSX.Element {
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
         // console.log(inputInfo)
         const loginresult = await axios.post(
-            `${URL}/login`, 
+            `${apiURL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 props.loginhandler()
