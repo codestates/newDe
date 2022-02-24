@@ -109,10 +109,12 @@ function SignUp():JSX.Element {
     
     const [checkText, setCheckText] = useState({
         email: '',
+        nickname:'',
         passwordCheck: '',
         submit: ''
     });
     const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+    const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
     // const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
     
 
@@ -156,6 +158,28 @@ function SignUp():JSX.Element {
         }
     }
 
+    const nicknamecheck = async (event: react.FocusEvent<HTMLInputElement>)=> {
+        let newnickname = event.target.value
+
+        if(regNickname.test(newnickname)){
+            const checknickname = await axios.post(
+                `${apiURL}/user/check`, {nickname: inputInfo.nickname}, config
+            )
+            if(checknickname.data.message === 'nickname available'){
+                setCheckText({...checkText, nickname: '사용 가능한 닉네임입니다.'})
+            }
+            else {
+                setCheckText({...checkText, nickname: '이미 사용중인 닉네임입니다.'})
+            }
+            
+
+        }
+        else{
+            setCheckText({...checkText, nickname: '잘못된 닉네임 형식입니다.'})
+        }
+        
+    }
+
     const passwordcheck = (event: react.FocusEvent<HTMLInputElement>) => {
         
         if(!inputInfo.password) {
@@ -172,6 +196,7 @@ function SignUp():JSX.Element {
 
     async function handleSubmit(){
         if(checkText.email === '사용 가능한 이메일입니다.' && 
+        checkText.nickname === '사용 가능한 닉네임입니다.' &&
         checkText.passwordCheck === '비밀번호가 일치합니다.' && 
         inputInfo.nickname){
             const sendingInfo = {
@@ -215,9 +240,9 @@ function SignUp():JSX.Element {
                 <NameWrap>
                     닉네임
                 </NameWrap>
-                <InputWrap type= 'nickname' placeholder = 'nickname' onChange ={handleInput}  />
+                <InputWrap type= 'nickname' placeholder = 'nickname' onChange ={handleInput} onBlur = {nicknamecheck}  />
                 <CheckWrap>
-                ㅤ
+                {checkText.nickname ? checkText.nickname : "ㅤ" } 
                 </CheckWrap>
                 <NameWrap>
                     password
