@@ -119,7 +119,6 @@ font-weight: bold;
 const SearchingWrap = styled.div`
 display: flex;
 width: 50%;
-background: red;
 margin: 3%;
 `
 
