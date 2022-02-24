@@ -1,11 +1,12 @@
 //메인 게시판
-import react from 'react'
+import react, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import {ContentList} from '../component';
+import { apiURL } from '../url'
 
 
 const MainContainer = styled.div`
@@ -86,21 +87,58 @@ font-weight: bold;
 function MainBoard():JSX.Element{
     //axios를 이용 게시글 정보 받아와서 렌더링  
     //http://localhost:8080/board/ front /back 을 각각 가져와서 최근 5개씩 렌더링 
+    const [loading, setLoading] = useState(false);
+    const [frontlist, setFront] = useState([]);
+    const [backlist, setBack] = useState([]);
     
 //arr.map 시 id = contentId로 주면 됨 해당 콘텐츠 아이디는 콘텐츠뷰로 넘길 때 /board/113 식으로 넘기면 됨 
     
     
-    const dummy = [{id: 1, contenttitle: '안녕', user: '바보', like: 32},{id: 2, contenttitle: '안녕', user: '바보', like: 32}]
-    const datatoList = dummy.map((el)=>{
+
+    const getListData = async () =>{
+
+        const front = await axios(`${apiURL}/board?page=1&parentCategory=front`)
+        try{
+            setFront(front.data.data.slice(0,5))
+        }
+        catch{console.log("error!")}
+
+        const back = await axios(`${apiURL}/board?page=1&parentCategory=front`)
+        try{
+            setFront(back.data.data.slice(0,5))
+        }
+        catch{console.log("error!")}
+    }
+    
+    const fronttoList = frontlist.map((el:any)=>{
         return (<ContentWrap key = {el.id}>
-            <ContentList id = {el.id} title = {el.contenttitle} like = {el.like} user = {el.user} />
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
         </ContentWrap>)
         
 
 
         })
 
- 
+        
+    const backtoList = backlist.map((el:any)=>{
+        return (<ContentWrap key = {el.id}>
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+        </ContentWrap>)
+        
+
+
+        })
+
+    useEffect(()=>{
+
+        setLoading(true)
+        getListData()
+        setLoading(false)
+        
+    }
+    , [])
+
+
 
     return(
         <MainContainer>
@@ -117,7 +155,7 @@ function MainBoard():JSX.Element{
 
                 </ContentWrap>
                 
-                {datatoList}
+                {fronttoList}
                 
             </ChildBoard>
 
@@ -129,7 +167,7 @@ function MainBoard():JSX.Element{
                     <Contentlike>추천</Contentlike>
 
                 </ContentWrap>
-                {datatoList}
+                {backtoList}
             </ChildBoard>
 
 
