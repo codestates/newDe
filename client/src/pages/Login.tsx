@@ -41,7 +41,7 @@ width: 40%;
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
-aligh-items: center;
+align-items: center;
 text-align: center;`
 
 
@@ -129,7 +129,7 @@ function Login (props: any):JSX.Element {
     }
 
     const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(event.target)
+        window.location.assign('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c36499545a48326c9793ab10769efa75&redirect_uri=http://localhost:3000/callback');
         
     }
 
