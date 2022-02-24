@@ -53,9 +53,13 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).json({ message: 'Bad Request' });
     }
     else {
-        const userInfo = yield userRepository.findOne({ email: email });
-        if (userInfo) {
+        const emailInfo = yield userRepository.findOne({ email: email });
+        const nicknameInfo = yield userRepository.findOne({ nickname: nickname });
+        if (emailInfo) {
             return res.status(409).json({ message: 'Account already exists' });
+        }
+        if (nicknameInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' });
         }
         yield userRepository.save(user);
         return res.status(201).json({ message: 'Success' });
@@ -143,7 +147,7 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(200).json({ message: 'nickname already exisits' });
+            return res.status(409).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }
