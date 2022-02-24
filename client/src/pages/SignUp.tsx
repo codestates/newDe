@@ -133,14 +133,10 @@ function SignUp(): JSX.Element {
             setInputInfo({ ...inputInfo, password: event.target.value });
         }
         if (event.target.placeholder === 'password check') {
-<<<<<<< HEAD
         //   console.log(checkinput)
           setcheckinput(true)
         //   console.log(checkinput)
           setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
-=======
-            setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
->>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
         }
     };
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
@@ -271,23 +267,14 @@ function SignUp(): JSX.Element {
                 <NameWrap>
                     password
                 </NameWrap>
-<<<<<<< HEAD
                 <InputWrap type = 'password' placeholder = 'password' onChange ={handleInput} onBlur = {passwordcheck}  />
                 <CheckWrap>
                 {checkText.password ? checkText.password : "ㅤ" } 
-=======
-                <InputWrap type='password' placeholder='password' value={inputInfo.password} onChange={handleInput} onBlur={passwordcheck} />
-                <CheckWrap>
->>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
                 </CheckWrap>
                 <NameWrap>
                     password 확인
                 </NameWrap>
-<<<<<<< HEAD
                 <InputWrap type = 'password' placeholder = 'password check' onChange ={handleInput} onBlur = {passwordcheck}  />
-=======
-                <InputWrap type='password' placeholder='passwordcheck' onChange={handleInput} onBlur={passwordcheck} />
->>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
                 <CheckWrap>
                     {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ"}
                 </CheckWrap>
