@@ -66,7 +66,6 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    console.log(verify);
     if (verify) {
         const userInfo = yield userRepository.findOne({
             where: { id: verify.userInfo.id }
@@ -106,7 +105,11 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    yield userRepository.delete({ id: verify.userInfo.id });
+    const targetUser = yield userRepository.findOne(verify.userInfo.id);
+    targetUser.nickname = '';
+    targetUser.email = '';
+    targetUser.password = '';
+    yield userRepository.save(targetUser);
     return res
         .clearCookie('accessToken')
         .status(200)
@@ -115,6 +118,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteUser = deleteUser;
 const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (email) {
         const userInfo = yield userRepository.findOne({ email: email });
@@ -129,18 +133,17 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(403).json({ message: 'Invalid Accesstoken' });
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
-        console.log(userInfo);
         if (userInfo.password === password) {
-            return res.status(400).json({ message: 'password correct!' });
+            return res.status(200).json({ message: 'password correct!' });
         }
         else {
-            return res.status(200).json({ message: 'incorrect password' });
+            return res.status(400).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' });
+            return res.status(200).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }

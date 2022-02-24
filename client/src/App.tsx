@@ -15,7 +15,7 @@ const ContentWrap = styled.div`
 display: flex;`
 function App() {
   
-  
+  const [isLogin, setlogin] = useState(false)
 
   const [isModalOpened, setModal] = useState(false)
   function modalHandler () {
@@ -26,20 +26,27 @@ function App() {
     setModal(false)
   }
 
+  function loginHandler(){
+    setlogin(true)
+  }
+
+  function logoutHandler(){
+    setlogin(false)
+  }
   
 
   return (
     <div className="App">
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} islogin={isLogin} logouthandler = {logoutHandler}/>
           <ContentWrap>
             
           <Routes>
             <Route path='/' element={<Landing />} />
             <Route path='/board' element={<Board />} />
-            <Route path='/contentview' element={<ContentView />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/:id' element={<ContentView />} />
+            <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
             <Route path='/mainboard' element={<MainBoard />} />
             <Route path='/mypage' element={<MyPage />} />
             <Route path='/mypageedit' element={<MyPageEdit />} />

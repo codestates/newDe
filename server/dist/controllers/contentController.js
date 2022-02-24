@@ -104,7 +104,7 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     yield ContentRepository.save(content);
-    return res.status(201).json({ message: 'Succes' });
+    return res.status(201).json({ message: 'Success' });
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -168,7 +168,7 @@ const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     //const comments = await commentRepository.find({where : {contentId : contentId}});
     const comments = yield commentRepository
         .createQueryBuilder('comment')
-        .select('comment', 'comments.nickname')
+        .select(['comment', 'comments.nickname'])
         .leftJoin('comment.user', 'comments')
         .where('comment.contentId = :contentId', { contentId })
         .getMany();

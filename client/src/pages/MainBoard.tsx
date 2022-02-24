@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import {ContentList} from '../component';
 
 
 const MainContainer = styled.div`
@@ -67,23 +68,40 @@ margin: 0.5% 0.5% 0.5% 0.5%
 
 const Contenttitle = styled.div`
 width: 70%;
-text-align: left;`
+text-align: left;
+font-weight: bold;`
 
 
 const Contentusersec = styled.div`
 width: 10%;
+font-weight: bold;
 `
 
 const Contentlike = styled.div`
 width: 10%;
+font-weight: bold;
 `
+
 
 function MainBoard():JSX.Element{
     //axios를 이용 게시글 정보 받아와서 렌더링  
-    //http://localhost:8080/board/front, /back 을 각각 가져와서 최근 5개씩 렌더링 
+    //http://localhost:8080/board/ front /back 을 각각 가져와서 최근 5개씩 렌더링 
     
+//arr.map 시 id = contentId로 주면 됨 해당 콘텐츠 아이디는 콘텐츠뷰로 넘길 때 /board/113 식으로 넘기면 됨 
+    
+    
+    const dummy = [{id: 1, contenttitle: '안녕', user: '바보', like: 32},{id: 2, contenttitle: '안녕', user: '바보', like: 32}]
+    const datatoList = dummy.map((el)=>{
+        return (<ContentWrap key = {el.id}>
+            <ContentList id = {el.id} title = {el.contenttitle} like = {el.like} user = {el.user} />
+        </ContentWrap>)
+        
 
-    
+
+        })
+
+ 
+
     return(
         <MainContainer>
     
@@ -96,31 +114,11 @@ function MainBoard():JSX.Element{
                     <Contentusersec>글쓴이</Contentusersec>
                     <Contentlike>추천</Contentlike>
 
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
 
                 </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
+                
+                {datatoList}
+                
             </ChildBoard>
 
             <BoardName>백엔드 게시판</BoardName>
@@ -131,30 +129,7 @@ function MainBoard():JSX.Element{
                     <Contentlike>추천</Contentlike>
 
                 </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
+                {datatoList}
             </ChildBoard>
 
 

@@ -62,7 +62,7 @@ const profile = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 
-    console.log(verify)
+    
 
     
     if(verify) {
@@ -112,8 +112,14 @@ const deleteUser = async (req:Request, res:Response) => {
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
-    await userRepository.delete({ id: verify.userInfo.id })
+    const targetUser = await userRepository.findOne(verify.userInfo.id);
 
+    targetUser.nickname = '';
+    targetUser.email = '';
+    targetUser.password = '';
+
+    await userRepository.save(targetUser);
+    
     return res
         .clearCookie('accessToken')
         .status(200)
@@ -122,8 +128,9 @@ const deleteUser = async (req:Request, res:Response) => {
 
 const checkInfo = async (req:Request, res:Response) => {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = getRepository(User);
-
+    
     if(email) {
         const userInfo = await userRepository.findOne({ email : email });
         if (userInfo) {
@@ -138,20 +145,18 @@ const checkInfo = async (req:Request, res:Response) => {
         const userRepository = getRepository(User);
 
         const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
-
-        console.log(userInfo)
         
         if(userInfo.password === password) {
-            return res.status(400).json({ message: 'password correct!' });
+            return res.status(200).json({ message: 'password correct!' });
         } else {
-            return res.status(200).json({ message: 'incorrect password' })
+            return res.status(400).json({ message: 'incorrect password' })
         }
     } 
     
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' })
+            return res.status(200).json({ message: 'nickname already exisits' })
         }
         return res.status(200).json({ message: 'nickname available'})
     } 

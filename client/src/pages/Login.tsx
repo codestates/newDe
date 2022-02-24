@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
 import axios from 'axios';
+import { URL } from '../url'
+
 
 //배경
 const MainContainer = styled.div`
@@ -80,8 +82,8 @@ margin: 5px;
 
 
 
-function Login ():JSX.Element {
-    const URL= useAppSelector((state:RootState)=> state.url.url)
+function Login (props: any):JSX.Element {
+    
     const navigate = useNavigate();
     const config = {
         headers: {
@@ -95,8 +97,9 @@ function Login ():JSX.Element {
         password: ''
     })
 
+
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        // console.log(event.target.value)
+        
         if(event.target.type === 'email'){
             setInputInfo({
                 ...inputInfo, 
@@ -114,11 +117,12 @@ function Login ():JSX.Element {
     }
 
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(inputInfo)
+        // console.log(inputInfo)
         const loginresult = await axios.post(
             `${URL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
+                props.loginhandler()
                 navigate('/MyPage')
             })
         
@@ -146,13 +150,13 @@ function Login ():JSX.Element {
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type = 'email' placeholder = '이메일을 입력해주세요' onChange = {handleInput} />
+                <InputWrap type = 'email' placeholder = 'email' onChange = {handleInput} />
                     
                 
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type= 'password' placeholder = '비밀번호를 입력해주세요' onChange = {handleInput}/>
+                <InputWrap type= 'password' placeholder = 'password' onChange= {handleInput} />
                 
                 <BtnContainer>
                     

@@ -1,11 +1,9 @@
 import react from 'react'
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { useState } from 'react';
 import axios from 'axios';
+import { URL } from '../url'
+import { useNavigate } from 'react-router';
 
 const SignUpContainer = styled.div`
 display: flex;
@@ -92,8 +90,9 @@ margin: 2%;
 `
 
 function SignUp():JSX.Element {
-    const navigate = useNavigate();
-    const URL= useAppSelector((state:RootState)=> state.url.url)
+
+
+    const navigate = useNavigate()
 
     const config = {
         headers: {
@@ -135,10 +134,10 @@ function SignUp():JSX.Element {
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
         // console.log(event.target.value)
         let newemail = event.target.value
-        console.log(regEmail.test(newemail))
+        // console.log(regEmail.test(newemail))
         if (regEmail.test(newemail)){
             const checkresult = await axios.post(
-                `${URL}/check/email`, 
+                `${URL}/user/check`, 
                 {email: inputInfo.email}, config
             )
 
@@ -171,7 +170,7 @@ function SignUp():JSX.Element {
 
     }
 
-    const handleSubmit = () => {
+    async function handleSubmit(){
         if(checkText.email === '사용 가능한 이메일입니다.' && 
         checkText.passwordCheck === '비밀번호가 일치합니다.' && 
         inputInfo.nickname){
@@ -179,6 +178,16 @@ function SignUp():JSX.Element {
                 email: inputInfo.email,
                 nickname: inputInfo.nickname, 
                 password: inputInfo.password
+            }
+            try{
+                const result = await axios.post(`${URL}/signup`,sendingInfo,config)
+                if(result.data.message==='Success'){
+                    alert('회원가입 성공!')
+                    navigate('/login')
+                }
+                
+            }catch (err){
+                console.log(err)
             }
             
 
