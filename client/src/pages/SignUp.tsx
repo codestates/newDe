@@ -180,7 +180,7 @@ function SignUp():JSX.Element {
                 password: inputInfo.password
             }
             try{
-                const result = await axios.post(`${URL}/signup`,sendingInfo,config)
+                const result = await axios.post(`${apiURL}/signup`,sendingInfo,config)
                 if(result.data.message==='Success'){
                     alert('회원가입 성공!')
                     navigate('/login')

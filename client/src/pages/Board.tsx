@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList} from '../component';
+import {ContentList, PageNav} from '../component';
 import { apiURL } from '../url'
 
 
@@ -96,11 +96,11 @@ font-weight: bold;
 `
 
 
-const PageNav = styled.div`
+const PageNavWrap = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-background: red;
+
 `
 
 const PageSec = styled.button`
@@ -155,6 +155,7 @@ const [contentlist, setList] = useState([]);
 const [nowpage, setPage] = useState(1); //페이지
 const [searching, setSearchWord] = useState('') //검색어
 const [inputInfo, setInputInfo] = useState('')
+const [maxpage, setMax] = useState(1)
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
@@ -168,6 +169,8 @@ const datatoList = contentlist.map((el:any)=>{
 
     })
 
+    
+
 
 const getListData = async () =>{
     //URL값 따오기 
@@ -177,8 +180,12 @@ const getListData = async () =>{
 
     
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    // console.log(listData.data.data)
-    try{setList(listData.data.data)}
+    // console.log(listData.data.pageCount)
+    try{
+        setList(listData.data.data)
+        setMax(listData.data.pageCount)
+        
+    }
     catch{console.log("error!")}
     
     
@@ -191,8 +198,14 @@ const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
 }
 
 const handleSubmit = () =>{
-    console.log(inputInfo)
+    // console.log(inputInfo)
     setSearchWord(inputInfo)
+}
+
+const handlePage = (el:number) =>{
+    setPage(el)
+    // console.log(nowpage)
+
 }
 
 useEffect(()=>{
@@ -202,7 +215,7 @@ useEffect(()=>{
     setLoading(false)
     
 
-},[ParentCategory, ChildCategory, searching])
+},[ParentCategory, ChildCategory, searching, nowpage])
 
 
 
@@ -238,11 +251,9 @@ useEffect(()=>{
 
         </BoardWrap>
         <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
-        <PageNav>
-            <PageSec>1</PageSec>
-            <PageSec>2</PageSec>
-            <PageSec>3</PageSec>
-        </PageNav>
+        <PageNavWrap>
+            <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler= {handlePage}/>            
+        </PageNavWrap>
         </MainContainer>
     )
     

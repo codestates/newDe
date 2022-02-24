@@ -103,9 +103,9 @@ function MainBoard():JSX.Element{
         }
         catch{console.log("error!")}
 
-        const back = await axios(`${apiURL}/board?page=1&parentCategory=front`)
+        const back = await axios(`${apiURL}/board?page=1&parentCategory=back`)
         try{
-            setFront(back.data.data.slice(0,5))
+            setBack(back.data.data.slice(0,5))
         }
         catch{console.log("error!")}
     }
