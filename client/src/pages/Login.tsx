@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
 import axios from 'axios';
-import { URL } from '../url'
+import { apiURL } from '../url'
 
 
 //배경
@@ -119,7 +119,7 @@ function Login (props: any):JSX.Element {
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
         // console.log(inputInfo)
         const loginresult = await axios.post(
-            `${URL}/login`, 
+            `${apiURL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 props.loginhandler()
@@ -129,7 +129,7 @@ function Login (props: any):JSX.Element {
     }
 
     const kakaologinSubmit = (event: react.MouseEvent<HTMLButtonElement>) =>{
-        console.log(event.target)
+        window.location.assign('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c36499545a48326c9793ab10769efa75&redirect_uri=http://localhost:3000/callback');
         
     }
 
