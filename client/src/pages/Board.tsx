@@ -163,9 +163,6 @@ const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
         <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
     </ContentWrap>)
-    
-
-
     })
 
     
