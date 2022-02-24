@@ -25,7 +25,7 @@ width: 40%;
 
 
 
-@media ${(props)=> props.theme.mobile}{
+@media ${(props) => props.theme.mobile}{
     width: 100%;
     height: 100%;
 
@@ -47,7 +47,7 @@ width: 80%;
 text-align: left;
 padding-left: 10px;
 margin-bottom: 0;
-` 
+`
 
 
 
@@ -89,7 +89,7 @@ margin: 2%;
 
 `
 
-function SignUp():JSX.Element {
+function SignUp(): JSX.Element {
 
 
     const navigate = useNavigate()
@@ -99,155 +99,159 @@ function SignUp():JSX.Element {
             'Content-Type': 'application/json'
         },
         withCredentials: true
-        };
+    };
     const [inputInfo, setInputInfo] = useState({
         email: '',
         nickname: '',
         password: '',
         passwordCheck: ''
     });
-    
+
     const [checkText, setCheckText] = useState({
         email: '',
+        password: '',
         passwordCheck: '',
         submit: ''
     });
     const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-    // const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
-    
+    const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,20}/
 
 
-    const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
+
+    const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
         if (event.target.placeholder === 'email') {
-          setInputInfo({ ...inputInfo, email: event.target.value });
+            setInputInfo({ ...inputInfo, email: event.target.value });
         }
         if (event.target.placeholder === 'nickname') {
-          setInputInfo({ ...inputInfo, nickname: event.target.value });
+            setInputInfo({ ...inputInfo, nickname: event.target.value });
         }
         if (event.target.placeholder === 'password') {
-          setInputInfo({ ...inputInfo, password: event.target.value });
+            setInputInfo({ ...inputInfo, password: event.target.value });
         }
         if (event.target.placeholder === 'password check') {
-          setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
+            setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
         }
-      };
+    };
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
         // console.log(event.target.value)
         let newemail = event.target.value
         // console.log(regEmail.test(newemail))
-        if (regEmail.test(newemail)){
+        if (regEmail.test(newemail)) {
             const checkresult = await axios.post(
-                `${apiURL}/user/check`, 
-                {email: inputInfo.email}, config
+                `${apiURL}/user/check`,
+                { email: inputInfo.email }, config
             )
 
-            if(checkresult.data.message = 'possible email'){
-                setCheckText({...checkText, email: '사용 가능한 이메일입니다.'})
+            if (checkresult.data.message = 'possible email') {
+                setCheckText({ ...checkText, email: '사용 가능한 이메일입니다.' })
             }
-            else{
-                setCheckText({...checkText, email: '이미 가입되어있는 이메일입니다.'})
+            else {
+                setCheckText({ ...checkText, email: '이미 가입되어있는 이메일입니다.' })
             }
-            
+
 
         }
         else {
-            setCheckText({...checkText, email: '잘못된 이메일 형식입니다.'})
-            
+            setCheckText({ ...checkText, email: '잘못된 이메일 형식입니다.' })
+
         }
     }
 
     const passwordcheck = (event: react.FocusEvent<HTMLInputElement>) => {
-        
-        if(!inputInfo.password) {
-            setCheckText({...checkText, passwordCheck: '비밀번호를 입력해주세요.'})
+        if (event.target.placeholder === 'password') {
+            if (regPassword.test(event.target.value)) {
+                setCheckText({ ...checkText, password: '사용가능한 비밀번호 입니다' })
+            } else {
+                setCheckText({ ...checkText, password: '8~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
+            }
         }
-        else if(inputInfo.password === event.target.value){
-            setCheckText({...checkText, passwordCheck: '비밀번호가 일치합니다.'})
+        if (!inputInfo.password) {
+            setCheckText({ ...checkText, passwordCheck: '비밀번호를 입력해주세요.' })
+        }
+        else if (inputInfo.password === event.target.value) {
+            setCheckText({ ...checkText, passwordCheck: '비밀번호가 일치합니다.' })
         }
         else {
-            setCheckText({...checkText, passwordCheck: '비밀번호가 일치하지 않습니다.'})
+            setCheckText({ ...checkText, passwordCheck: '비밀번호가 일치하지 않습니다.' })
         }
 
     }
 
-    async function handleSubmit(){
-        if(checkText.email === '사용 가능한 이메일입니다.' && 
-        checkText.passwordCheck === '비밀번호가 일치합니다.' && 
-        inputInfo.nickname){
+    async function handleSubmit() {
+        if (checkText.email === '사용 가능한 이메일입니다.' &&
+            checkText.passwordCheck === '비밀번호가 일치합니다.' &&
+            inputInfo.nickname) {
             const sendingInfo = {
                 email: inputInfo.email,
-                nickname: inputInfo.nickname, 
+                nickname: inputInfo.nickname,
                 password: inputInfo.password
             }
-            try{
-                const result = await axios.post(`${URL}/signup`,sendingInfo,config)
-                if(result.data.message==='Success'){
+            try {
+                const result = await axios.post(`${URL}/signup`, sendingInfo, config)
+                if (result.data.message === 'Success') {
                     alert('회원가입 성공!')
                     navigate('/login')
                 }
-                
-            }catch (err){
+
+            } catch (err) {
                 console.log(err)
             }
-            
+
 
         }
         else {
-            setCheckText({...checkText, submit: '항목을 모두 올바르게 입력해 주세요.'})
+            setCheckText({ ...checkText, submit: '항목을 모두 올바르게 입력해 주세요.' })
         }
     }
 
     return (
         <SignUpContainer>
-            
+
             <SignUpWrap>
-                
                 <LogoWrap>
-                    <img src = "images/biglogo.png" width= "100%"></img>
+                    <img src="images/biglogo.png" width="100%"></img>
                 </LogoWrap>
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type= 'email' placeholder = 'email' onChange ={handleInput} onBlur = {emailcheck}/>
+                <InputWrap type='email' placeholder='email' onChange={handleInput} onBlur={emailcheck} />
                 <CheckWrap>
-                    {checkText.email ? checkText.email : "ㅤ" } 
+                    {checkText.email ? checkText.email : "ㅤ"}
                 </CheckWrap>
                 <NameWrap>
                     닉네임
                 </NameWrap>
-                <InputWrap type= 'nickname' placeholder = 'nickname' onChange ={handleInput}  />
+                <InputWrap type='nickname' placeholder='nickname' onChange={handleInput} />
                 <CheckWrap>
-                ㅤ
+                    ㅤ
                 </CheckWrap>
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type = 'password' placeholder = 'password' onChange ={handleInput}  />
+                <InputWrap type='password' placeholder='password' value={inputInfo.password} onChange={handleInput} onBlur={passwordcheck} />
                 <CheckWrap>
-                ㅤ
+                    {checkText.password}
+                    ㅤ
                 </CheckWrap>
                 <NameWrap>
                     password 확인
                 </NameWrap>
-                <InputWrap type = 'password' placeholder = 'passwordcheck' onChange ={handleInput} onBlur = {passwordcheck}  />
+                <InputWrap type='password' placeholder='passwordcheck' onChange={handleInput} onBlur={passwordcheck} />
                 <CheckWrap>
-                    {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ" }  
+                    {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ"}
                 </CheckWrap>
                 <SubmitcheckWrap>
-                {checkText.submit ? checkText.submit : "ㅤ" } 
+                    {checkText.submit ? checkText.submit : "ㅤ"}
                 </SubmitcheckWrap>
-                <BtnBox onClick = {handleSubmit}> submit</BtnBox>
-
-               
-
+                <BtnBox onClick={handleSubmit}> submit</BtnBox>
             </SignUpWrap>
         </SignUpContainer>
-           
-        
+
+
 
 
     )
-        
+
 }
 
 export default SignUp
