@@ -36,6 +36,7 @@ const typeorm_1 = require("typeorm");
 const user_1 = require("../../entities/user");
 const dotenv = __importStar(require("dotenv"));
 const axios_1 = __importDefault(require("axios"));
+const generateToken_1 = require("../../middleware/token/generateToken");
 dotenv.config();
 const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
@@ -53,7 +54,6 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         });
         let kakaoInfo = userInfo.data;
-        console.log(userInfo);
         const user = new user_1.User();
         user.email = kakaoInfo.kakao_account.email;
         user.nickname = '';
@@ -66,13 +66,13 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
         }
         if (kakaoEmail && kakaoEmail.kakao) {
-            return res.status(201).cookie('kakaoAccessToken', token).redirect('http://localhost:3000');
+            const accessToken = yield (0, generateToken_1.generateToken)(kakaoEmail);
+            return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000');
         }
         let count = 1;
         let nickname = kakaoInfo.properties.nickname;
         while (true) {
             const kakaoNickname = yield userRepository.findOne({ nickname: nickname });
-            console.log(kakaoNickname);
             if (kakaoNickname) {
                 if (count === 1)
                     nickname += count++;
@@ -84,10 +84,12 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         }
         user.nickname = nickname;
-        yield userRepository.save(user);
+        const kakaoUser = yield userRepository.save(user);
+        const accessToken = yield (0, generateToken_1.generateToken)(kakaoUser);
+        console.log(accessToken);
         return res
             .status(201)
-            .cookie('kakaoAccessToken', token)
+            .cookie('accessToken', accessToken)
             .redirect('http://localhost:3000');
     }
     catch (e) {
