@@ -20,6 +20,7 @@ const oauth = async (req:Request, res:Response) => {
     );
 
     console.log(kakaoResponse)
+    
 
     res.send('ouath');
 }
