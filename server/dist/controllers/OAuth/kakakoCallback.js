@@ -49,19 +49,24 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = result.data.access_token;
         const userInfo = yield axios_1.default.get('https://kapi.kakao.com/v2/user/me', {
             headers: {
-                Authorization: `Bearer ${result.data.access_token}`
+                Authorization: `Bearer ${token}`
             }
         });
         let kakaoInfo = userInfo.data;
+        console.log(userInfo);
         const user = new user_1.User();
         user.email = kakaoInfo.kakao_account.email;
         user.nickname = '';
         user.password = '';
+        user.kakao = true;
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const kakaoEmail = yield userRepository.findOne({ email: kakaoInfo.kakao_account.email });
         //쿼리문 읽어서 모달창 띄우기
-        if (kakaoEmail) {
+        if (kakaoEmail && !kakaoEmail.kakao) {
             return res.status(409).redirect('http://localhost:3000/login?islogin=fail');
+        }
+        if (kakaoEmail && kakaoEmail.kakao) {
+            return res.status(201).cookie('kakaoAccessToken', token).redirect('http://localhost:3000');
         }
         let count = 1;
         let nickname = kakaoInfo.properties.nickname;
@@ -82,7 +87,7 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield userRepository.save(user);
         return res
             .status(201)
-            .cookie('accessToken', token)
+            .cookie('kakaoAccessToken', token)
             .redirect('http://localhost:3000');
     }
     catch (e) {
