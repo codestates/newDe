@@ -26,7 +26,7 @@ width: 40%;
 
 
 
-@media ${(props)=> props.theme.mobile}{
+@media ${(props) => props.theme.mobile}{
     width: 100%;
     height: 100%;
 
@@ -48,7 +48,7 @@ width: 80%;
 text-align: left;
 padding-left: 10px;
 margin-bottom: 0;
-` 
+`
 
 
 
@@ -90,7 +90,7 @@ margin: 2%;
 
 `
 
-function SignUp():JSX.Element {
+function SignUp(): JSX.Element {
 
 
     const navigate = useNavigate()
@@ -100,14 +100,14 @@ function SignUp():JSX.Element {
             'Content-Type': 'application/json'
         },
         withCredentials: true
-        };
+    };
     const [inputInfo, setInputInfo] = useState({
         email: '',
         nickname: '',
         password: '',
         passwordCheck: ''
     });
-    
+
     const [checkText, setCheckText] = useState({
         email: '',
         nickname:'',
@@ -121,45 +121,50 @@ function SignUp():JSX.Element {
     
     const [checkinput, setcheckinput] = useState(false)
 
-    const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
+
+    const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
         if (event.target.placeholder === 'email') {
-          setInputInfo({ ...inputInfo, email: event.target.value });
+            setInputInfo({ ...inputInfo, email: event.target.value });
         }
         if (event.target.placeholder === 'nickname') {
-          setInputInfo({ ...inputInfo, nickname: event.target.value });
+            setInputInfo({ ...inputInfo, nickname: event.target.value });
         }
         if (event.target.placeholder === 'password') {
-          setInputInfo({ ...inputInfo, password: event.target.value });
+            setInputInfo({ ...inputInfo, password: event.target.value });
         }
         if (event.target.placeholder === 'password check') {
+<<<<<<< HEAD
         //   console.log(checkinput)
           setcheckinput(true)
         //   console.log(checkinput)
           setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
+=======
+            setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
+>>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
         }
-      };
+    };
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
         // console.log(event.target.value)
         let newemail = event.target.value
         // console.log(regEmail.test(newemail))
-        if (regEmail.test(newemail)){
+        if (regEmail.test(newemail)) {
             const checkresult = await axios.post(
-                `${apiURL}/user/check`, 
-                {email: inputInfo.email}, config
+                `${apiURL}/user/check`,
+                { email: inputInfo.email }, config
             )
 
-            if(checkresult.data.message = 'possible email'){
-                setCheckText({...checkText, email: '사용 가능한 이메일입니다.'})
+            if (checkresult.data.message = 'possible email') {
+                setCheckText({ ...checkText, email: '사용 가능한 이메일입니다.' })
             }
-            else{
-                setCheckText({...checkText, email: '이미 가입되어있는 이메일입니다.'})
+            else {
+                setCheckText({ ...checkText, email: '이미 가입되어있는 이메일입니다.' })
             }
-            
+
 
         }
         else {
-            setCheckText({...checkText, email: '잘못된 이메일 형식입니다.'})
-            
+            setCheckText({ ...checkText, email: '잘못된 이메일 형식입니다.' })
+
         }
     }
 
@@ -221,7 +226,7 @@ function SignUp():JSX.Element {
         inputInfo.nickname){
             const sendingInfo = {
                 email: inputInfo.email,
-                nickname: inputInfo.nickname, 
+                nickname: inputInfo.nickname,
                 password: inputInfo.password
             }
             try{
@@ -230,32 +235,31 @@ function SignUp():JSX.Element {
                     alert('회원가입 성공!')
                     navigate('/login')
                 }
-                
-            }catch (err){
+
+            } catch (err) {
                 console.log(err)
             }
-            
+
 
         }
         else {
-            setCheckText({...checkText, submit: '항목을 모두 올바르게 입력해 주세요.'})
+            setCheckText({ ...checkText, submit: '항목을 모두 올바르게 입력해 주세요.' })
         }
     }
 
     return (
         <SignUpContainer>
-            
+
             <SignUpWrap>
-                
                 <LogoWrap>
-                    <img src = "images/biglogo.png" width= "100%"></img>
+                    <img src="images/biglogo.png" width="100%"></img>
                 </LogoWrap>
                 <NameWrap>
                     email
                 </NameWrap>
-                <InputWrap type= 'email' placeholder = 'email' onChange ={handleInput} onBlur = {emailcheck}/>
+                <InputWrap type='email' placeholder='email' onChange={handleInput} onBlur={emailcheck} />
                 <CheckWrap>
-                    {checkText.email ? checkText.email : "ㅤ" } 
+                    {checkText.email ? checkText.email : "ㅤ"}
                 </CheckWrap>
                 <NameWrap>
                     닉네임
@@ -267,32 +271,38 @@ function SignUp():JSX.Element {
                 <NameWrap>
                     password
                 </NameWrap>
+<<<<<<< HEAD
                 <InputWrap type = 'password' placeholder = 'password' onChange ={handleInput} onBlur = {passwordcheck}  />
                 <CheckWrap>
                 {checkText.password ? checkText.password : "ㅤ" } 
+=======
+                <InputWrap type='password' placeholder='password' value={inputInfo.password} onChange={handleInput} onBlur={passwordcheck} />
+                <CheckWrap>
+>>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
                 </CheckWrap>
                 <NameWrap>
                     password 확인
                 </NameWrap>
+<<<<<<< HEAD
                 <InputWrap type = 'password' placeholder = 'password check' onChange ={handleInput} onBlur = {passwordcheck}  />
+=======
+                <InputWrap type='password' placeholder='passwordcheck' onChange={handleInput} onBlur={passwordcheck} />
+>>>>>>> b98e3d2b0f28aee064374b3414f009b1f7bc9d77
                 <CheckWrap>
-                    {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ" }  
+                    {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ"}
                 </CheckWrap>
                 <SubmitcheckWrap>
-                {checkText.submit ? checkText.submit : "ㅤ" } 
+                    {checkText.submit ? checkText.submit : "ㅤ"}
                 </SubmitcheckWrap>
-                <BtnBox onClick = {handleSubmit}> submit</BtnBox>
-
-               
-
+                <BtnBox onClick={handleSubmit}> submit</BtnBox>
             </SignUpWrap>
         </SignUpContainer>
-           
-        
+
+
 
 
     )
-        
+
 }
 
 export default SignUp
