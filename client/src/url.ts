@@ -1,1 +1,1 @@
-export const URL = 'https://ec2-54-146-138-199.compute-1.amazonaws.com'
+export const apiURL = 'http://localhost:4000'

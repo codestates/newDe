@@ -105,7 +105,11 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    yield userRepository.delete({ id: verify.userInfo.id });
+    const targetUser = yield userRepository.findOne(verify.userInfo.id);
+    targetUser.nickname = '';
+    targetUser.email = '';
+    targetUser.password = '';
+    yield userRepository.save(targetUser);
     return res
         .clearCookie('accessToken')
         .status(200)
@@ -114,6 +118,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteUser = deleteUser;
 const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (email) {
         const userInfo = yield userRepository.findOne({ email: email });

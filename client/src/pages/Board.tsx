@@ -1,11 +1,13 @@
 //게시판 보기 
-import react from 'react'
+import react, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import {ContentList} from '../component';
+import { apiURL } from '../url'
+
 
 const MainContainer = styled.div`
 display: flex;
@@ -115,25 +117,58 @@ font-weight: bold;
 `
 function Board(props: any):JSX.Element {
 //역시 axios로 해당 게시판 글들 긁어와서 렌더링 query값이 없으면 기본 1페이지, query로 페이지 생각
+const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  };
+
 
 const nowURL = new URL(window.location.href); //URL값 따오기 
 // console.log(nowURL)
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
+// console.log(!!ChildCategory)
+
+
+const [loading, setLoading] = useState(false);
+const [contentlist, setList] = useState([]); 
+const [nowpage, setPage] = useState(1); //페이지
+const [searching, setSearchWord] = useState('') //검색어
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
-const dummy = [{id: 1, contenttitle: '안녕', user: '바보', like: 32},{id: 2, contenttitle: '안녕', user: '바보', like: 32},{id: 3, contenttitle: '안녕', user: '바보', like: 32}
-,{id: 4, contenttitle: '안녕', user: '바보', like: 32},
-{id: 5, contenttitle: '안녕', user: '바보', like: 32}]
-const datatoList = dummy.map((el)=>{
+
+const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.contenttitle} like = {el.like} user = {el.user} />
+        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
     </ContentWrap>)
+    })
+
+
+const getListData = async () =>{
+    const nowURL = new URL(window.location.href); //URL값 따오기 
+    const Parent = nowURL.searchParams.get('parentcategory');
+    const Child = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
+    const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${Parent}&${Child ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
+    setList(listData.data.data)
+}
+useEffect(()=>{
+    setLoading(true);
+    
+    getListData();
+    setLoading(false)
     
 
+},[ChildCategory,ParentCategory])
 
-    })
+
+
+
+
+
+
 
     return (
         <MainContainer>

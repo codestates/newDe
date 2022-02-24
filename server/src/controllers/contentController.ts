@@ -104,7 +104,7 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     
     await ContentRepository.save(content);
-    return res.status(201).json({ message: 'Succes'})
+    return res.status(201).json({ message: 'Success'})
 };
 
 const getContentDetail = async (req:Request, res:Response) => {
@@ -177,7 +177,7 @@ const allComment = async (req:Request, res:Response) => {
 
     const comments = await commentRepository
         .createQueryBuilder('comment')
-        .select('comment', 'comments.nickname')
+        .select(['comment', 'comments.nickname'])
         .leftJoin('comment.user', 'comments')
         .where('comment.contentId = :contentId', {contentId})
         .getMany();
