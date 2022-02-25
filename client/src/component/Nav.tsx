@@ -103,7 +103,6 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    islogin: boolean;
     logouthandler: any;
 
 }
