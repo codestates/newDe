@@ -169,7 +169,7 @@ const getComment = async () => {
                         <ContentBtn>삭제</ContentBtn>
                     </TitleWrap>
                     <WriterSec>{content.nickname ? content.nickname: "탈퇴한 회원입니다."}</WriterSec>
-                    <MainContent>{content.main}</MainContent>
+                    <MainContent dangerouslySetInnerHTML={{__html:content.main}}></MainContent>
                     
                 </ContentWrap>
                     {datatoComment}

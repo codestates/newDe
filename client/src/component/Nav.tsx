@@ -4,9 +4,10 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin } from '../features/info';
+import { setLogin, setOauth } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
+import { setOriginalNode } from 'typescript';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
@@ -114,6 +115,20 @@ function Nav (props:Iprops):JSX.Element  {
     const dispatch=useAppDispatch()
     const isLogin = useAppSelector((state: RootState) => state.info.login)
     // let isLogin = props.islogin
+    const config = {
+        headers: { "Content-type": "application/json" },
+        withCredentials: true
+    }
+    const logouthandler = async()=>{
+        try{
+            dispatch(setLogin(false))
+            dispatch(setOauth(false))
+            await axios.get(`${apiURL}/user/logout`,config)
+
+        }catch(err){
+            console.log(err)
+        }
+    }
     return (
         <Navi>
             <NavWrap>
@@ -128,9 +143,7 @@ function Nav (props:Iprops):JSX.Element  {
             
                 {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap onClick = {async ()=>{try{
-                        dispatch(setLogin(false)) 
-                        await axios.get(`${apiURL}/user/logout`)}catch(err){console.log(err)}}}>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {logouthandler}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
