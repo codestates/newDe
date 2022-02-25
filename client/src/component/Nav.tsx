@@ -3,9 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 
-
 // let isLogin = false//나중에 props나 redux등으로 받을것 
-
 
 const Navi = styled.header`
     
@@ -29,8 +27,6 @@ width: 50px;
 align-items: center;
 
 
-
-
 `
 const NavWrap = styled.header`
 display: flex;
@@ -46,7 +42,9 @@ margin: 2px ;
       cursor: pointer;
       outline: none;
       color: black;
-    }`
+    }
+}
+`
 
 
 const LeftSection = styled.header`
@@ -54,7 +52,7 @@ display: flex;
 width: 70%;
 
 align-items: center;
-margin : 1px
+margin : 1px;
 @media ${(props)=> props.theme.mobile}{
     width: 0px;
     height: 0px;
@@ -67,14 +65,12 @@ display: flex;
 width: 20%;
 align-items: center;
 justify-content: right;
-margin : 10px
+margin : 10px;
 @media ${(props)=> props.theme.mobile}{
     display: hidden;
 
 }
 `;
-
-
 
 const LogoWrap = styled.header`
 margin: 10px;
@@ -137,8 +133,7 @@ function Nav (props:Iprops):JSX.Element  {
             </NavWrap>
         
             
-        </Navi>
-        
+        </Navi>   
         
         
         

@@ -12,7 +12,7 @@ display: flex;
 justify-content: center;
 width: 100%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%
+margin: 0.5% 0.5% 0.5% 0.5%;
 
 
 `

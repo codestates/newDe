@@ -67,7 +67,7 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         if (kakaoEmail && kakaoEmail.kakao) {
             const accessToken = yield (0, generateToken_1.generateToken)(kakaoEmail);
-            return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000');
+            return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000/login?islogin=success');
         }
         let count = 1;
         let nickname = kakaoInfo.properties.nickname;
@@ -90,7 +90,7 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res
             .status(201)
             .cookie('accessToken', accessToken)
-            .redirect('http://localhost:3000');
+            .redirect('http://localhost:3000/login?islogin=success');
     }
     catch (e) {
         console.log(e);
