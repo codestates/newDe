@@ -77,7 +77,7 @@ const kakaologin = async (req:Request, res:Response) => {
 
         return res
             .status(201)
-            .cookie('accessToken', accessToken)
+            .cookie('accessToken', accessToken, {domain: 'kingsenal.link', sameSite: 'none', secure: true})
             .redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`)
     }
 
