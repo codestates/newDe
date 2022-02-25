@@ -30,7 +30,7 @@ const login = async (req:Request, res:Response) => {
 }
 
 const logout = async (req:Request, res:Response) => {
-    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' })
+    return res.clearCookie('accessToken', {domain: 'kingsenal.link', sameSite: 'none', secure: true}).status(205).json({ message: 'Logout Success' })
 }
 
 const signup = async (req:Request, res:Response) => {
