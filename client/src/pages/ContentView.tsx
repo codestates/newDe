@@ -178,8 +178,10 @@ const getComment = async () => {
                     
                 </ContentWrap>
                     {datatoComment}
+                
                 <WritingBox>
-                <WriteComment contentid = {path}/>
+                {isLogin ? <WriteComment contentid = {path}/> :null}
+                
                 </WritingBox>
                 
                 
