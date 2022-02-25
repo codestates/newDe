@@ -8,7 +8,6 @@ import {AiOutlineMenu} from 'react-icons/ai'
 
 
 const Navi = styled.header`
-    
     width: 100%;
     height: 70px;
     background: #F3F3F3;
@@ -17,9 +16,6 @@ const Navi = styled.header`
         width: 100%;
         
     }
-    
-    
-    
 `
 
 const MenubarBtn = styled.header`
@@ -27,10 +23,6 @@ margin: 20px;
 margin-top: 10px;
 width: 50px;
 align-items: center;
-
-
-
-
 `
 const NavWrap = styled.header`
 display: flex;
@@ -46,15 +38,16 @@ margin: 2px ;
       cursor: pointer;
       outline: none;
       color: black;
-    }`
-
+    }
+}`
 
 const LeftSection = styled.header`
 display: flex;
 width: 70%;
 
 align-items: center;
-margin : 1px
+margin : 1px;
+
 @media ${(props)=> props.theme.mobile}{
     width: 0px;
     height: 0px;
@@ -67,7 +60,8 @@ display: flex;
 width: 20%;
 align-items: center;
 justify-content: right;
-margin : 10px
+margin : 10px;
+
 @media ${(props)=> props.theme.mobile}{
     display: hidden;
 
@@ -131,18 +125,8 @@ function Nav (props:Iprops):JSX.Element  {
                     <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
                     <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}
-                
-            
-        
             </NavWrap>
-        
-            
         </Navi>
-        
-        
-        
-        
-        
     )
 }
 
