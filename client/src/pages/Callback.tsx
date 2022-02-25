@@ -17,15 +17,13 @@ function Callback(props:any):JSX.Element {
     const dispatch = useAppDispatch()
 
     useEffect( () => {
-        // console.log(props)
+        
         setLoading(true)
         const url = new URL(window.location.href);
 
         const login = url.searchParams.get('islogin')
         if(login === 'success') {
-            // console.log(setLogin(true))
-            // console.log(props.loginhandler)
-            // props.loginhandler()
+            
             dispatch(setLogin(true))
             
             navigate('/MyPage')
