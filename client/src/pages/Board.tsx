@@ -226,8 +226,8 @@ useEffect(()=>{
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
+                {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null }
                 
-                <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn>
 
             </BoardName>
             <ChildBoard>

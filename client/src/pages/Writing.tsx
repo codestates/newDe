@@ -5,8 +5,11 @@ import axios from 'axios'
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { Navigate } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 function Writing(): JSX.Element {
+    const navigate = useNavigate()
 
     const QuillRef = useRef<ReactQuill>()
     const [contents, setContents] = useState({
@@ -22,8 +25,8 @@ function Writing(): JSX.Element {
     }
     const clickhandler = async (e: any) => {
         try {
-            
             await axios.post(`${apiURL}/board`, contents, config)
+            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
         } catch (err) {
             console.log(err)
         }

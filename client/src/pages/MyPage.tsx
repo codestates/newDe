@@ -13,7 +13,7 @@ function MyPage() {
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
     const [content,setContent] = useState<any>([])
-    console.log(content[0].main)
+    
 
     const navigate = useNavigate();
     const handleModal = () => {
