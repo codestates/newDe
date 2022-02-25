@@ -32,11 +32,7 @@ function Callback(props:any):JSX.Element {
         <div>
             {loading ? <Loader type="spin" color="#999999" /> : '콜백화면입니다.'}
         </div>
-        
-
-
-    )
-        
+    )        
 }
 
 export default Callback

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { apiURL } from '../url'
 import { useNavigate } from 'react-router';
 
+
 const SignUpContainer = styled.div`
 display: flex;
 position: absolute;
@@ -110,14 +111,15 @@ function SignUp(): JSX.Element {
     const [checkText, setCheckText] = useState({
         email: '',
         nickname:'',
+        password:'',
         passwordCheck: '',
         submit: ''
     });
     const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
     const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
-    // const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
+    const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
     
-
+    const [checkinput, setcheckinput] = useState(false)
 
 
     const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +133,10 @@ function SignUp(): JSX.Element {
             setInputInfo({ ...inputInfo, password: event.target.value });
         }
         if (event.target.placeholder === 'password check') {
-            setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
+        //   console.log(checkinput)
+          setcheckinput(true)
+        //   console.log(checkinput)
+          setInputInfo({ ...inputInfo, passwordCheck: event.target.value });
         }
     };
     const emailcheck = async (event: react.FocusEvent<HTMLInputElement>) => {
@@ -176,21 +181,35 @@ function SignUp(): JSX.Element {
 
         }
         else{
-            setCheckText({...checkText, nickname: '잘못된 닉네임 형식입니다.'})
+            setCheckText({...checkText, nickname: '닉네임은 2~10글자 사이로 입력해 주세요.'})
         }
         
     }
 
+    
     const passwordcheck = (event: react.FocusEvent<HTMLInputElement>) => {
-       
-        if (!inputInfo.password) {
-            setCheckText({ ...checkText, passwordCheck: '비밀번호를 입력해주세요.' })
+        
+        if(event.target.placeholder === 'password'){
+            if(event.target.value === '') setCheckText({...checkText, password:''})
+            else if (regPw.test(event.target.value)) setCheckText({ ...checkText, password: '사용 가능한 비밀번호 입니다.' });
+            else setCheckText({ ...checkText, password: '알파벳, 숫자, 특수문자를 포함한 8~15글자를 입력해주세요.' });
+
+        }//현재 칸이 패스워드일 경우에만 발생하는 이벤트 
+        
+        if(!inputInfo.password) {
+            
+            setCheckText({...checkText, passwordCheck: '비밀번호를 입력해주세요.'})
         }
-        else if (inputInfo.password === event.target.value) {
-            setCheckText({ ...checkText, passwordCheck: '비밀번호가 일치합니다.' })
+        else if(inputInfo.password === inputInfo.passwordCheck){
+            
+            setCheckText({...checkText, passwordCheck: '비밀번호가 일치합니다.'})
+        }
+        else if(checkinput === false){ //비밀번호 체크란이 한번도 입력된 적이 없을 시 (즉  처음 비밀번호만 치고 on Blur 가 일어났을 때 비밀번호가 일치하지 않습니다 창이 굳이 나오지 않게 하기 위함 )
+
         }
         else {
-            setCheckText({ ...checkText, passwordCheck: '비밀번호가 일치하지 않습니다.' })
+            
+            setCheckText({...checkText, passwordCheck: '비밀번호가 일치하지 않습니다.'})
         }
 
     }
@@ -198,6 +217,7 @@ function SignUp(): JSX.Element {
     async function handleSubmit(){
         if(checkText.email === '사용 가능한 이메일입니다.' && 
         checkText.nickname === '사용 가능한 닉네임입니다.' &&
+        checkText.password === '사용 가능한 비밀번호 입니다.' &&
         checkText.passwordCheck === '비밀번호가 일치합니다.' && 
         inputInfo.nickname){
             const sendingInfo = {
@@ -247,13 +267,14 @@ function SignUp(): JSX.Element {
                 <NameWrap>
                     password
                 </NameWrap>
-                <InputWrap type='password' placeholder='password' value={inputInfo.password} onChange={handleInput} onBlur={passwordcheck} />
+                <InputWrap type = 'password' placeholder = 'password' onChange ={handleInput} onBlur = {passwordcheck}  />
                 <CheckWrap>
+                {checkText.password ? checkText.password : "ㅤ" } 
                 </CheckWrap>
                 <NameWrap>
                     password 확인
                 </NameWrap>
-                <InputWrap type='password' placeholder='passwordcheck' onChange={handleInput} onBlur={passwordcheck} />
+                <InputWrap type = 'password' placeholder = 'password check' onChange ={handleInput} onBlur = {passwordcheck}  />
                 <CheckWrap>
                     {checkText.passwordCheck ? checkText.passwordCheck : "ㅤ"}
                 </CheckWrap>
