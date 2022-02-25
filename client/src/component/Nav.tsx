@@ -103,13 +103,25 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    logouthandler: any;
+    
 
 }
 
 
 
 function Nav (props:Iprops):JSX.Element  {
+    const config = {
+        headers: { "Content-type": "application/json" },
+        withCredentials: true
+    }
+    const logouthandler = async()=>{
+        try{
+            dispatch(setLogin(false)) 
+            await axios.get(`${apiURL}/user/logout`,config)
+        }catch(err){
+            console.log(err)
+        }
+    }
     // console.log(props.modalhandler)
     const dispatch=useAppDispatch()
     const isLogin = useAppSelector((state: RootState) => state.info.login)
@@ -128,9 +140,7 @@ function Nav (props:Iprops):JSX.Element  {
             
                 {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap onClick = {async ()=>{try{
-                        dispatch(setLogin(false)) 
-                        await axios.get(`${apiURL}/user/logout`)}catch(err){console.log(err)}}}>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {logouthandler}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
