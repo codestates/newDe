@@ -53,7 +53,7 @@ app.use("/comment", commentRouter);
 
 
 
-const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
+const handleListening = () => console.log(`Server Listening on https://server.newb-d.com:${PORT}`);
 
 app.listen(PORT, handleListening);
 

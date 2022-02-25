@@ -130,7 +130,7 @@ function Login (props: any):JSX.Element {
         }
         
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-                window.location.assign('http://localhost:4000/kakao')
+                window.location.assign(`${apiURL}/kakao`)
                 dispatch(setOauth(true))
                 
 
