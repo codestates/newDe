@@ -1,4 +1,4 @@
-import react from 'react'
+import react, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -83,9 +83,10 @@ margin: 5px;
 
 
 
-function Login (props: any):JSX.Element {
-    
+function Login (props: any):JSX.Element {    
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -97,8 +98,6 @@ function Login (props: any):JSX.Element {
         email: '',
         password: ''
     })
-const dispatch = useAppDispatch()
-
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
         
@@ -125,7 +124,7 @@ const dispatch = useAppDispatch()
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 dispatch(setLogin(true))
-                navigate('/MyPage')
+                navigate('/mypage')
             })
             
         }
@@ -133,7 +132,7 @@ const dispatch = useAppDispatch()
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
                 window.location.assign('http://localhost:4000/kakao')
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
-    }
+        }
 
     const handleSignUpSubmit = () =>{
         navigate('/signup')

@@ -28,10 +28,8 @@ justify-content: center;
       outline: none;
       color: black;
     }
-
-
+}
 `
-
 
 
 
@@ -75,9 +73,7 @@ display: flex;
 justify-content: center;
 width: 90%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%
-
-
+margin: 0.5% 0.5% 0.5% 0.5%;
 `
 
 const Contenttitle = styled.div`
@@ -105,7 +101,7 @@ align-items: center;
 `
 
 const PageSec = styled.button`
-background: green
+background: green;
 margin: 5% ;
 `
 
@@ -128,8 +124,8 @@ margin: 2%;
 width: 80%;
 background-color: seashell;
 
-
 `
+
 const SearchBtn = styled.button`
 margin: 1%;
 `

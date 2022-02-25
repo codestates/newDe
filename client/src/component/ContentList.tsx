@@ -1,10 +1,9 @@
 //글목록 콤포넌트 
-import react from 'react'
+
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
+
+import { useNavigate } from 'react-router-dom';
+
 
 
 const ContentWrap = styled.div`
@@ -12,15 +11,14 @@ display: flex;
 justify-content: center;
 width: 100%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%
-
-
+margin: 0.5% 0.5% 0.5% 0.5%;
 `
 
 const Contenttitle = styled.div`
 width: 70%;
 text-align: left;
-cursor:pointer;`
+cursor:pointer;
+`
 
 
 const Contentusersec = styled.div`

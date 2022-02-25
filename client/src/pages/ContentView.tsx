@@ -68,14 +68,15 @@ width: 10%;
 margin: 1%;
 background-color: yellow;
 `
+
 const WriterSec = styled.div`
 width: 90%;
 background: aquamarine;
 
 `
 
-
 const MainContent = styled.div`
+overflow: scroll;
 width: 90%;
 height: 50%;
 margin: 2%;
@@ -134,6 +135,7 @@ const getComment = async () => {
 
 
 }
+
     useEffect(()=>{
         setLoading(true);
         getcontent()
@@ -172,7 +174,7 @@ const getComment = async () => {
                         <ContentBtn>삭제</ContentBtn>
                     </TitleWrap>
                     <WriterSec>{content.nickname ? content.nickname: "탈퇴한 회원입니다."}</WriterSec>
-                    <MainContent>{content.main}</MainContent>
+                    <MainContent dangerouslySetInnerHTML={{__html:content.main}}></MainContent>
                     
                 </ContentWrap>
                     {datatoComment}
