@@ -89,7 +89,9 @@ align-items: center;
 background: palevioletred;`
 
 const WritingBox = styled.div`
-width: 90%;
+width: 80%;
+height: 10%;
+justify-content: center;
 background: Goldenrod;
 
 `
@@ -172,7 +174,7 @@ const getComment = async () => {
                 </ContentWrap>
                     {datatoComment}
                 <WritingBox>
-                <WriteComment />
+                <WriteComment contentid = {path}/>
                 </WritingBox>
                 
                 

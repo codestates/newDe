@@ -47,9 +47,7 @@ margin: 2px ;
       cursor: pointer;
       outline: none;
       color: black;
-    }
-}
-`
+    }}`
 
 
 const LeftSection = styled.header`
@@ -59,8 +57,8 @@ width: 70%;
 align-items: center;
 margin : 1px;
 @media ${(props)=> props.theme.mobile}{
-    width: 0px;
-    height: 0px;
+    width: 100%;
+    height: 100%;
 
 }
 `;
@@ -100,7 +98,6 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    islogin: boolean;
     logouthandler: any;
 
 }
@@ -111,6 +108,7 @@ function Nav (props:Iprops):JSX.Element  {
     // console.log(props.modalhandler)
     const dispatch=useAppDispatch()
     const isLogin = useAppSelector((state: RootState) => state.info.login)
+    // let isLogin = props.islogin
     return (
         <Navi>
             <NavWrap>

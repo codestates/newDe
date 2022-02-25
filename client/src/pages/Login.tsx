@@ -86,15 +86,6 @@ margin: 5px;
 function Login (props: any):JSX.Element {    
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
-    useEffect(()=>{
-        const nowURL = new URL(window.location.href); 
-        const success = nowURL.searchParams.get('islogin')
-        if(success==="success"){
-            dispatch(setLogin(true));
-            navigate('/mypage');
-        }
-    },[])
     
     const config = {
         headers: {
@@ -139,16 +130,9 @@ function Login (props: any):JSX.Element {
         }
         
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-            try{
-                await window.location.assign('http://localhost:4000/kakao');    
-                                
-            }catch(err){
-                console.log(err)
-            }
-
+                window.location.assign('http://localhost:4000/kakao')
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
-
-    }
+        }
 
     const handleSignUpSubmit = () =>{
         navigate('/signup')
