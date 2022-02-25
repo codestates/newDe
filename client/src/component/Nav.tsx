@@ -92,13 +92,22 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    logouthandler: any;
+    
 
 }
 
 
 
 function Nav (props:Iprops):JSX.Element  {
+   
+    const logouthandler = async()=>{
+        try{
+            dispatch(setLogin(false)) 
+            await axios.get(`${apiURL}/user/logout`,config)
+        }catch(err){
+            console.log(err)
+        }
+    }
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()

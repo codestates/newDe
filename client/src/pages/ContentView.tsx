@@ -7,6 +7,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import {Comment, WriteComment} from '../component';
 import { apiURL } from '../url'
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 const MainContainer = styled.div`
 display: flex;
@@ -98,6 +100,7 @@ background: Goldenrod;
 `
 
 function ContentView ():JSX.Element {
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
 
     const config = {
         headers: {
@@ -175,8 +178,10 @@ const getComment = async () => {
                     
                 </ContentWrap>
                     {datatoComment}
+                
                 <WritingBox>
-                <WriteComment contentid = {path}/>
+                {isLogin ? <WriteComment contentid = {path}/> :null}
+                
                 </WritingBox>
                 
                 
