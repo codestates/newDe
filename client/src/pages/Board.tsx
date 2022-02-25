@@ -10,6 +10,7 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
 
+
 const MainContainer = styled.div`
 display: flex;
 flex-direction: column;
@@ -130,6 +131,7 @@ const SearchBtn = styled.button`
 margin: 1%;
 `
 function Board(props: any):JSX.Element {
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
 //역시 axios로 해당 게시판 글들 긁어와서 렌더링 query값이 없으면 기본 1페이지, query로 페이지 생각
 const config = {
     headers: {
@@ -169,6 +171,7 @@ const datatoList = contentlist.map((el:any)=>{
 const getListData = async () =>{
     //URL값 따오기 
 // console.log(nowURL)
+
     
     
     
@@ -222,7 +225,8 @@ useEffect(()=>{
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
-                {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null }
+                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null) : null}
+                {/* {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null } */}
                 
 
             </BoardName>

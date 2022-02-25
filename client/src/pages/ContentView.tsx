@@ -7,6 +7,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import {Comment, WriteComment} from '../component';
 import { apiURL } from '../url'
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 const MainContainer = styled.div`
 display: flex;
@@ -96,8 +98,11 @@ justify-content: center;
 background: Goldenrod;
 
 `
+const LikeBtn = styled.button`
+`
 
 function ContentView ():JSX.Element {
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
 
     const config = {
         headers: {
@@ -157,6 +162,10 @@ const getComment = async () => {
             </CommentWrap>
         )
     })
+
+    const likehandler = () => {
+        axios.patch(`${apiURL}/board/recommend`, {contentId: path}, config)
+    }
     
 
     return (
@@ -172,11 +181,15 @@ const getComment = async () => {
                     </TitleWrap>
                     <WriterSec>{content.nickname ? content.nickname: "탈퇴한 회원입니다."}</WriterSec>
                     <MainContent dangerouslySetInnerHTML={{__html:content.main}}></MainContent>
+                    {isLogin ? <LikeBtn onClick = {likehandler}>추천</LikeBtn> : null}
+                    
                     
                 </ContentWrap>
                     {datatoComment}
+                
                 <WritingBox>
-                <WriteComment contentid = {path}/>
+                {isLogin ? <WriteComment contentid = {path}/> :null}
+                
                 </WritingBox>
                 
                 

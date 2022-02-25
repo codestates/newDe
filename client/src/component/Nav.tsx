@@ -4,9 +4,10 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin } from '../features/info';
+import { setLogin, setOauth } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
+import { setOriginalNode } from 'typescript';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
@@ -92,13 +93,22 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    logouthandler: any;
+    
 
 }
 
 
 
 function Nav (props:Iprops):JSX.Element  {
+   
+    const logouthandler = async()=>{
+        try{
+            dispatch(setLogin(false)) 
+            await axios.get(`${apiURL}/user/logout`,config)
+        }catch(err){
+            console.log(err)
+        }
+    }
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -117,7 +127,10 @@ function Nav (props:Iprops):JSX.Element  {
          .get(`${apiURL}/user/logout`,config)
          .then((res) => {
              dispatch(setLogin(false))
+             dispatch(setOauth(false))
              navigate('/')
+         }).catch(err=>{
+             console.log(err)
          })
     }
 

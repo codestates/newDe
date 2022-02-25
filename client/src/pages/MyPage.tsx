@@ -4,7 +4,8 @@ import Loader from '../component/Loader'
 import { apiURL } from '../url'
 import Edit from '../component/editPassword'
 import { useNavigate } from 'react-router-dom';
-
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 function MyPage() {
     const [userInfo, setUserInfo] = useState<any>({})
@@ -12,11 +13,17 @@ function MyPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
-    // console.log(text, typeof(text));
+    const [content,setContent] = useState<any>([])
+    const isOauth = useAppSelector((state: RootState) => state.info.oauth)
+    
 
     const navigate = useNavigate();
     const handleModal = () => {
-        setIsOpen(!isOpen);
+        if(isOauth){
+            navigate('/mypageedit')
+        } else{
+            setIsOpen(!isOpen);
+        }
     };
 
     const config = {
@@ -46,7 +53,9 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
+            console.log(res.data)
             setUserInfo(res.data.data)
+            setContent(res.data.data.content)
         } catch (e) {
             console.log(e)
         }
@@ -73,6 +82,9 @@ function MyPage() {
                     <span><button onClick={passwordCheck}>submit</button></span>
                     <div>{checkText}</div>
                 </Edit>
+            </div>
+            <div>
+                
             </div>
         </div>
     )

@@ -25,7 +25,6 @@ function Writing(): JSX.Element {
     }
     const clickhandler = async (e: any) => {
         try {
-            
             await axios.post(`${apiURL}/board`, contents, config)
             navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
         } catch (err) {

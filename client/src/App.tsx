@@ -9,7 +9,7 @@ import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
-import { setLogin } from './features/info';
+import { setLogin, setOauth } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
 
@@ -31,14 +31,20 @@ function App() {
   const dispatch=useAppDispatch()
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const cookies = new Cookies();
+  
   const accessToken = cookies.get("accessToken")
-  console.log(cookies.get("accessToken"))
+  
   useEffect( () => {
+    
     if(accessToken){
+      // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
-      // console.log(el)
+      console.log(el.data.data.kakao)
       dispatch(setLogin(true))
+      if(el.data.data.kakao){
+        dispatch(setOauth(true))
+      }
     })
     }
         
@@ -61,9 +67,7 @@ function App() {
     dispatch(setLogin(true))
   }
 
-  function logoutHandler(){
-    dispatch(setLogin(false))
-  }
+  
   
 
   return (
@@ -71,7 +75,7 @@ function App() {
       
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} logouthandler = {logoutHandler}/>
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
           <ContentWrap>
             
           <Routes>

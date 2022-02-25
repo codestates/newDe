@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Loader from '../component/Loader'
 import { text } from 'stream/consumers';
 import { useNavigate } from 'react-router-dom';
-
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 function MyPageEdit() {
     const [loading, setLoading] = useState(false)
@@ -104,6 +105,8 @@ function MyPageEdit() {
             }
         }
     }
+    const isOauth = useAppSelector((state: RootState) => state.info.oauth)
+
     console.log(text)
     if (loading) return <Loader type="spin" color="#999999" />
 
@@ -114,12 +117,14 @@ function MyPageEdit() {
             <div>변경할 닉네임</div>
             <input type='text' placeholder='nickname' value={checkInfo.nickname} onChange={onChange} onBlur={handleOnBlur} />
             <div>{text.nickname}</div>
-            <div>변경할 비밀번호</div>
+            {isOauth ? 
+            <div></div>
+            :<><div>변경할 비밀번호</div>
             <input type='password' placeholder='password' value={checkInfo.password} onChange={onChange} onBlur={handleOnBlur} />
             <div>{text.password}</div>
             <div>비밀번호 확인</div>
             <input type='password' placeholder='checkPassword' value={checkInfo.checkPassword} onChange={onChange} onBlur={handleOnBlur} />
-            <div>{text.checkPassword}</div>
+            <div>{text.checkPassword}</div></>}
             <button onClick={fatchData}>수정 완료</button>
             <button onClick={()=> navigate('/mypage')}>수정 취소</button>
         </div>

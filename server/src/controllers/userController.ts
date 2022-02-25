@@ -77,6 +77,8 @@ const profile = async (req:Request, res:Response) => {
         const userContent = await ContentRepository.find({
             where: { userId : userInfo.id }
         })
+
+        delete userInfo.password;
     
         return res.status(201).json({ data: {...userInfo, content: userContent} })
     } else {
