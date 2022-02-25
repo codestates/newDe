@@ -9,7 +9,7 @@ import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
-import { setLogin } from './features/info';
+import { setLogin, setOauth } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
 
@@ -40,8 +40,11 @@ function App() {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
-      // console.log(el)
+      console.log(el.data.data.kakao)
       dispatch(setLogin(true))
+      if(el.data.data.kakao){
+        dispatch(setOauth(true))
+      }
     })
     }
         
