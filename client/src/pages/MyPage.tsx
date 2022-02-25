@@ -12,7 +12,7 @@ function MyPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
-    console.log(text, typeof(text));
+    // console.log(text, typeof(text));
 
     const navigate = useNavigate();
     const handleModal = () => {
