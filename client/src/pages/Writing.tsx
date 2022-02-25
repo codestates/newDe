@@ -1,10 +1,15 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
 import { apiURL } from '../url'
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { Navigate } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 function Writing(): JSX.Element {
+    const navigate = useNavigate()
 
     const QuillRef = useRef<ReactQuill>()
     const [contents, setContents] = useState({
@@ -13,11 +18,22 @@ function Writing(): JSX.Element {
         parentCategory: '',
         childCategory: ''
     });// 에디터 속 콘텐츠를 저장하는 state
-
-    const clickhandler = (e: any) => {
-        axios.post(`${apiURL}/board`, contents)
+    const { parent, child } = useAppSelector((state: RootState) => state.info)
+    const config = {
+        headers: { "Content-type": "application/json" },
+        withCredentials: true
     }
+    const clickhandler = async (e: any) => {
+        try {
+            
+            await axios.post(`${apiURL}/board`, contents, config)
+            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
+        } catch (err) {
+            console.log(err)
+        }
 
+        console.log(contents)
+    }
     // 이미지를 업로드 하기 위한 함수
     const imageHandler = () => {
         // 파일을 업로드 하기 위한 input 태그 생성
@@ -130,7 +146,9 @@ function Writing(): JSX.Element {
     // 백엔드에서 이미지 접근 URL을 돌려 받는다.
     // 받은 URL로 img 요소를 생성한다 <img src=IMG_URL>
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
-
+    useEffect(()=>{
+        setContents({ ...contents, parentCategory: parent ,childCategory:child})
+    },[])
     return (
 
         <div>

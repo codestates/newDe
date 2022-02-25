@@ -2,7 +2,11 @@ import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
-
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { setLogin } from '../features/info';
+import axios from 'axios';
+import { apiURL } from '../url';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
@@ -47,10 +51,9 @@ width: 70%;
 
 align-items: center;
 margin : 1px;
-
 @media ${(props)=> props.theme.mobile}{
-    width: 0px;
-    height: 0px;
+    width: 100%;
+    height: 100%;
 
 }
 `;
@@ -102,7 +105,27 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     // console.log(props.modalhandler)
-    
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
+    // let isLogin = props.islogin
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    };
+
+    const handleLogout = () => {
+        axios
+         .get(`${apiURL}/user/logout`,config)
+         .then((res) => {
+             dispatch(setLogin(false))
+             navigate('/')
+         })
+    }
+
     return (
         <Navi>
             <NavWrap>
@@ -115,9 +138,9 @@ function Nav (props:Iprops):JSX.Element  {
                 
             </LeftSection>
             
-                {props.islogin ? 
+                {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap onClick = {props.logouthandler}>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {handleLogout}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 

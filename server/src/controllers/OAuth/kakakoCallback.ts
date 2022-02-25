@@ -51,7 +51,7 @@ const kakaologin = async (req:Request, res:Response) => {
             }
          if(kakaoEmail && kakaoEmail.kakao) {
              const accessToken = await generateToken(kakaoEmail) 
-              return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000');
+              return res.status(201).cookie('accessToken', accessToken).redirect('http://localhost:3000/callback?islogin=success');
          }
 
          let count = 1
@@ -78,7 +78,7 @@ const kakaologin = async (req:Request, res:Response) => {
         return res
             .status(201)
             .cookie('accessToken', accessToken)
-            .redirect('http://localhost:3000')
+            .redirect('http://localhost:3000/callback?islogin=success')
     }
 
     catch(e) {
