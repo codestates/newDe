@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loader from '../component/Loader'
-import { URL } from '../url'
+import { apiURL } from '../url'
 import Edit from '../component/editPassword'
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ function MyPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
-    console.log(text, typeof(text));
+    // console.log(text, typeof(text));
 
     const navigate = useNavigate();
     const handleModal = () => {
@@ -29,7 +29,7 @@ function MyPage() {
     async function passwordCheck() {
         try {
             setLoading(true)
-            const res = await axios.post(`${URL}/user/check`, { password: text }, config)
+            const res = await axios.post(`${apiURL}/user/check`, { password: text }, config)
             if (res.data.message === 'password correct!') {
                 navigate('/mypageedit')
             } else {
@@ -45,7 +45,7 @@ function MyPage() {
     async function fetchData() {
         try {
             setLoading(true)
-            const res = await axios.get(`${URL}/user`, { withCredentials: true })
+            const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
             setUserInfo(res.data.data)
         } catch (e) {
             console.log(e)

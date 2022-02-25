@@ -1,12 +1,13 @@
-import react from 'react'
+import react, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import axios from 'axios';
-import { URL } from '../url'
+import { apiURL } from '../url'
+import { setLogin } from '../features/info';
 
 
 //배경
@@ -41,7 +42,7 @@ width: 40%;
 const LogoWrap = styled.div` 
 margin-right: 3%;
 width: 50%;
-aligh-items: center;
+align-items: center;
 text-align: center;`
 
 
@@ -82,12 +83,13 @@ margin: 5px;
 
 
 
-function Login (props: any):JSX.Element {
-    
+function Login (props: any):JSX.Element {    
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    
     const config = {
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         withCredentials: true
       };
@@ -96,7 +98,6 @@ function Login (props: any):JSX.Element {
         email: '',
         password: ''
     })
-
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
         
@@ -119,20 +120,19 @@ function Login (props: any):JSX.Element {
     const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
         // console.log(inputInfo)
         const loginresult = await axios.post(
-            `${URL}/login`, 
+            `${apiURL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
-                props.loginhandler()
-                navigate('/MyPage')
+                dispatch(setLogin(true))
+                navigate('/mypage')
             })
+            
+        }
         
-    }
-
-    const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        await window.location.assign('http://localhost:4000/kakao');
+        const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
+                window.location.assign('https://kingsenal.link/kakao')
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
-
-    }
+        }
 
     const handleSignUpSubmit = () =>{
         navigate('/signup')

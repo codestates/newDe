@@ -1,10 +1,18 @@
 import {useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing } from './pages'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback } from './pages'
 import {Nav, BoardModal} from './component';
 import {ThemeProvider} from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
+import { Cookies } from 'react-cookie';
+import react, { useEffect } from 'react'
+import { RootState } from './store'
+import { useAppSelector, useAppDispatch } from './store/hooks'
+import { setLogin } from './features/info';
+import axios from 'axios';
+import { apiURL } from './url'
+
 
 
 // let isModalOpened = true
@@ -14,8 +22,31 @@ const ContentWrap = styled.div`
 
 display: flex;`
 function App() {
-  
-  const [isLogin, setlogin] = useState(false)
+  const config = {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  };
+  const dispatch=useAppDispatch()
+  const isLogin = useAppSelector((state: RootState) => state.info.login)
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken")
+  console.log(cookies.get("accessToken"))
+  useEffect( () => {
+    if(accessToken){
+      axios.get(`${apiURL}/user`, config)
+    .then(el => {
+      // console.log(el)
+      dispatch(setLogin(true))
+    })
+    }
+        
+    
+    
+    
+}, [])
+  // const [isLogin, setlogin] = useState(false)
 
   const [isModalOpened, setModal] = useState(false)
   function modalHandler () {
@@ -27,19 +58,20 @@ function App() {
   }
 
   function loginHandler(){
-    setlogin(true)
+    dispatch(setLogin(true))
   }
 
   function logoutHandler(){
-    setlogin(false)
+    dispatch(setLogin(false))
   }
   
 
   return (
     <div className="App">
+      
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} islogin={isLogin} logouthandler = {logoutHandler}/>
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} logouthandler = {logoutHandler}/>
           <ContentWrap>
             
           <Routes>
@@ -53,6 +85,8 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/writing' element={<Writing />} />
             <Route path='/roadmap' element={<RoadMap />} />
+            <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
+            
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}

@@ -28,10 +28,6 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: null }),
-    __metadata("design:type", String)
-], User.prototype, "joinType", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: null }),
     __metadata("design:type", String)
 ], User.prototype, "penalty", void 0);
@@ -39,6 +35,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "kakao", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

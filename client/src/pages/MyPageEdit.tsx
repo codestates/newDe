@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URL } from '../url'
+import { apiURL } from '../url'
 import { useState } from 'react'
 import Loader from '../component/Loader'
 import { text } from 'stream/consumers';
@@ -36,12 +36,12 @@ function MyPageEdit() {
         }
     }
     const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/
-    const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,20}/
+    const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,20}/
 
     const handleOnBlur = (e: any) => {
         if (e.target.placeholder === 'nickname') {
             if (regNickname.test(e.target.value)) {
-                axios.post(`${URL}/user/check`, { nickname: checkInfo.nickname }, config)
+                axios.post(`${apiURL}/user/check`, { nickname: checkInfo.nickname }, config)
                     .then(res => {
                         if (res.data.message === 'nickname already exisits') {
                             setText({ ...text, nickname: '중복된 닉네임 입니다' })
@@ -60,7 +60,7 @@ function MyPageEdit() {
             if (regPassword.test(e.target.value)) {
                 setText({ ...text, password: '사용가능한 비밀번호 입니다' })
             } else {
-                setText({ ...text, password: '8~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
+                setText({ ...text, password: '6~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
             }
         }
         if (e.target.placeholder === 'checkPassword') {
@@ -73,13 +73,14 @@ function MyPageEdit() {
     }
 
     async function fatchData() {
-        if (text.nickname === '사용가능한 닉네임 입니다' || text.checkPassword === '비밀번호가 일치합니다') {
+        if (text.nickname === '사용가능한 닉네임 입니다' || text.checkPassword === '비밀번호가 일치합니다') { // fix please
             if (text.nickname) {
                 try {
                     setLoading(true)
-                    await axios.patch(`${URL}/user`, { nickname: checkInfo.nickname }, config)
+                    await axios.patch(`${apiURL}/user`, { nickname: checkInfo.nickname }, config)
                     .then(res=>{
                         setLoading(false)
+                        
                     })
                 } catch (err) {
                     console.log(err)
@@ -88,7 +89,7 @@ function MyPageEdit() {
             if (text.checkPassword) {
                 try {
                     setLoading(true)
-                    await axios.patch(`${URL}/user`, { password: checkInfo.checkPassword }, config)
+                    await axios.patch(`${apiURL}/user`, { password: checkInfo.checkPassword }, config)
                     .then(res=>{
                         setLoading(false)
                     })
@@ -96,10 +97,14 @@ function MyPageEdit() {
                     console.log(err)
                 }
             }
-            alert('수정 완료!')
+            if(checkInfo.nickname===''&& checkInfo.password===''&&checkInfo.checkPassword===''){
+                alert('수정할 내용이 없습니다')
+            }else{
+                alert('수정 완료!')
+            }
         }
     }
-
+    console.log(text)
     if (loading) return <Loader type="spin" color="#999999" />
 
     return (

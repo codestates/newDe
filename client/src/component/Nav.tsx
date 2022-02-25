@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
-
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { setLogin } from '../features/info';
+import axios from 'axios';
+import { apiURL } from '../url';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
-
 const Navi = styled.header`
-    
     width: 100%;
     height: 70px;
     background: #F3F3F3;
@@ -17,9 +19,6 @@ const Navi = styled.header`
         width: 100%;
         
     }
-    
-    
-    
 `
 
 const MenubarBtn = styled.header`
@@ -27,10 +26,6 @@ margin: 20px;
 margin-top: 10px;
 width: 50px;
 align-items: center;
-
-
-
-
 `
 const NavWrap = styled.header`
 display: flex;
@@ -46,18 +41,18 @@ margin: 2px ;
       cursor: pointer;
       outline: none;
       color: black;
-    }`
-
+    }
+}`
 
 const LeftSection = styled.header`
 display: flex;
 width: 70%;
 
 align-items: center;
-margin : 1px
+margin : 1px;
 @media ${(props)=> props.theme.mobile}{
-    width: 0px;
-    height: 0px;
+    width: 100%;
+    height: 100%;
 
 }
 `;
@@ -67,14 +62,12 @@ display: flex;
 width: 20%;
 align-items: center;
 justify-content: right;
-margin : 10px
+margin : 10px;
 @media ${(props)=> props.theme.mobile}{
     display: hidden;
 
 }
 `;
-
-
 
 const LogoWrap = styled.header`
 margin: 10px;
@@ -99,7 +92,6 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    islogin: boolean;
     logouthandler: any;
 
 }
@@ -108,7 +100,27 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     // console.log(props.modalhandler)
-    
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
+    // let isLogin = props.islogin
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    };
+
+    const handleLogout = () => {
+        axios
+         .get(`${apiURL}/user/logout`,config)
+         .then((res) => {
+             dispatch(setLogin(false))
+             navigate('/')
+         })
+    }
+
     return (
         <Navi>
             <NavWrap>
@@ -121,9 +133,9 @@ function Nav (props:Iprops):JSX.Element  {
                 
             </LeftSection>
             
-                {props.islogin ? 
+                {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap onClick = {props.logouthandler}>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {handleLogout}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
@@ -131,18 +143,8 @@ function Nav (props:Iprops):JSX.Element  {
                     <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
                     <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}
-                
-            
-        
             </NavWrap>
-        
-            
         </Navi>
-        
-        
-        
-        
-        
     )
 }
 

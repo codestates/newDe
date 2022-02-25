@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection, MoreThanOrEqual } from "typeorm";
-import { User } from "../entities/user";
 import { Content } from "../entities/content";
-import { Comment } from "../entities/comment";
 import { authorizeToken } from '../middleware/token/authorizeToken';
 
 
 const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;
     const verify = await authorizeToken(req, res)
+
+    
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
