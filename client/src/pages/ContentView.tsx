@@ -174,7 +174,7 @@ const getComment = async () => {
                 </ContentWrap>
                     {datatoComment}
                 <WritingBox>
-                <WriteComment />
+                <WriteComment contentid = {path}/>
                 </WritingBox>
                 
                 

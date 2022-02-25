@@ -7,6 +7,11 @@ import styled from 'styled-components';
 import theme from './style/theme';
 import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
+import { RootState } from './store'
+import { useAppSelector, useAppDispatch } from './store/hooks'
+import { setLogin } from './features/info';
+import axios from 'axios';
+import { apiURL } from './url'
 
 
 
@@ -17,11 +22,31 @@ const ContentWrap = styled.div`
 
 display: flex;`
 function App() {
+  const config = {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  };
+  const dispatch=useAppDispatch()
+  const isLogin = useAppSelector((state: RootState) => state.info.login)
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken")
-  // console.log(cookies.get("accessToken"))
-  
-  const [isLogin, setlogin] = useState(false)
+  console.log(cookies.get("accessToken"))
+  useEffect( () => {
+    if(accessToken){
+      axios.get(`${apiURL}/user`, config)
+    .then(el => {
+      // console.log(el)
+      dispatch(setLogin(true))
+    })
+    }
+        
+    
+    
+    
+}, [])
+  // const [isLogin, setlogin] = useState(false)
 
   const [isModalOpened, setModal] = useState(false)
   function modalHandler () {
@@ -33,19 +58,20 @@ function App() {
   }
 
   function loginHandler(){
-    setlogin(true)
+    dispatch(setLogin(true))
   }
 
   function logoutHandler(){
-    setlogin(false)
+    dispatch(setLogin(false))
   }
   
 
   return (
     <div className="App">
+      
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} islogin={isLogin} logouthandler = {logoutHandler}/>
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} logouthandler = {logoutHandler}/>
           <ContentWrap>
             
           <Routes>
