@@ -60,7 +60,7 @@ function MyPageEdit() {
             if (regPassword.test(e.target.value)) {
                 setText({ ...text, password: '사용가능한 비밀번호 입니다' })
             } else {
-                setText({ ...text, password: '8~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
+                setText({ ...text, password: '6~20자 사이의 최소 하나의 특수문자,대문자가 포함되어야 합니다' })
             }
         }
         if (e.target.placeholder === 'checkPassword') {
@@ -73,13 +73,14 @@ function MyPageEdit() {
     }
 
     async function fatchData() {
-        if (text.nickname === '사용가능한 닉네임 입니다' || text.checkPassword === '비밀번호가 일치합니다') {
+        if (text.nickname === '사용가능한 닉네임 입니다' || text.checkPassword === '비밀번호가 일치합니다') { // fix please
             if (text.nickname) {
                 try {
                     setLoading(true)
                     await axios.patch(`${apiURL}/user`, { nickname: checkInfo.nickname }, config)
                     .then(res=>{
                         setLoading(false)
+                        
                     })
                 } catch (err) {
                     console.log(err)
@@ -96,10 +97,14 @@ function MyPageEdit() {
                     console.log(err)
                 }
             }
-            alert('수정 완료!')
+            if(checkInfo.nickname===''&& checkInfo.password===''&&checkInfo.checkPassword===''){
+                alert('수정할 내용이 없습니다')
+            }else{
+                alert('수정 완료!')
+            }
         }
     }
-
+    console.log(text)
     if (loading) return <Loader type="spin" color="#999999" />
 
     return (
