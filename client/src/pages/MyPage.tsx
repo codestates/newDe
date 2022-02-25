@@ -12,7 +12,8 @@ function MyPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [checkText, setCheckText] = useState('')
     const [text, setText] = useState('')
-    console.log(text, typeof(text));
+    const [content,setContent] = useState<any>([])
+    console.log(content[0].main)
 
     const navigate = useNavigate();
     const handleModal = () => {
@@ -46,7 +47,9 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
+            console.log(res.data)
             setUserInfo(res.data.data)
+            setContent(res.data.data.content)
         } catch (e) {
             console.log(e)
         }
@@ -73,6 +76,9 @@ function MyPage() {
                     <span><button onClick={passwordCheck}>submit</button></span>
                     <div>{checkText}</div>
                 </Edit>
+            </div>
+            <div>
+                
             </div>
         </div>
     )

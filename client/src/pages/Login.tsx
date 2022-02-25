@@ -137,7 +137,6 @@ const dispatch = useAppDispatch()
                 const success = nowURL.searchParams.get('islogin')
                 if(success==="success"){
                     dispatch(setLogin(true))
-
                 }
                 
             }catch(err){
