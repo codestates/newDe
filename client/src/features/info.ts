@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface infoState {
   parent:string
   child:string
+  login:boolean
 }
 
 const initialState = {
   parent:'',
-  child:''
+  child:'',
+  login:false
 } as infoState
 
 export const info = createSlice({
@@ -19,10 +21,13 @@ export const info = createSlice({
     },
     setChild:(state,action:PayloadAction<any>)=>{
       state.child=action.payload
-    } 
+    },
+    setLogin:(state,action:PayloadAction<any>)=>{
+      state.login=action.payload
+    }
   },
 })
 
-export const { setParent,setChild } = info.actions
+export const { setParent,setChild,setLogin } = info.actions
 
 export default info.reducer

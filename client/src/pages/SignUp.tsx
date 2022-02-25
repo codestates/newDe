@@ -117,7 +117,7 @@ function SignUp(): JSX.Element {
     });
     const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
     const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
-    const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
+    const regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,20}$/;
     
     const [checkinput, setcheckinput] = useState(false)
 
@@ -192,7 +192,7 @@ function SignUp(): JSX.Element {
         if(event.target.placeholder === 'password'){
             if(event.target.value === '') setCheckText({...checkText, password:''})
             else if (regPw.test(event.target.value)) setCheckText({ ...checkText, password: '사용 가능한 비밀번호 입니다.' });
-            else setCheckText({ ...checkText, password: '알파벳, 숫자, 특수문자를 포함한 8~15글자를 입력해주세요.' });
+            else setCheckText({ ...checkText, password: '알파벳, 숫자, 특수문자를 포함한 6~20글자를 입력해주세요.' });
 
         }//현재 칸이 패스워드일 경우에만 발생하는 이벤트 
         
