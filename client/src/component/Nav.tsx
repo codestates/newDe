@@ -11,7 +11,6 @@ import { apiURL } from '../url';
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
 const Navi = styled.header`
-    
     width: 100%;
     height: 70px;
     background: #F3F3F3;
@@ -20,9 +19,6 @@ const Navi = styled.header`
         width: 100%;
         
     }
-    
-    
-    
 `
 
 const MenubarBtn = styled.header`
@@ -30,8 +26,6 @@ margin: 20px;
 margin-top: 10px;
 width: 50px;
 align-items: center;
-
-
 `
 const NavWrap = styled.header`
 display: flex;
@@ -47,8 +41,8 @@ margin: 2px ;
       cursor: pointer;
       outline: none;
       color: black;
-    }}`
-
+    }
+}`
 
 const LeftSection = styled.header`
 display: flex;
@@ -106,9 +100,27 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     // console.log(props.modalhandler)
-    const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const isLogin = useAppSelector((state: RootState) => state.info.login)
     // let isLogin = props.islogin
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    };
+
+    const handleLogout = () => {
+        axios
+         .get(`${apiURL}/user/logout`,config)
+         .then((res) => {
+             dispatch(setLogin(false))
+             navigate('/')
+         })
+    }
+
     return (
         <Navi>
             <NavWrap>
@@ -123,9 +135,7 @@ function Nav (props:Iprops):JSX.Element  {
             
                 {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
-                    <RightBtnWrap onClick = {async ()=>{try{
-                        dispatch(setLogin(false)) 
-                        await axios.get(`${apiURL}/user/logout`, { withCredentials:true })}catch(err){console.log(err)}}}>Logout</RightBtnWrap>
+                    <RightBtnWrap onClick = {handleLogout}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
@@ -133,17 +143,8 @@ function Nav (props:Iprops):JSX.Element  {
                     <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
                     <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}
-                
-            
-        
             </NavWrap>
-        
-            
-        </Navi>   
-        
-        
-        
-        
+        </Navi>
     )
 }
 

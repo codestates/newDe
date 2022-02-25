@@ -74,7 +74,6 @@ justify-content: center;
 width: 90%;
 align-items: center;
 margin: 0.5% 0.5% 0.5% 0.5%;
-
 `
 
 const Contenttitle = styled.div`

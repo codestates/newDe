@@ -19,10 +19,8 @@ padding: 10px;
 
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
-    
 }
 .btn {
-    
     text-decoration-line: none;
     color: #34495E;
     &:hover {
@@ -30,7 +28,6 @@ padding: 10px;
       outline: none;
       color: black;
     }
-
 }`
 
 const ParentMenuWrap = styled.div`
@@ -45,8 +42,7 @@ text-align: center;
 
 border-bottom: 1px solid gray;
 padding-right: 30%;
-border : 1px ;
-
+border : 1px;
 `
 
 
