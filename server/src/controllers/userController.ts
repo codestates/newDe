@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
-import { createQueryBuilder, getRepository, getConnection } from "typeorm";
+import { createQueryBuilder, getRepository, getConnection, MetadataAlreadyExistsError } from "typeorm";
 import { User } from "../entities/user";
-import { Content } from "../entities/content"
-import { generateToken } from './token/generateToken'
-import { authorizeToken } from './token/authorizeToken'
+import { Content } from "../entities/content";
+import { generateToken } from '../middleware/token/generateToken';
+import { authorizeToken } from '../middleware/token/authorizeToken';
 
 const login = async (req:Request, res:Response) => {
     const { email, password } = req.body;
-    const user = new User();
-
-    user.email = email;
-    user.password = password;
 
     const userRepository = getRepository(User)
 
@@ -50,14 +46,20 @@ const signup = async (req:Request, res:Response) => {
     if(!email || !nickname || !password) {
         return res.status(400).json({ message: 'Bad Request' });
     } else {
-        const userInfo = await userRepository.findOne({ email : email });
+        const emailInfo = await userRepository.findOne({ email : email });
+        const nicknameInfo = await userRepository.findOne({ nickname : nickname });
 
-        if(userInfo) {
+        if(emailInfo) {
             return res.status(409).json({ message: 'Account already exists' });
         }
+
+        if (nicknameInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' })
+        }
+
         await userRepository.save(user);
         return res.status(201).json({ message: 'Success'})
-    }
+    } 
 }
 
 const profile = async (req:Request, res:Response) => {
@@ -66,9 +68,6 @@ const profile = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     const userRepository = getRepository(User)
 
-    console.log(verify)
-
-    
     if(verify) {
         const userInfo = await userRepository.findOne({
             where: { id : verify.userInfo.id }
@@ -116,8 +115,14 @@ const deleteUser = async (req:Request, res:Response) => {
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
-    await userRepository.delete({ id: verify.userInfo.id })
+    const targetUser = await userRepository.findOne(verify.userInfo.id);
 
+    targetUser.nickname = '';
+    targetUser.email = '';
+    targetUser.password = '';
+
+    await userRepository.save(targetUser);
+    
     return res
         .clearCookie('accessToken')
         .status(200)
@@ -126,8 +131,9 @@ const deleteUser = async (req:Request, res:Response) => {
 
 const checkInfo = async (req:Request, res:Response) => {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = getRepository(User);
-
+    
     if(email) {
         const userInfo = await userRepository.findOne({ email : email });
         if (userInfo) {
@@ -135,19 +141,21 @@ const checkInfo = async (req:Request, res:Response) => {
         }
         return res.status(200).json({ message: 'email available'})
     } 
-
+    
     if(password) {
         const verify = await authorizeToken(req, res);
-
         if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+        const userRepository = getRepository(User);
 
-        if(verify.userInfo.password !== password) {
-            return res.status(400).json({ message: 'incorrect password' });
+        const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
+        
+        if(userInfo.password === password) {
+            return res.status(200).json({ message: 'password correct!' });
         } else {
-            return res.status(200).json({ message: 'password correct!' })
+            return res.status(400).json({ message: 'incorrect password' })
         }
     } 
-
+    
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
@@ -158,7 +166,6 @@ const checkInfo = async (req:Request, res:Response) => {
 
     return res.status(404).json({ message: 'Bad Request' })
 };
-
 
 export {
     login,

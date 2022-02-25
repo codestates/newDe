@@ -13,13 +13,10 @@ exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = ex
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
-const generateToken_1 = require("./token/generateToken");
-const authorizeToken_1 = require("./token/authorizeToken");
+const generateToken_1 = require("../middleware/token/generateToken");
+const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = new user_1.User();
-    user.email = email;
-    user.password = password;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!email || !password) {
         return res.status(400).json({ message: 'Fail' });
@@ -56,9 +53,13 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).json({ message: 'Bad Request' });
     }
     else {
-        const userInfo = yield userRepository.findOne({ email: email });
-        if (userInfo) {
+        const emailInfo = yield userRepository.findOne({ email: email });
+        const nicknameInfo = yield userRepository.findOne({ nickname: nickname });
+        if (emailInfo) {
             return res.status(409).json({ message: 'Account already exists' });
+        }
+        if (nicknameInfo) {
+            return res.status(409).json({ message: 'nickname already exisits' });
         }
         yield userRepository.save(user);
         return res.status(201).json({ message: 'Success' });
@@ -69,7 +70,6 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
-    console.log(verify);
     if (verify) {
         const userInfo = yield userRepository.findOne({
             where: { id: verify.userInfo.id }
@@ -109,7 +109,11 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    yield userRepository.delete({ id: verify.userInfo.id });
+    const targetUser = yield userRepository.findOne(verify.userInfo.id);
+    targetUser.nickname = '';
+    targetUser.email = '';
+    targetUser.password = '';
+    yield userRepository.save(targetUser);
     return res
         .clearCookie('accessToken')
         .status(200)
@@ -118,6 +122,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteUser = deleteUser;
 const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, nickname, password } = req.body;
+    console.log(email, nickname, password);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (email) {
         const userInfo = yield userRepository.findOne({ email: email });
@@ -130,11 +135,13 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
         if (!verify)
             return res.status(403).json({ message: 'Invalid Accesstoken' });
-        if (verify.userInfo.password !== password) {
-            return res.status(400).json({ message: 'incorrect password' });
+        const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+        const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
+        if (userInfo.password === password) {
+            return res.status(200).json({ message: 'password correct!' });
         }
         else {
-            return res.status(200).json({ message: 'password correct!' });
+            return res.status(400).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {

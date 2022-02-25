@@ -9,14 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editComment = exports.reportComment = exports.deleteContent = exports.deleteComment = exports.editContent = exports.getContentDetail = exports.createContent = exports.createComment = exports.allContent = exports.allComment = exports.reportContent = exports.recommentContent = void 0;
+exports.getReportedContent = exports.deleteContent = exports.editContent = exports.getContentDetail = exports.createContent = exports.allContent = exports.reportContent = exports.recommentContent = void 0;
 const typeorm_1 = require("typeorm");
 const content_1 = require("../entities/content");
-const comment_1 = require("../entities/comment");
-const authorizeToken_1 = require("./token/authorizeToken");
+const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { contentId } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify)
+        return res.status(403).json({ message: 'Invalid Accesstoken' });
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const contentInfo = yield ContentRepository.findOne({
         where: { id: contentId }
@@ -29,12 +30,64 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
     })
         .where({ id: contentId })
         .execute();
-    res.status(200).json({ message: "succes" });
+    res.status(200).json({ message: "success" });
 });
 exports.recommentContent = recommentContent;
-const reportContent = (req, res) => res.send("reportContent");
-exports.reportContent = reportContent;
-const allContent = (req, res) => res.send("allContent");
+const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searching, parentCategory, childCategory, page } = req.query;
+    // query check
+    if (!parentCategory || !page)
+        return res.status(404).json({ message: 'no essential query' });
+    //find payload with searching and category
+    let payload = null;
+    if (!searching) {
+        if (!childCategory) {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+                .getMany();
+        }
+        else {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+                .getMany();
+        }
+    }
+    else {
+        if (!childCategory) {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+                .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
+                .getMany();
+        }
+        else {
+            payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+                .createQueryBuilder('content')
+                .select(['content', 'contents.nickname'])
+                .leftJoin('content.user', 'contents')
+                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+                .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
+                .getMany();
+        }
+    }
+    payload.reverse();
+    //pagenation
+    const pageCount = Math.floor(payload.length / 10) + 1;
+    if (pageCount < Number(page) || Number(page) < 1)
+        return res.status(404).json({ message: 'page query out of range' });
+    payload = payload.filter((el, idx) => {
+        return Math.floor(idx / 10) + 1 === Number(page);
+    });
+    return res.status(200).json({ data: payload, pageCount, message: 'ok' });
+});
 exports.allContent = allContent;
 const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, parentCategory, childCategory } = req.body;
@@ -50,10 +103,23 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     yield ContentRepository.save(content);
-    return res.status(201).json({ message: 'Succes' });
+    return res.status(201).json({ message: 'Success' });
 });
 exports.createContent = createContent;
-const getContentDetail = (req, res) => res.send("getContentDetail");
+const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { contentid } = req.params;
+    console.log(contentid);
+    const payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+        .createQueryBuilder('content')
+        .select(['content', 'contents.nickname'])
+        .leftJoin('content.user', 'contents')
+        .where('content.id = :id', { id: contentid })
+        .getOne();
+    console.log(payload);
+    if (!payload)
+        return res.status(404).json({ data: [], message: "no Content" });
+    return res.status(200).json({ data: payload, message: "ok" });
+});
 exports.getContentDetail = getContentDetail;
 const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, main, parentCategory, childCategory } = req.body;
@@ -94,58 +160,33 @@ const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     return res.status(200).json({ message: 'Deleted' });
 });
 exports.deleteContent = deleteContent;
-// Comment
-const reportComment = (req, res) => {
-    res.send("reportComment");
-};
-exports.reportComment = reportComment;
-const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const contentId = req.params.contentId;
-    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const comments = yield commentRepository.find({ where: { contentId: contentId } });
-    res.status(200).json({ data: comments, message: 'ok' });
-});
-exports.allComment = allComment;
-const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { contentId, userId, main } = req.body;
+// report
+const reportContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { contentId } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const comment = new comment_1.Comment();
-    comment.contentId = contentId;
-    comment.userId = userId;
-    comment.main = main;
-    yield commentRepository.save(comment);
-    res.status(201).json({ data: comment, message: 'comment registered successfully' });
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const contentInfo = yield ContentRepository.findOne({
+        where: { id: contentId }
+    });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .update(content_1.Content)
+        .set({
+        report: contentInfo.report + 1
+    })
+        .where({ id: contentId })
+        .execute();
+    res.status(200).json({ message: "success" });
 });
-exports.createComment = createComment;
-const editComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const { commentId, userId, main } = req.body;
-    const targetComment = yield commentRepository.findOne(commentId);
-    //console.log(verify);
-    if (!verify)
-        return res.status(403).json({ message: 'Invalid Accesstoken' });
-    if (targetComment.userId !== verify.userInfo.id)
-        return res.status(400).json({ message: 'different user' });
-    targetComment.main = main;
-    yield commentRepository.save(targetComment);
-    res.status(200).json({ data: targetComment, message: 'comment mdified successfully' });
+exports.reportContent = reportContent;
+const getReportedContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const contents = yield ContentRepository.find({
+        report: (0, typeorm_1.MoreThanOrEqual)(5)
+    });
+    res.status(200).json({ data: contents, message: "ok" });
 });
-exports.editComment = editComment;
-const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
-    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const commentId = req.params.commentId;
-    const targetContent = yield commentRepository.findOne(commentId);
-    if (!verify)
-        return res.status(403).json({ message: 'Invalid Accesstoken' });
-    if (targetContent.userId !== verify.userInfo.id)
-        return res.status(400).json({ message: 'different user' });
-    yield commentRepository.delete(commentId);
-    return res.status(200).json({ message: 'Deleted' });
-});
-exports.deleteComment = deleteComment;
+exports.getReportedContent = getReportedContent;
 //# sourceMappingURL=contentController.js.map

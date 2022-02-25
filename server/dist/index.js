@@ -27,9 +27,11 @@ const logger = (0, morgan_1.default)('dev');
     .catch((error) => console.log(error));
 // middleware
 app.use(express_1.default.json()); //body parser(json)
-// app.use(express.urlencoded({extended:false})); //body parser(url)
 app.use((0, cookie_parser_1.default)());
-// app.use(express.urlencoded({extended:false}))
+app.use(express_1.default.urlencoded({ extended: false }));
+// app.use(express.static(__dirname+'/../src/imageStorage'));
+app.use(express_1.default.static(__dirname + '/../src/imageStorage'));
+// app.use(express.static('.'));
 app.use(logger);
 app.use((0, cors_1.default)({
     origin: true,
@@ -40,7 +42,7 @@ app.get('/', (req, res) => {
     res.send('NewDe is running...');
 });
 app.use("/", globalRouter_1.default);
-app.use("/users", userRouter_1.default);
+app.use("/user", userRouter_1.default);
 app.use("/board", boardRouter_1.default);
 app.use("/comment", commentRouter_1.default);
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
