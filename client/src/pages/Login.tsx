@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import axios from 'axios';
 import { apiURL } from '../url'
+import { setLogin } from '../features/info';
 
 
 //배경
@@ -96,6 +97,7 @@ function Login (props: any):JSX.Element {
         email: '',
         password: ''
     })
+const dispatch = useAppDispatch()
 
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
@@ -122,14 +124,26 @@ function Login (props: any):JSX.Element {
             `${apiURL}/login`, 
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
-                props.loginhandler()
+                dispatch(setLogin(true))
                 navigate('/MyPage')
             })
+            
+        }
         
-    }
+        const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
+            try{
+                await window.location.assign('http://localhost:4000/kakao')
+                const nowURL = new URL(window.location.href); 
+                const success = nowURL.searchParams.get('islogin')
+                if(success==="success"){
+                    dispatch(setLogin(true))
 
-    const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        await window.location.assign('http://localhost:4000/kakao');
+                }
+                
+            }catch(err){
+                console.log(err)
+            }
+
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
 
     }

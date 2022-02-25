@@ -1,13 +1,14 @@
 //게시판 보기 
 import react, { useEffect } from 'react'
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import {ContentList, PageNav} from '../component';
 import { apiURL } from '../url'
-
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { setChild, setParent } from '../features/info';
 
 const MainContainer = styled.div`
 display: flex;
@@ -138,14 +139,15 @@ const config = {
     withCredentials: true
   };
 
-
+const dispatch = useAppDispatch()
 const nowURL = new URL(window.location.href); //URL값 따오기 
 // console.log(nowURL)
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
 // console.log(!!ChildCategory)
 
-
+dispatch(setParent(ParentCategory))
+dispatch(setChild(ChildCategory))
 const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
@@ -170,13 +172,14 @@ const getListData = async () =>{
 // console.log(nowURL)
     
     
-
+    
     
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
     // console.log(listData.data.pageCount)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)
+        
         
     }
     catch{console.log("error!")}
@@ -221,7 +224,7 @@ useEffect(()=>{
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
                 
-                <WritingBtn><Link to = '/writing' className = 'btn'>글쓰기</Link></WritingBtn>
+                <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn>
 
             </BoardName>
             <ChildBoard>
