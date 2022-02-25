@@ -1,1 +1,1 @@
-export const apiURL = 'https://newb-d.com'
+export const apiURL = 'https://server.newb-d.com'
