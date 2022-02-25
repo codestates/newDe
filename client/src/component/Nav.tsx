@@ -10,7 +10,6 @@ import { apiURL } from '../url';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
-
 const Navi = styled.header`
     width: 100%;
     height: 70px;
@@ -64,14 +63,11 @@ width: 20%;
 align-items: center;
 justify-content: right;
 margin : 10px;
-
 @media ${(props)=> props.theme.mobile}{
     display: hidden;
 
 }
 `;
-
-
 
 const LogoWrap = styled.header`
 margin: 10px;
@@ -96,7 +92,6 @@ cursor: pointer;
 interface Iprops {
     modalhandler: any;
     modalcloser: any;
-    islogin: boolean;
     logouthandler: any;
 
 }

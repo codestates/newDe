@@ -29,9 +29,7 @@ justify-content: center;
       color: black;
     }
 }
-
 `
-
 
 
 
@@ -126,8 +124,8 @@ margin: 2%;
 width: 80%;
 background-color: seashell;
 
-
 `
+
 const SearchBtn = styled.button`
 margin: 1%;
 `
