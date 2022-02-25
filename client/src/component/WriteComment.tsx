@@ -32,6 +32,12 @@ interface writingprops {
 
 function WriteComment(props: writingprops):JSX.Element {
     const [inputText, setText] = useState('')
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      };
     
     
 
@@ -44,7 +50,7 @@ function WriteComment(props: writingprops):JSX.Element {
 
     const submitHandler = () => {
         // console.log(props.contentid)
-        // axios.post(``)
+        axios.post(`${apiURL}/comment`, {contentId: props.contentid, main: inputText}, config)
 
 
     }
