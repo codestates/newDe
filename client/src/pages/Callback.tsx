@@ -12,19 +12,17 @@ function Callback(props:any):JSX.Element {
     const navigate = useNavigate()
 
     useEffect( () => {
+        console.log(props)
         setLoading(true)
         const url = new URL(window.location.href);
 
-        const authorizationCode = url.searchParams.get('code')
-        if(authorizationCode) {
-            axios.post(`${apiURL}/oauth`, { authorizationCode }, { withCredentials: true } )
-            .then( () => {
-                props.loginhandler()
-                setLoading(false)
-                navigate('/mypage')
-
-            })
-        }
+        const login = url.searchParams.get('islogin')
+        if(login === 'success') {
+            console.log(props.loginhandler)
+            props.loginhandler()
+            navigate('/MyPage')
+            }
+        
         
     }, [])
 

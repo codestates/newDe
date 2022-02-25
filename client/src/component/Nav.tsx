@@ -113,7 +113,8 @@ interface Iprops {
 function Nav (props:Iprops):JSX.Element  {
     // console.log(props.modalhandler)
     const dispatch=useAppDispatch()
-    const isLogin = useAppSelector((state: RootState) => state.info.login)
+    // const isLogin = useAppSelector((state: RootState) => state.info.login)
+    let isLogin = props.islogin
     return (
         <Navi>
             <NavWrap>
