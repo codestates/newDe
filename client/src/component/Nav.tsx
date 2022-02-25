@@ -125,7 +125,7 @@ function Nav (props:Iprops):JSX.Element  {
                 <RightSection onClick = {props.modalcloser}>
                     <RightBtnWrap onClick = {async ()=>{try{
                         dispatch(setLogin(false)) 
-                        await axios.get(`${apiURL}/user/logout`)}catch(err){console.log(err)}}}>Logout</RightBtnWrap>
+                        await axios.get(`${apiURL}/user/logout`, { withCredentials:true })}catch(err){console.log(err)}}}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
