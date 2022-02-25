@@ -29,7 +29,10 @@ padding: 10px;
       cursor: pointer;
       outline: none;
       color: black;
-    }`
+    }
+
+}`
+
 const ParentMenuWrap = styled.div`
 padding-bottom: 3px;
 border-bottom: 2px solid black;
@@ -41,14 +44,8 @@ padding-bottom: 4%;
 text-align: center;
 
 border-bottom: 1px solid gray;
-padding-right: 30%
-border : 1px 
-
-
-
-    
-
-
+padding-right: 30%;
+border : 1px ;
 
 `
 

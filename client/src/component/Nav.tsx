@@ -10,7 +10,6 @@ import { apiURL } from '../url';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
-
 const Navi = styled.header`
     
     width: 100%;
@@ -31,8 +30,6 @@ margin: 20px;
 margin-top: 10px;
 width: 50px;
 align-items: center;
-
-
 
 
 `
@@ -71,14 +68,12 @@ display: flex;
 width: 20%;
 align-items: center;
 justify-content: right;
-margin : 10px
+margin : 10px;
 @media ${(props)=> props.theme.mobile}{
     display: hidden;
 
 }
 `;
-
-
 
 const LogoWrap = styled.header`
 margin: 10px;
@@ -144,8 +139,7 @@ function Nav (props:Iprops):JSX.Element  {
             </NavWrap>
         
             
-        </Navi>
-        
+        </Navi>   
         
         
         
