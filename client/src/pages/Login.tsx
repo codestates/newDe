@@ -1,4 +1,4 @@
-import react from 'react'
+import react, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -83,9 +83,19 @@ margin: 5px;
 
 
 
-function Login (props: any):JSX.Element {
-    
+function Login (props: any):JSX.Element {    
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    useEffect(()=>{
+        const nowURL = new URL(window.location.href); 
+        const success = nowURL.searchParams.get('islogin')
+        if(success==="success"){
+            dispatch(setLogin(true));
+            navigate('/mypage');
+        }
+    },[])
+    
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -97,8 +107,6 @@ function Login (props: any):JSX.Element {
         email: '',
         password: ''
     })
-const dispatch = useAppDispatch()
-
 
     const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
         
@@ -125,21 +133,15 @@ const dispatch = useAppDispatch()
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 dispatch(setLogin(true))
-                navigate('/MyPage')
+                navigate('/mypage')
             })
             
         }
         
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
             try{
-                await window.location.assign('http://localhost:4000/kakao')
-                const nowURL = new URL(window.location.href); 
-                const success = nowURL.searchParams.get('islogin')
-                if(success==="success"){
-                    dispatch(setLogin(true))
-
-                }
-                
+                await window.location.assign('http://localhost:4000/kakao');    
+                                
             }catch(err){
                 console.log(err)
             }
