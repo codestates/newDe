@@ -7,6 +7,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import {Comment, WriteComment} from '../component';
 import { apiURL } from '../url'
+import { RootState } from '../store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 const MainContainer = styled.div`
 display: flex;
@@ -66,14 +68,15 @@ width: 10%;
 margin: 1%;
 background-color: yellow;
 `
+
 const WriterSec = styled.div`
 width: 90%;
 background: aquamarine;
 
 `
 
-
 const MainContent = styled.div`
+overflow: scroll;
 width: 90%;
 height: 50%;
 margin: 2%;
@@ -97,6 +100,7 @@ background: Goldenrod;
 `
 
 function ContentView ():JSX.Element {
+    const isLogin = useAppSelector((state: RootState) => state.info.login)
 
     const config = {
         headers: {
@@ -131,6 +135,7 @@ const getComment = async () => {
 
 
 }
+
     useEffect(()=>{
         setLoading(true);
         getcontent()
@@ -173,8 +178,10 @@ const getComment = async () => {
                     
                 </ContentWrap>
                     {datatoComment}
+                
                 <WritingBox>
-                <WriteComment contentid = {path}/>
+                {isLogin ? <WriteComment contentid = {path}/> :null}
+                
                 </WritingBox>
                 
                 

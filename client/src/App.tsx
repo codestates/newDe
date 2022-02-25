@@ -31,10 +31,13 @@ function App() {
   const dispatch=useAppDispatch()
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const cookies = new Cookies();
+  
   const accessToken = cookies.get("accessToken")
-
+  
   useEffect( () => {
+    
     if(accessToken){
+      // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
       console.log(el.data.data.kakao)
@@ -64,9 +67,7 @@ function App() {
     dispatch(setLogin(true))
   }
 
-  function logoutHandler(){
-    dispatch(setLogin(false))
-  }
+  
   
 
   return (
@@ -74,7 +75,7 @@ function App() {
       
       <ThemeProvider theme = {theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} logouthandler = {logoutHandler}/>
+          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
           <ContentWrap>
             
           <Routes>
