@@ -13,9 +13,6 @@ export class User {
     @Column()
     email: string;
 
-    @Column({default:null})
-    joinType: string;
-
     @Column({type:'timestamp', default:null})
     penalty: string;
 
