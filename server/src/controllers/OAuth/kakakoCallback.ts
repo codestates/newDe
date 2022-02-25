@@ -51,7 +51,7 @@ const kakaologin = async (req:Request, res:Response) => {
             }
          if(kakaoEmail && kakaoEmail.kakao) {
              const accessToken = await generateToken(kakaoEmail) 
-              return res.status(201).cookie('accessToken', accessToken).redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`);
+              return res.status(201).cookie('accessToken', accessToken, {domain: 'kingsenal.link', sameSite: 'none', secure: true}).redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`);
          }
 
          let count = 1
