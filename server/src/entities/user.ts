@@ -13,17 +13,17 @@ export class User {
     @Column()
     email: string;
 
-    @Column({default:null})
-    joinType: string;
-
     @Column({type:'timestamp', default:null})
     penalty: string;
 
     @Column()
     password: string;
 
-    @Column({default:false})
+    @Column({default: false})
     kakao: boolean;
+
+    @Column({default: false})
+    admin: boolean;
 
     @CreateDateColumn()
     createdAt: Date;
