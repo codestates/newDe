@@ -67,18 +67,29 @@ function Admin(): JSX.Element {
 
     const getReported = async () => {
         const reportedresult = await axios.get(`${apiURL}/report/board`, config)
-        console.log(reportedresult.data.data)
+        // console.log(reportedresult.data.data)
         setReportedCon(reportedresult.data.data)
 
 
 
 
     }
+    const getReportedComment = async () => {
+        const reportedcommentresult = await axios.get(`${apiURL}/report/comment`, config)
+        // console.log(reportedcommentresult.data.data)
+        setReportedComment(reportedcommentresult.data.data)
 
+
+
+
+    }
+
+    
     useEffect(()=>{
         getReported()
-
-    }, [])
+        getReportedComment()
+        setNum(reportedCon.length+reportedComment.length)
+    }, [restnum])
     
     const dummy = [1,2,3,4,5];
     const handleClickTitle = (el: string) => {
@@ -124,7 +135,7 @@ function Admin(): JSX.Element {
                 <UserSec>{el.userId}</UserSec>
                 <select onChange = {handleDropDown}>
                     <option value = '혐의없음'>혐의없음</option>
-                    <option value = '글삭제'>글만삭제</option>
+                    <option value = '글삭제'>글삭제</option>
                     <option value = '7일정지'>7일정지</option>
                     <option value = '30일정지'>30일정지</option>
                     <option value = '1년정지'>1년정지</option>
@@ -137,13 +148,21 @@ function Admin(): JSX.Element {
 
     })
 
-    const commentToList = dummy.map((el:any) => {
+    const commentToList = reportedComment.map((el:any) => {
         return (
-            <div key = {el}>
-                <span>댓글내용</span>
-                <span>댓쓴이</span>
+            <ReportedSec key = {el.id}>
+                <NameSec onClick = {()=> handleClickTitle(el.contentId)}>{el.main}</NameSec>
+                <UserSec>{el.userId}</UserSec>
+                <select onChange = {handleDropDown}>
+                    <option value = '혐의없음'>혐의없음</option>
+                    <option value = '댓글삭제'>댓글삭제</option>
+                    <option value = '7일정지'>7일정지</option>
+                    <option value = '30일정지'>30일정지</option>
+                    <option value = '1년정지'>1년정지</option>
+                </select>
+                <ManageBtn onClick = {handlePanalty}>처리하기</ManageBtn>
                 
-            </div>
+            </ReportedSec>
 
         )
 
