@@ -101,14 +101,7 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
    
-    const logouthandler = async()=>{
-        try{
-            dispatch(setLogin(false)) 
-            await axios.get(`${apiURL}/user/logout`,config)
-        }catch(err){
-            console.log(err)
-        }
-    }
+    
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -128,6 +121,7 @@ function Nav (props:Iprops):JSX.Element  {
          .then((res) => {
              dispatch(setLogin(false))
              dispatch(setOauth(false))
+             alert('로그아웃 되었습니다')
              navigate('/')
          }).catch(err=>{
              console.log(err)

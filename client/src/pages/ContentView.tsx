@@ -165,6 +165,7 @@ const getComment = async () => {
 
     const likehandler = () => {
         axios.patch(`${apiURL}/board/recommend`, {contentId: path}, config)
+        .then(el=>alert('추천되었습니다'))
     }
     
 

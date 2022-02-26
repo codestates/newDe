@@ -52,7 +52,7 @@ function ContentList(props: ListCompo):JSX.Element {
         <ContentWrap>
             
             <Contenttitle onClick = {clickHandler}>{props.title}</Contenttitle>
-            <Contentusersec>{props.user}</Contentusersec>
+            <Contentusersec>{props.user?props.user:'탈퇴한 회원'}</Contentusersec>
             <Contentlike>{props.like}</Contentlike>
             
         </ContentWrap>
