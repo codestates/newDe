@@ -77,6 +77,7 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userContent = yield ContentRepository.find({
             where: { userId: userInfo.id }
         });
+        delete userInfo.password;
         return res.status(201).json({ data: Object.assign(Object.assign({}, userInfo), { content: userContent }) });
     }
     else {

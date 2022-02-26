@@ -13,6 +13,9 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const content_1 = require("./content");
 const comment_1 = require("./comment");
+const contentLike_1 = require("./contentLike");
+const contentReport_1 = require("./contentReport");
+const commentReport_1 = require("./commentReport");
 let User = class User {
 };
 __decorate([
@@ -40,6 +43,10 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "kakao", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "admin", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
@@ -55,6 +62,18 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => comment_1.Comment, conment => conment.user),
     __metadata("design:type", Array)
 ], User.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => contentLike_1.ContentLike, contentLike => contentLike.user),
+    __metadata("design:type", Array)
+], User.prototype, "contentLikes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => contentReport_1.ContentReport, contentReport => contentReport.user),
+    __metadata("design:type", Array)
+], User.prototype, "contentReports", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => commentReport_1.CommentReport, commentReport => commentReport.user),
+    __metadata("design:type", Array)
+], User.prototype, "commentReports", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

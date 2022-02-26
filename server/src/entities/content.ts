@@ -1,6 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
 import {User} from './user';
 import { Comment } from "./comment";
+import { ContentLike } from "./contentLike";
+import { ContentReport } from "./contentReport";
 
 @Entity()
 export class Content {
@@ -39,5 +41,11 @@ export class Content {
 
     @OneToMany(() => Comment, comment => comment.content)
     comments:Comment[];
+
+    @OneToMany(()=> ContentLike, contentLike=>contentLike.user)
+    contentLikes: ContentLike[];
+
+    @OneToMany(()=> ContentReport, contentReport=>contentReport.user)
+    contentReports: ContentReport[];
 
 }

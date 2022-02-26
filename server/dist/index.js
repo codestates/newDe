@@ -45,7 +45,7 @@ app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);
 app.use("/board", boardRouter_1.default);
 app.use("/comment", commentRouter_1.default);
-const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`);
+const handleListening = () => console.log(`Server Listening on https://server.newb-d.com:${PORT}`);
 app.listen(PORT, handleListening);
 //haha
 //# sourceMappingURL=index.js.map
