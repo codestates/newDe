@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback } from './pages'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin} from './pages'
 import {Nav, BoardModal} from './component';
 import {ThemeProvider} from 'styled-components'
 import styled from 'styled-components';
@@ -99,6 +99,7 @@ function App() {
             </Route>
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
+            <Route path='/admin' element={<Admin />} />
             
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
