@@ -19,8 +19,11 @@ export class User {
     @Column()
     password: string;
 
-    @Column({default:false})
+    @Column({default: false})
     kakao: boolean;
+
+    @Column({default: false})
+    admin: boolean;
 
     @CreateDateColumn()
     createdAt: Date;
