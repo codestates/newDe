@@ -21,7 +21,8 @@ const login = async (req:Request, res:Response) => {
         if(userInfo) {
             const token = await generateToken(userInfo);
             // console.log(token);
-            res.cookie('accessToken', token, {domain : 'newb-d.com', sameSite: 'none', secure: true});
+            res.cookie('accessToken', token );
+            // res.cookie('accessToken', token, {domain : 'newb-d.com', sameSite: 'none', secure: true});
             res.status(200).json({ data : userInfo, message: 'Login Success'})
         } else {
             res.status(404).send('invalid user');
