@@ -64,7 +64,7 @@ background: red;
 `
 
 const ContentBtn = styled.button`
-width: 10%;
+width: 50%;
 margin: 1%;
 background-color: yellow;
 `
@@ -98,11 +98,18 @@ justify-content: center;
 background: Goldenrod;
 
 `
+const ButtonSec = styled.div`
+display: flex;
+width: 20%;
+`
 const LikeBtn = styled.button`
 `
 
 function ContentView ():JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
+    // const isLogin = true;
+    const usernickname = useAppSelector((state: RootState) => state.info.nickname)
+
 
     const config = {
         headers: {
@@ -168,7 +175,10 @@ const getComment = async () => {
         .then(el=>alert('추천되었습니다'))
     }
     
-
+    const reporthandler = () => {
+        axios.patch(`${apiURL}/board/report`,{contentId: path}, config)
+        .then(el => alert('신고되었습니다.'))
+    }
     return (
         
         <MainContainer>
@@ -177,8 +187,18 @@ const getComment = async () => {
                 <ContentWrap>
                     <TitleWrap>
                         <TitleSec>{content.title}</TitleSec>
-                        <ContentBtn>수정</ContentBtn>
-                        <ContentBtn>삭제</ContentBtn>
+                        {usernickname === content.nickname ? 
+                        <ButtonSec>
+                            <ContentBtn>수정</ContentBtn>
+                            <ContentBtn>삭제</ContentBtn>
+                        </ButtonSec>
+                        : (isLogin ?
+                            <ButtonSec>
+                                <ContentBtn onClick = {reporthandler}>신고</ContentBtn>
+                            </ButtonSec>
+                            
+                                : null)}
+                        
                     </TitleWrap>
                     <WriterSec>{content.nickname ? content.nickname: "탈퇴한 회원입니다."}</WriterSec>
                     <MainContent dangerouslySetInnerHTML={{__html:content.main}}></MainContent>

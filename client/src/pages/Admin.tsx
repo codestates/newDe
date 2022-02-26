@@ -103,14 +103,20 @@ function Admin(): JSX.Element {
         setPenalty(event.target.value)
     }
 
-    const handlePanalty = () => {
+    const handlePanalty = (user:string, contentid : string) => {
         if(penalty === '혐의없음'){
-            //해당 글, 댓글의 신고된 횟수만 0으로 만들고 종료, 
+            //해당 글의 신고된 횟수만 0으로 만들고 종료, 
+            // axios.patch(`${apiURL}/board/report`)
+            
         }
-
-        else if(penalty === '글삭제'||'댓글삭제'){
-            //해당 글, 댓글만 삭제함 axios delete board/:contentId 사용하면 됨 
+        
+        else if(penalty === '글삭제'){
+            //해당 글만 삭제함 axios delete board/:contentId 사용하면 됨 
+            axios.delete(`${apiURL}/board/${contentid}`, config)
+            .then(el=>alert("삭제되었습니다"))
+            //댓글이 있는 글은 현재 삭제가 안됨, 수정 필요 및 admin 유저는 모든 글을 삭제할 수 있도록 변경해야함 
         }
+        
         
         else if(penalty === '7일정지'){
             //여기서부턴 글 댓글 삭제와 함께 patch 로 패널티 기간 발송 
@@ -128,6 +134,37 @@ function Admin(): JSX.Element {
 
 
     }
+
+    
+    const handleCommentPanalty = (user:string, commentid : string) => {
+        if(penalty === '혐의없음'){
+            //해당 글의 신고된 횟수만 0으로 만들고 종료, 
+            
+        }
+        
+        else if(penalty === '댓글삭제'){
+            //해당 글만 삭제함 axios delete board/:contentId 사용하면 됨 
+        }
+        
+        
+        else if(penalty === '7일정지'){
+            //여기서부턴 글 댓글 삭제와 함께 patch 로 패널티 기간 발송 
+
+        }
+        else if(penalty === '30일정지'){
+
+        }
+        else if(penalty === '1년정지'){
+
+        }
+        else {
+            console.log('something wrong!!')
+        }
+
+
+    }
+
+
     const contentToList = reportedCon.map((el:any) => {
         return (
             <ReportedSec key = {el.id}>
@@ -140,7 +177,7 @@ function Admin(): JSX.Element {
                     <option value = '30일정지'>30일정지</option>
                     <option value = '1년정지'>1년정지</option>
                 </select>
-                <ManageBtn onClick = {handlePanalty}>처리하기</ManageBtn>
+                <ManageBtn onClick = {()=> handlePanalty(el.userId, el.id)}>처리하기</ManageBtn>
                 
             </ReportedSec>
 
@@ -160,7 +197,7 @@ function Admin(): JSX.Element {
                     <option value = '30일정지'>30일정지</option>
                     <option value = '1년정지'>1년정지</option>
                 </select>
-                <ManageBtn onClick = {handlePanalty}>처리하기</ManageBtn>
+                <ManageBtn onClick = {() => handleCommentPanalty(el.userId, el.id)}>처리하기</ManageBtn>
                 
             </ReportedSec>
 
