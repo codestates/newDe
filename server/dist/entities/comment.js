@@ -13,6 +13,7 @@ exports.Comment = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("./user");
 const content_1 = require("./content");
+const commentReport_1 = require("./commentReport");
 let Comment = class Comment {
 };
 __decorate([
@@ -40,21 +41,25 @@ __decorate([
     __metadata("design:type", Date)
 ], Comment.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments, { onDelete: 'CASCADE' }),
-    __metadata("design:type", user_1.User)
-], Comment.prototype, "user", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Comment.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => content_1.Content, content => content.comments),
-    __metadata("design:type", content_1.Content)
-], Comment.prototype, "content", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Comment.prototype, "contentId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_1.User, user => user.comments, { onDelete: 'CASCADE' }),
+    __metadata("design:type", user_1.User)
+], Comment.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)((type) => content_1.Content, (content) => content.comments, { nullable: false, onDelete: 'CASCADE' }),
+    __metadata("design:type", content_1.Content)
+], Comment.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => commentReport_1.CommentReport, commentReport => commentReport.user),
+    __metadata("design:type", Array)
+], Comment.prototype, "commentReports", void 0);
 Comment = __decorate([
     (0, typeorm_1.Entity)()
 ], Comment);

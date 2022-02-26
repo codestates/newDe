@@ -13,6 +13,8 @@ exports.Content = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("./user");
 const comment_1 = require("./comment");
+const contentLike_1 = require("./contentLike");
+const contentReport_1 = require("./contentReport");
 let Content = class Content {
 };
 __decorate([
@@ -63,6 +65,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => comment_1.Comment, comment => comment.content),
     __metadata("design:type", Array)
 ], Content.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => contentLike_1.ContentLike, contentLike => contentLike.user),
+    __metadata("design:type", Array)
+], Content.prototype, "contentLikes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => contentReport_1.ContentReport, contentReport => contentReport.user),
+    __metadata("design:type", Array)
+], Content.prototype, "contentReports", void 0);
 Content = __decorate([
     (0, typeorm_1.Entity)()
 ], Content);
