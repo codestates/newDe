@@ -97,7 +97,6 @@ function App() {
           <ContentWrap>
             
           <Routes>
-            <Route path='/' element={<Landing />} />
             <Route path='/board' element={<Board />} />
             <Route path='/:id' element={<ContentView />} />
             <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
@@ -117,6 +116,7 @@ function App() {
             <Route path='/admin' element={<AdminPrivate />}>
               <Route path='' element={<Admin />} />
             </Route>
+            <Route path='/' element={<Landing />} />
             {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
