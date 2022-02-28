@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getReportedComment = exports.reportComment = exports.deleteComment = exports.editComment = exports.createComment = exports.allComment = void 0;
 const typeorm_1 = require("typeorm");
 const comment_1 = require("../entities/comment");
+const commentReport_1 = require("../entities/commentReport");
 const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const allComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const contentId = req.params.contentId;
@@ -61,24 +62,54 @@ const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
     const commentId = req.params.commentId;
-    const targetContent = yield commentRepository.findOne(commentId);
+    const targetComment = yield commentRepository.findOne(commentId);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
-    if (targetContent.userId !== verify.userInfo.id)
+    if (!targetComment)
+        return res.status(400).json({ message: 'no comment' });
+    if (verify.userInfo.admin) {
+        yield commentRepository.delete(commentId);
+        return res.status(200).json({ message: 'Deleted' });
+    }
+    if (targetComment.userId !== verify.userInfo.id)
         return res.status(400).json({ message: 'different user' });
     yield commentRepository.delete(commentId);
     return res.status(200).json({ message: 'Deleted' });
 });
 exports.deleteComment = deleteComment;
 const reportComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { commentId } = req.body;
+    const { commentId, initialrize } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
     const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
+    const CommentReportRepository = (0, typeorm_1.getRepository)(commentReport_1.CommentReport);
+    if (initialrize && verify.userInfo.admin) {
+        yield (0, typeorm_1.getConnection)()
+            .createQueryBuilder()
+            .update(comment_1.Comment)
+            .set({
+            report: 0
+        })
+            .where({ id: commentId })
+            .execute();
+        yield (0, typeorm_1.getConnection)()
+            .createQueryBuilder()
+            .delete()
+            .from(commentReport_1.CommentReport)
+            .where("comment = :comment", { comment: commentId })
+            .execute();
+        return res.status(200).json({ message: "success" });
+    }
     const commentInfo = yield commentRepository.findOne({
         where: { id: commentId }
     });
+    const overlap = yield CommentReportRepository.findOne({
+        where: { comment: commentId, user: verify.userInfo.id }
+    });
+    if (overlap) {
+        return res.status(400).json({ message: "Fail" });
+    }
     yield (0, typeorm_1.getConnection)()
         .createQueryBuilder()
         .update(comment_1.Comment)
@@ -87,16 +118,26 @@ const reportComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     })
         .where({ id: commentId })
         .execute();
-    console.log(commentInfo);
-    console.log(commentInfo.report);
-    res.status(200).json({ message: "success" });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .insert()
+        .into(commentReport_1.CommentReport)
+        .values([
+        { user: verify.userInfo.id,
+            comment: commentId }
+    ])
+        .execute();
+    return res.status(200).json({ message: "success" });
 });
 exports.reportComment = reportComment;
 const getReportedComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const CommentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
-    const comments = yield CommentRepository.find({
-        report: (0, typeorm_1.MoreThanOrEqual)(5)
-    });
+    const commentRepository = (0, typeorm_1.getRepository)(comment_1.Comment);
+    const comments = yield commentRepository
+        .createQueryBuilder('comment')
+        .leftJoin('comment.user', 'comments')
+        .select(['comment', 'comments.nickname'])
+        .where('comment.report >= :report', { report: 5 })
+        .getMany();
     res.status(200).json({ data: comments, message: "ok" });
 });
 exports.getReportedComment = getReportedComment;

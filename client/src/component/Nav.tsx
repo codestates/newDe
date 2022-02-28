@@ -106,6 +106,7 @@ function Nav (props:Iprops):JSX.Element  {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const isLogin = useAppSelector((state: RootState) => state.info.login)
+    const isAdmin = useAppSelector((state: RootState) => state.info.admin)
     // let isLogin = props.islogin
 
     const config = {
@@ -142,11 +143,13 @@ function Nav (props:Iprops):JSX.Element  {
             
                 {isLogin ? 
                 <RightSection onClick = {props.modalcloser}>
+                    {isAdmin ? <RightBtnWrap><Link to = '/admin' className = 'btn'>admin</Link></RightBtnWrap>: null}
                     <RightBtnWrap onClick = {handleLogout}>Logout</RightBtnWrap>
                     <RightBtnWrap><Link to = '/mypage' className = 'btn'>Mypage</Link></RightBtnWrap>
                 </RightSection> : 
 
                 <RightSection onClick = {props.modalcloser}>
+                    
                     <RightBtnWrap><Link to = '/login' className = 'btn'>Login</Link></RightBtnWrap>
                     <RightBtnWrap><Link to = '/signup' className = 'btn'>Join</Link></RightBtnWrap>
                 </RightSection>}

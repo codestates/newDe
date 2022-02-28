@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { createQueryBuilder, getRepository, getConnection, MoreThanOrEqual } from "typeorm";
 import { Content } from "../entities/content";
+import { ContentLike } from "../entities/contentLike";
+import { ContentReport } from "../entities/contentReport";
 import { authorizeToken } from '../middleware/token/authorizeToken';
 
 
@@ -8,15 +10,26 @@ const recommentContent = async (req:Request, res:Response) => {
     const { contentId } = req.body;
     const verify = await authorizeToken(req, res)
 
-    
+    console.log(contentId)
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     const ContentRepository = getRepository(Content)
+    const ContentLikeRepository = getRepository(ContentLike)
 
     const contentInfo = await ContentRepository.findOne({
         where: { id : contentId }
     })
+
+    const overlap = await ContentLikeRepository.findOne({
+        where: { content : contentId, user : verify.userInfo.id }
+    })
+
+    console.log(overlap)
+
+    if(overlap) {
+        return res.status(400).json({ message: "Fail" })
+    }
 
     await getConnection()
     .createQueryBuilder()
@@ -25,6 +38,16 @@ const recommentContent = async (req:Request, res:Response) => {
         like: contentInfo.like + 1
     })
     .where({ id : contentId })
+    .execute();
+
+    await getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(ContentLike)
+    .values([
+        { user: verify.userInfo.id ,
+         content: contentId }
+    ])
     .execute();
 
     res.status(200).json({ message: "success" })
@@ -159,7 +182,17 @@ const deleteContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content); 
     const targetContent = await ContentRepository.findOne({ id: Number(req.params.contentid) });
 
+    console.log(verify.userInfo)
+
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+    if(!targetContent) return res.status(400).json( { message: 'no article' })
+
+    if(verify.userInfo.admin) {
+        await ContentRepository.delete(req.params.contentid)
+
+        return res.status(200).json({ message: 'Deleted' })
+    }
+
     if(targetContent.userId !== verify.userInfo.id ) return res.status(400).json({ message: 'different user' })
 
     await ContentRepository.delete(req.params.contentid)
@@ -169,35 +202,81 @@ const deleteContent = async (req:Request, res:Response) => {
 
 // report
 const reportContent = async (req:Request, res:Response) => {
-    const { contentId } = req.body;
+    const { contentId, initialrize } = req.body;
     const verify = await authorizeToken(req, res)
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
 
     const ContentRepository = getRepository(Content)
+    const ContentReportRepository = getRepository(ContentReport)
+
+    if(initialrize && verify.userInfo.admin) {
+        await getConnection()
+        .createQueryBuilder()
+        .update(Content)
+        .set({
+            report: 0
+        })
+        .where({ id : contentId })
+        .execute();
+
+        await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(ContentReport)
+        .where("content = :content", { content: contentId })
+        .execute();
+
+        return res.status(200).json({ message: "success" })
+    }
 
     const contentInfo = await ContentRepository.findOne({
         where: { id : contentId }
     })
-
-    await getConnection()
-    .createQueryBuilder()
-    .update(Content)
-    .set({
-        report: contentInfo.report + 1
+    
+    const overlap = await ContentReportRepository.findOne({
+        where: { content : contentId, user : verify.userInfo.id }
     })
-    .where({ id : contentId })
-    .execute();
 
-    res.status(200).json({ message: "success" })
+    if(overlap) {
+        return res.status(400).json({ message: "Fail" })
+    }
+
+
+        await getConnection()
+        .createQueryBuilder()
+        .update(Content)
+        .set({
+            report: contentInfo.report + 1
+        })
+        .where({ id : contentId })
+        .execute();
+
+        await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(ContentReport)
+        .values([
+            { user: verify.userInfo.id ,
+             content: contentId }
+        ])
+        .execute();    
+    
+
+    return res.status(200).json({ message: "success" })
 };
 
 const getReportedContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
 
-    const contents = await ContentRepository.find({
-        report: MoreThanOrEqual(5)
-    })
+    const contents = await ContentRepository
+    .createQueryBuilder('content')
+    .leftJoin('content.user', 'contents')
+    .select(['content', 'contents.nickname'])
+    .where('content.report >= :report', {report: 5})
+    .getMany();
+
+    console.log(contents)
 
     res.status(200).json({ data: contents, message: "ok" })
 }

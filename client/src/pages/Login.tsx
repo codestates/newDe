@@ -130,8 +130,9 @@ function Login (props: any):JSX.Element {
         }
         
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-                window.location.assign('http://localhost:4000/kakao')
+                window.location.assign(`${apiURL}/kakao`)
                 dispatch(setOauth(true))
+                
                 
 
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
