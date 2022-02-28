@@ -30,8 +30,10 @@ function Callback(props:any):JSX.Element {
             navigate('/MyPage')
             }
 
-        if(isbanned === 'true'){
-            alert("차단된 유저입니다.")
+        if(isbanned){
+            const timebanned = isbanned.split('%20'); //['Thu', 'Mar', '03', '2022', '13:56:43', 'GMT+0900', '(Korean', 'Standard', 'Time']
+            const [dayofweek, month, day, year, time] = timebanned
+            alert(`${year}년 ${month}월 ${day}일 ${dayofweek}요일 ${time} 까지 차단되었습니다.`)
             navigate('/')
         }
         
