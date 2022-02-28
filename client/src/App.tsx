@@ -1,8 +1,8 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin} from './pages'
-import {Nav, BoardModal} from './component';
-import {ThemeProvider} from 'styled-components'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
+import { Nav, BoardModal } from './component';
+import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
 import { Cookies } from 'react-cookie';
@@ -17,30 +17,26 @@ import Loader from './component/Loader';
 
 
 
-// let isModalOpened = true
-
-
-const ContentWrap = styled.div`
-
-display: flex;`
 
 function App() {
   const config = {
     headers: {
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
     withCredentials: true
   };
-  const dispatch=useAppDispatch()
+  const ContentWrap = styled.div`
+  display: flex;`
+  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
-  
+
   const accessToken = cookies.get("accessToken")
-  
-  useEffect( () => {    
-    if(accessToken){
+
+  useEffect(() => {
+    if (accessToken) {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
@@ -55,23 +51,25 @@ function App() {
     })    
     }
     else setIsLoading(false);
-}, [])
+  }, [])
+
+
   // const [isLogin, setlogin] = useState(false)
 
-  const pathUrl ={
-    landing:'/',
-    board:''
+  const pathUrl = {
+    landing: '/',
+    board: ''
   }
   const [isModalOpened, setModal] = useState(false)
-  function modalHandler () {
+  function modalHandler() {
     setModal(!isModalOpened)
   }
+  function modalCloser() {
 
-  function modalCloser(){
     setModal(false)
   }
 
-  function loginHandler(){
+  function loginHandler() {
     dispatch(setLogin(true))
   }
 
@@ -90,10 +88,10 @@ function App() {
   if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
-      
-      <ThemeProvider theme = {theme}>
+
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
+          <Nav modalhandler={modalHandler} modalcloser={modalCloser} />
           <ContentWrap>
             
           <Routes>
@@ -125,9 +123,9 @@ function App() {
           </ContentWrap>
         </BrowserRouter>
       </ThemeProvider>
-      
+
     </div>
   );
 }
 
-export default App;
+export default App

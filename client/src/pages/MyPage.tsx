@@ -53,7 +53,7 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
-            console.log(res.data)
+            console.log(res.data.data)
             setUserInfo(res.data.data)
             setContent(res.data.data.content)
         } catch (e) {
@@ -84,7 +84,11 @@ function MyPage() {
                 </Edit>
             </div>
             <div>
-                
+                {content.map((el:any,index:number)=>
+                <div key={index}>
+                    <div>title : {el.title}</div>    
+                    <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
+                </div>)}
             </div>
         </div>
     )
