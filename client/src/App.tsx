@@ -82,7 +82,6 @@ function App() {
           <ContentWrap>
             
           <Routes>
-            <Route path='/' element={<Landing />} />
             <Route path='/board' element={<Board />} />
             <Route path='/:id' element={<ContentView />} />
             <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
@@ -100,6 +99,7 @@ function App() {
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
             <Route path='/admin' element={<Admin />} />
+            <Route path='/' element={<Landing />} />
             
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
