@@ -7,7 +7,6 @@ export interface infoState {
   oauth:boolean
   admin:boolean
   nickname:string
-  manager:boolean
 }
 
 const initialState = {

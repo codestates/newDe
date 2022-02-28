@@ -18,9 +18,9 @@ const login = async (req:Request, res:Response) => {
             password : password,
         });
 
-        if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
-
+        
         if(userInfo) {
+            if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
             // console.log(token);
             res.cookie('accessToken', token);
@@ -181,7 +181,7 @@ const setUserPenalty = async (req:Request, res:Response) => {
 
     const targetUser = await userRepository.findOne(userId);
 
-    targetUser.penalty = new Date(Date.now() + (new Date(penalty*24*60*60*1000).getTime() - new Date(0).getTime())).toString();
+    targetUser.penalty = new Date(Date.now() + (penalty*24*60*60*1000)).toString();
 
     await userRepository.save(targetUser);
 

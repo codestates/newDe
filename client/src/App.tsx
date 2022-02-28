@@ -1,8 +1,8 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin} from './pages'
-import {Nav, BoardModal} from './component';
-import {ThemeProvider} from 'styled-components'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
+import { Nav, BoardModal } from './component';
+import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
 import { Cookies } from 'react-cookie';
@@ -12,47 +12,46 @@ import { useAppSelector, useAppDispatch } from './store/hooks'
 import { setLogin, setOauth, setAdmin } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
-import { Outlet, Navigate  } from 'react-router';
+import { Outlet, Navigate } from 'react-router';
+import Loader from './component/Loader';
 
 
 function App() {
-  
-  
+
+  const ContentWrap = styled.div`
+display: flex;`
   const config = {
     headers: {
       'Content-Type': 'application/json'
     },
     withCredentials: true
   };
-  
-  // let isModalOpened = true
-  const ContentWrap = styled.div`
-  
-  display: flex;`
   const dispatch = useAppDispatch()
+  const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
-  const isManager = useAppSelector((state: RootState) => state.info.manager)
+  const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
-  
+
   const accessToken = cookies.get("accessToken")
-  
+
   useEffect(() => {
-    
     if (accessToken) {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
-      .then(el => {
-      console.log(el.data.data)
-      dispatch(setLogin(true))
-      if(el.data.data.kakao){
-        dispatch(setOauth(true))
-      }
-      if(el.data.data.admin){
-        dispatch(setAdmin(true))
-      }
-    })
+        .then(el => {
+          console.log(el.data.data)
+          dispatch(setLogin(true))
+          if (el.data.data.kakao) {
+            dispatch(setOauth(true))
+          }
+          if (el.data.data.admin) {
+            dispatch(setAdmin(true))
+          }
+          setIsLoading(false);
+        })
     }
-}, [])
+    else setIsLoading(false);
+  }, [])
 
 
   // const [isLogin, setlogin] = useState(false)
@@ -76,17 +75,18 @@ function App() {
 
   function PrivateRoute() {
 
-    return isLogin ? <Outlet /> : <>{setTimeout(() => {
-      alert('로그인하세욧!!!')
-    }, 0)}<Navigate replace to='/login' /></>;
+    return isLogin ? <Outlet /> : <Navigate replace to='/login' />
   }
-  function PublicRoute(){
-    return isManager ? <Outlet />: <>{()=>{
+  function PublicRoute() {
+    return isAdmin ? <Outlet /> : <>{() => {
       setTimeout(() => {
         alert('접근권한이 없습니다')
-      }, 0)}}<Navigate replace to='/'/></>
+      }, 0)
+    }}<Navigate replace to='/' /></>
   }
-  
+
+
+  if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
 
@@ -94,30 +94,32 @@ function App() {
         <BrowserRouter>
           <Nav modalhandler={modalHandler} modalcloser={modalCloser} />
           <ContentWrap>
-            
-          <Routes>
-            <Route path='/' element={<Landing />} />
-            <Route path='/board' element={<Board />} />
-            <Route path='/:id' element={<ContentView />} />
-            <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
-            <Route path='/mainboard' element={<MainBoard />} />
-            <Route path='/mypage/*' element={<PrivateRoute />}>
-              <Route path='' element={<MyPage />} />
-            </Route>
-            <Route path='/mypageedit' element={<PrivateRoute />}>
-              <Route path='' element={<MyPageEdit />} />
-            </Route>
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/writing' element={<PrivateRoute />}>
-              <Route path='' element={<Writing />} />
-            </Route>
-            <Route path='/roadmap' element={<RoadMap />} />
-            <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
-            <Route path='/admin' element={<Admin />} />
-            
-          </Routes>
-          {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
-          {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
+
+            <Routes>
+              <Route path='/' element={<Landing />} />
+              <Route path='/board' element={<Board />} />
+              <Route path='/:id' element={<ContentView />} />
+              <Route path='/login' element={<Login loginhandler={loginHandler} />} />
+              <Route path='/mainboard' element={<MainBoard />} />
+              <Route path='/mypage/*' element={<PrivateRoute />}>
+                <Route path='' element={<MyPage />} />
+              </Route>
+              <Route path='/mypageedit' element={<PrivateRoute />}>
+                <Route path='' element={<MyPageEdit />} />
+              </Route>
+              <Route path='/signup' element={<SignUp />} />
+              <Route path='/writing' element={<PrivateRoute />}>
+                <Route path='' element={<Writing />} />
+              </Route>
+              <Route path='/roadmap' element={<RoadMap />} />
+              <Route path='/callback' element={<Callback loginhandler={loginHandler} />} />
+              <Route path='/admin' element={<PublicRoute />}>
+                <Route path='' element={<Admin />} />
+              </Route>
+
+            </Routes>
+            {isModalOpened ? <BoardModal modalHandler={modalHandler} /> : null}
+            {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
           </ContentWrap>
         </BrowserRouter>
       </ThemeProvider>
