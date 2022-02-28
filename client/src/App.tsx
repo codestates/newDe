@@ -34,6 +34,7 @@ function App() {
   const dispatch=useAppDispatch()
   const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
+  const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
   
   const accessToken = cookies.get("accessToken")
@@ -43,7 +44,6 @@ function App() {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
-      console.log(el.data.data)
       dispatch(setLogin(true))
       if(el.data.data.kakao){
         dispatch(setOauth(true))
@@ -82,6 +82,11 @@ function App() {
     return isLogin ? <Outlet /> : <Navigate replace to='/login' />;
   }
  
+  function AdminPrivate() {
+    return isAdmin ? <Outlet /> : <>{setTimeout(() => {
+      alert('권한이 없습니다.!!!')
+    }, 0)}<Navigate replace to='/' /></>;
+  }
   if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
@@ -109,7 +114,10 @@ function App() {
             </Route>
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
-            <Route path='/admin' element={<Admin />} />
+            <Route path='/admin' element={<AdminPrivate />}>
+              <Route path='' element={<Admin />} />
+            </Route>
+            {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 

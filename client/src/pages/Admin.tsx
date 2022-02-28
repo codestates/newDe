@@ -130,12 +130,32 @@ function Admin(): JSX.Element {
         
         else if(penalty === '7일정지'){
             //여기서부턴 글 댓글 삭제와 함께 patch 로 패널티 기간 발송 
+            // console.log(user)
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 7}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/board/${contentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
 
         }
         else if(penalty === '30일정지'){
 
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 30}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/board/${contentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
+
         }
         else if(penalty === '1년정지'){
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 365}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/board/${contentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
 
         }
         else {
@@ -165,12 +185,29 @@ function Admin(): JSX.Element {
         
         else if(penalty === '7일정지'){
             //여기서부턴 글 댓글 삭제와 함께 patch 로 패널티 기간 발송 
-
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 7}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/comment/${commentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
         }
         else if(penalty === '30일정지'){
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 30}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/comment/${commentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
 
         }
         else if(penalty === '1년정지'){
+            axios.patch(`${apiURL}/report`, {userId: user, penalty: 365}, config)
+            .then(el => {
+                axios.delete(`${apiURL}/comment/${commentid}`, config)
+            })
+            .then(el => setNum(restnum -1 ))
+            .then(el => alert('처리되었습니다.'))
 
         }
         else {

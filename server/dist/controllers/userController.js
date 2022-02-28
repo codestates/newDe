@@ -164,7 +164,7 @@ const setUserPenalty = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { userId, penalty } = req.body;
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     const targetUser = yield userRepository.findOne(userId);
-    targetUser.penalty = new Date(Date.now() + (new Date(penalty * 24 * 60 * 60 * 1000).getTime() - new Date(0).getTime())).toString();
+    targetUser.penalty = new Date(Date.now() + (penalty * 24 * 60 * 60 * 1000)).toString();
     yield userRepository.save(targetUser);
     return res.status(200).json({ data: null, message: 'ok' });
 });

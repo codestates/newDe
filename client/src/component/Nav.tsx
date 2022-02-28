@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin, setOauth } from '../features/info';
+import { setLogin, setOauth, setAdmin } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
 import { setOriginalNode } from 'typescript';
@@ -119,6 +119,7 @@ function Nav (props:Iprops):JSX.Element  {
     const handleLogout = () => {
         axios
          .get(`${apiURL}/user/logout`,config)
+
          .then((res) => {                   
              alert('로그아웃 되었습니다')
              navigate('/')     
