@@ -22,12 +22,23 @@ function Callback(props:any):JSX.Element {
         const url = new URL(window.location.href);
 
         const login = url.searchParams.get('islogin')
+        const isbanned = url.searchParams.get('ban')
         if(login === 'success') {
             
             dispatch(setLogin(true))
             
             navigate('/MyPage')
             }
+
+        if(isbanned){
+            
+            const timebanned = isbanned.split(' '); //['Thu', 'Mar', '03', '2022', '13:56:43', 'GMT+0900', '(Korean', 'Standard', 'Time']
+            
+            // console.log(timearr)
+            const [dayofweek, month, day, year, time] = timebanned
+            alert(`${year}년 ${month}월 ${day}일 ${dayofweek}요일 ${time} 까지 차단되었습니다.`)
+            navigate('/')
+        }
         
         
     }, [])

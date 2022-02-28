@@ -9,10 +9,11 @@ import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
-import { setLogin, setOauth } from './features/info';
+import { setLogin, setOauth, setAdmin } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
 import { Outlet, Navigate } from 'react-router';
+import Loader from './component/Loader';
 
 
 
@@ -22,6 +23,7 @@ import { Outlet, Navigate } from 'react-router';
 const ContentWrap = styled.div`
 
 display: flex;`
+
 function App() {
   const config = {
     headers: {
@@ -30,13 +32,14 @@ function App() {
     withCredentials: true
   };
   const dispatch=useAppDispatch()
+  const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
+  const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
   
   const accessToken = cookies.get("accessToken")
   
-  useEffect( () => {
-    
+  useEffect( () => {    
     if(accessToken){
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
@@ -45,8 +48,13 @@ function App() {
       if(el.data.data.kakao){
         dispatch(setOauth(true))
       }
-    })
+      if(el.data.data.admin){
+        dispatch(setAdmin(true))
+      }
+      setIsLoading(false);
+    })    
     }
+    else setIsLoading(false);
 }, [])
   // const [isLogin, setlogin] = useState(false)
 
@@ -68,11 +76,18 @@ function App() {
   }
 
   function PrivateRoute() {
-    return isLogin ? <Outlet /> : <>{setTimeout(() => {
-      alert('로그인하세욧!!!')
-    }, 0)}<Navigate replace to='/login' /></>;
+    useEffect(()=>{
+      if(!isLogin) alert('로그인하세욧!');
+    }, []);
+    return isLogin ? <Outlet /> : <Navigate replace to='/login' />;
   }
  
+  function AdminPrivate() {
+    return isAdmin ? <Outlet /> : <>{setTimeout(() => {
+      alert('권한이 없습니다.!!!')
+    }, 0)}<Navigate replace to='/' /></>;
+  }
+  if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
       
@@ -98,8 +113,11 @@ function App() {
             </Route>
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
-            <Route path='/admin' element={<Admin />} />
+            <Route path='/admin' element={<AdminPrivate />}>
+              <Route path='' element={<Admin />} />
+            </Route>
             <Route path='/' element={<Landing />} />
+            {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 

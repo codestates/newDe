@@ -11,6 +11,7 @@ const contentController_js_1 = require("../controllers/contentController.js");
 const commentController_js_1 = require("../controllers/commentController.js");
 const kakao_js_1 = require("../controllers/OAuth/kakao.js");
 const kakakoCallback_js_1 = require("../controllers/OAuth/kakakoCallback.js");
+const userController_1 = require("../controllers/userController");
 const globalRouter = express_1.default.Router();
 globalRouter.post("/login", userController_js_1.login);
 globalRouter.post("/signup", userController_js_1.signup);
@@ -19,5 +20,6 @@ globalRouter.get("/kakao", kakao_js_1.kakao);
 globalRouter.get("/kakaoCallback", kakakoCallback_js_1.kakaologin);
 globalRouter.get("/report/board", contentController_js_1.getReportedContent);
 globalRouter.get("/report/comment", commentController_js_1.getReportedComment);
+globalRouter.patch("/report", userController_1.setUserPenalty);
 exports.default = globalRouter;
 //# sourceMappingURL=globalRouter.js.map

@@ -16,9 +16,10 @@ const login = async (req:Request, res:Response) => {
         const userInfo = await userRepository.findOne({
             email : email,
             password : password,
-        });
+        });        
 
         if(userInfo) {
+            if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
             console.log(token);
             res.cookie('accessToken', token);
@@ -169,6 +170,23 @@ const checkInfo = async (req:Request, res:Response) => {
     return res.status(404).json({ message: 'Bad Request' })
 };
 
+const setUserPenalty = async (req:Request, res:Response) => {
+    const verify = await authorizeToken(req, res);
+    if(!verify.userInfo.admin) return res.status(400).json({data: null, message: 'this request only allowed for administrator'});
+
+    const { userId, penalty } = req.body;
+
+    const userRepository = getRepository(User);
+
+    const targetUser = await userRepository.findOne(userId);
+
+    targetUser.penalty = new Date(Date.now() + (penalty*24*60*60*1000)).toString();
+
+    await userRepository.save(targetUser);
+
+    return res.status(200).json({data: null, message: 'ok'});
+}
+
 export {
     login,
     logout,
@@ -176,5 +194,6 @@ export {
     profile,
     editUser,
     deleteUser,
-    checkInfo
+    checkInfo,
+    setUserPenalty
 };

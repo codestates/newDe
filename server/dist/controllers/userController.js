@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
+exports.setUserPenalty = exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
@@ -26,6 +26,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email: email,
             password: password,
         });
+        if (new Date(userInfo.penalty).getTime() - Date.now() > 0)
+            return res.status(400).json({ date: null, message: 'temporarily banned user' });
         if (userInfo) {
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             console.log(token);
@@ -155,4 +157,16 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return res.status(404).json({ message: 'Bad Request' });
 });
 exports.checkInfo = checkInfo;
+const setUserPenalty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify.userInfo.admin)
+        return res.status(400).json({ data: null, message: 'this request only allowed for administrator' });
+    const { userId, penalty } = req.body;
+    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    const targetUser = yield userRepository.findOne(userId);
+    targetUser.penalty = new Date(Date.now() + (penalty * 24 * 60 * 60 * 1000)).toString();
+    yield userRepository.save(targetUser);
+    return res.status(200).json({ data: null, message: 'ok' });
+});
+exports.setUserPenalty = setUserPenalty;
 //# sourceMappingURL=userController.js.map

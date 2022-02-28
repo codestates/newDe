@@ -6,6 +6,7 @@ import { getReportedContent } from '../controllers/contentController.js';
 import { getReportedComment } from '../controllers/commentController.js';
 import { kakao } from '../controllers/OAuth/kakao.js';
 import { kakaologin } from '../controllers/OAuth/kakakoCallback.js';
+import { setUserPenalty } from '../controllers/userController'
 
 const globalRouter = express.Router();
 
@@ -16,6 +17,7 @@ globalRouter.get("/kakao", kakao);
 globalRouter.get("/kakaoCallback", kakaologin)
 globalRouter.get("/report/board", getReportedContent);
 globalRouter.get("/report/comment", getReportedComment);
+globalRouter.patch("/report", setUserPenalty);
 
 
 

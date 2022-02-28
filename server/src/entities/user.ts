@@ -16,7 +16,7 @@ export class User {
     @Column()
     email: string;
     
-    @Column({type:'timestamp', default:null})
+    @Column({default:Date()})
     penalty: string;
 
     @Column()
