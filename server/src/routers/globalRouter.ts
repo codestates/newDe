@@ -17,7 +17,7 @@ globalRouter.get("/kakao", kakao);
 globalRouter.get("/kakaoCallback", kakaologin)
 globalRouter.get("/report/board", getReportedContent);
 globalRouter.get("/report/comment", getReportedComment);
-globalRouter.patch("/report", setUserPenalty)
+globalRouter.patch("/report", setUserPenalty);
 
 
 

@@ -42,7 +42,6 @@ function App() {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
-      console.log(el.data.data)
       dispatch(setLogin(true))
       if(el.data.data.kakao){
         dispatch(setOauth(true))
@@ -76,7 +75,7 @@ function App() {
 
   function PrivateRoute() {
     return isLogin ? <Outlet /> : <>{setTimeout(() => {
-      alert('로그인하세욧!!!')
+      // alert('로그인하세욧!!!')
     }, 0)}<Navigate replace to='/login' /></>;
   }
  
