@@ -6,7 +6,6 @@ position: absolute;
 width: 100%;
 height: 90%;
 background: ghost;
-
 `
 const ContainerWrap = styled.div`
 border: 1px solid black;
@@ -15,7 +14,7 @@ width: 30%;
 background: Whitesmoke;
 opacity: 90%;
 padding: 10px;
-
+z-index: 2;
 
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
