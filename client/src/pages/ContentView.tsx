@@ -109,6 +109,8 @@ function ContentView ():JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
     // const isLogin = true;
     const usernickname = useAppSelector((state: RootState) => state.info.nickname)
+    const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
+    const navigate = useNavigate()
 
 
     const config = {
@@ -188,6 +190,7 @@ const getComment = async () => {
     const handleDelete = () =>{
         axios.delete(`${apiURL}/board/${path}`, config)
             .then(el=>alert("삭제되었습니다"))
+            navigate('../mainboard')
 
     }
     return (
@@ -198,7 +201,7 @@ const getComment = async () => {
                 <ContentWrap>
                     <TitleWrap>
                         <TitleSec>{content.title}</TitleSec>
-                        {usernickname === content.nickname ? 
+                        {usernickname === content.nickname ||isAdmin === true ? 
                         <ButtonSec>
                             <ContentBtn onClick = {handleModify}>수정</ContentBtn>
                             <ContentBtn onClick = {handleDelete}>삭제</ContentBtn>
