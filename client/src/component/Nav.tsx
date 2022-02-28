@@ -119,12 +119,12 @@ function Nav (props:Iprops):JSX.Element  {
     const handleLogout = () => {
         axios
          .get(`${apiURL}/user/logout`,config)
-         .then((res) => {
-             dispatch(setLogin(false))
-             dispatch(setOauth(false))
-             dispatch(setAdmin(false))
+
+         .then((res) => {                   
              alert('로그아웃 되었습니다')
-             navigate('/')
+             navigate('/')     
+             dispatch(setLogin(false))
+             dispatch(setOauth(false))  
          }).catch(err=>{
              console.log(err)
          })

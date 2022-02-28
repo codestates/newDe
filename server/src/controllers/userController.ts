@@ -16,11 +16,10 @@ const login = async (req:Request, res:Response) => {
         const userInfo = await userRepository.findOne({
             email : email,
             password : password,
-        });
-
-        if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
+        });        
 
         if(userInfo) {
+            if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
             // console.log(token);
             res.cookie('accessToken', token);
