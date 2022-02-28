@@ -1,0 +1,26 @@
+  @font-face {
+    font-family: "BMJUA";
+    src: url("./style/fonts/BMJUA.otf");
+  }
+
+  @font-face {
+    font-family: "NotoSans-black";
+    src: url("./style/fonts/NotoSansKR-WEB/NotoSansKR-Black.otf");
+  }
+
+  @font-face {
+    font-family: "NotoSans-DemiLight";
+    src: url("./style/fonts/NotoSansKR-WEB/NotoSansKR-DemiLight.otf");
+  }
+
+  @font-face {
+    font-family: "NotoSans-Light";
+    src: url("./style/fonts/NotoSansKR-WEB/NotoSansKR-Light.otf");
+  }
+
+  @font-face {
+    font-family: "NotoSans-Thin";
+    src: url("./style/fonts/NotoSansKR-WEB/NotoSansKR-Thin.otf");
+  }
+
+

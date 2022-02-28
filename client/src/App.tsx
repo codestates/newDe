@@ -1,8 +1,8 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin} from './pages'
-import {Nav, BoardModal} from './component';
-import {ThemeProvider} from 'styled-components'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
+import { Nav, BoardModal } from './component';
+import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
 import { Cookies } from 'react-cookie';
@@ -17,30 +17,38 @@ import Loader from './component/Loader';
 
 
 
-// let isModalOpened = true
-
-
-const ContentWrap = styled.div`
-
-display: flex;`
 
 function App() {
   const config = {
     headers: {
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
     withCredentials: true
   };
-  const dispatch=useAppDispatch()
+  const ContentWrap = styled.div`
+  display: flex;`
+  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(true);
+  const [isLanding, setLanding] = useState(false)
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
-  
+
+
   const accessToken = cookies.get("accessToken")
-  
-  useEffect( () => {    
-    if(accessToken){
+  const nowURL = new URL(window.location.href); //URL값 따오기 
+  const path = nowURL.pathname
+  console.log(path)
+
+  useEffect(() => {
+    console.log(isLanding)
+    if (path === '/'){
+      setLanding(true)
+    }
+    else {
+      setLanding(false)
+    }
+    if (accessToken) {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
@@ -55,23 +63,25 @@ function App() {
     })    
     }
     else setIsLoading(false);
-}, [])
+  }, [isLanding])
+
+
   // const [isLogin, setlogin] = useState(false)
 
-  const pathUrl ={
-    landing:'/',
-    board:''
+  const pathUrl = {
+    landing: '/',
+    board: ''
   }
   const [isModalOpened, setModal] = useState(false)
-  function modalHandler () {
+  function modalHandler() {
     setModal(!isModalOpened)
   }
+  function modalCloser() {
 
-  function modalCloser(){
     setModal(false)
   }
 
-  function loginHandler(){
+  function loginHandler() {
     dispatch(setLogin(true))
   }
 
@@ -90,14 +100,13 @@ function App() {
   if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
-      
-      <ThemeProvider theme = {theme}>
+
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Nav modalhandler = {modalHandler} modalcloser = {modalCloser} />
+          <Nav modalhandler={modalHandler} modalcloser={modalCloser} />
           <ContentWrap>
             
           <Routes>
-            <Route path='/' element={<Landing />} />
             <Route path='/board' element={<Board />} />
             <Route path='/:id' element={<ContentView />} />
             <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
@@ -117,6 +126,7 @@ function App() {
             <Route path='/admin' element={<AdminPrivate />}>
               <Route path='' element={<Admin />} />
             </Route>
+            <Route path='/' element={<Landing />} />
             {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
@@ -125,9 +135,9 @@ function App() {
           </ContentWrap>
         </BrowserRouter>
       </ThemeProvider>
-      
+
     </div>
   );
 }
 
-export default App;
+export default App
