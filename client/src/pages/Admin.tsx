@@ -90,9 +90,10 @@ function Admin(): JSX.Element {
         getReported()
         getReportedComment()
         setNum(reportedCon.length+reportedComment.length)
+        
     }, [restnum])
     
-    const dummy = [1,2,3,4,5];
+    // const dummy = [1,2,3,4,5];
     const handleClickTitle = (el: string) => {
         navigate(`../${el}`)
 
@@ -184,7 +185,7 @@ function Admin(): JSX.Element {
         return (
             <ReportedSec key = {el.id}>
                 <NameSec onClick = {()=> handleClickTitle(el.id)}>{el.title}</NameSec>
-                <UserSec>{el.userId}</UserSec>
+                <UserSec>{el.user.nickname}</UserSec>
                 <select onChange = {handleDropDown}>
                     <option value = '선택하세요'>...</option>
                     <option value = '혐의없음'>혐의없음</option>
@@ -205,7 +206,7 @@ function Admin(): JSX.Element {
         return (
             <ReportedSec key = {el.id}>
                 <NameSec onClick = {()=> handleClickTitle(el.contentId)}>{el.main}</NameSec>
-                <UserSec>{el.userId}</UserSec>
+                <UserSec>{el.user.nickname}</UserSec>
                 <select onChange = {handleDropDown}>
                     <option value = '선택하세요'>...</option>
                     <option value = '혐의없음'>혐의없음</option>
