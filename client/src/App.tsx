@@ -23,6 +23,7 @@ import Loader from './component/Loader';
 const ContentWrap = styled.div`
 
 display: flex;`
+
 function App() {
   const config = {
     headers: {
@@ -75,9 +76,10 @@ function App() {
   }
 
   function PrivateRoute() {
-    return isLogin ? <Outlet /> : <>{setTimeout(() => {
-      alert('로그인하세욧!!!')
-    }, 0)}<Navigate replace to='/login' /></>;
+    useEffect(()=>{
+      if(!isLogin) alert('로그인하세욧!');
+    }, []);
+    return isLogin ? <Outlet /> : <Navigate replace to='/login' />;
   }
  
   if (isLoading) return <Loader type="spin" color="#999999" />
