@@ -29,25 +29,13 @@ function App() {
   display: flex;`
   const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(true);
-  const [isLanding, setLanding] = useState(false)
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const isAdmin = useAppSelector((state: RootState) => state.info.admin)
   const cookies = new Cookies();
 
-
   const accessToken = cookies.get("accessToken")
-  const nowURL = new URL(window.location.href); //URL값 따오기 
-  const path = nowURL.pathname
-  console.log(path)
 
   useEffect(() => {
-    console.log(isLanding)
-    if (path === '/'){
-      setLanding(true)
-    }
-    else {
-      setLanding(false)
-    }
     if (accessToken) {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
@@ -63,7 +51,7 @@ function App() {
     })    
     }
     else setIsLoading(false);
-  }, [isLanding])
+  }, [])
 
 
   // const [isLogin, setlogin] = useState(false)
@@ -141,3 +129,4 @@ function App() {
 }
 
 export default App
+
