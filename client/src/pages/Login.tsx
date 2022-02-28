@@ -7,7 +7,7 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import axios from 'axios';
 import { apiURL } from '../url'
-import { setLogin, setOauth } from '../features/info';
+import { setLogin, setOauth, setAdmin } from '../features/info';
 
 
 //배경
@@ -124,6 +124,10 @@ function Login (props: any):JSX.Element {
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 dispatch(setLogin(true))
+                if(el.data.data.admin){
+                    dispatch(setAdmin(true))
+                }
+                
                 navigate('/mypage')
             })
             
@@ -132,6 +136,7 @@ function Login (props: any):JSX.Element {
         const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
                 window.location.assign(`${apiURL}/kakao`)
                 dispatch(setOauth(true))
+                
                 
 
         // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄

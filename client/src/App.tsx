@@ -9,10 +9,11 @@ import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
-import { setLogin, setOauth } from './features/info';
+import { setLogin, setOauth, setAdmin } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
 import { Outlet, Navigate } from 'react-router';
+import Loader from './component/Loader';
 
 
 
@@ -30,13 +31,13 @@ function App() {
     withCredentials: true
   };
   const dispatch=useAppDispatch()
+  const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const cookies = new Cookies();
   
   const accessToken = cookies.get("accessToken")
   
-  useEffect( () => {
-    
+  useEffect( () => {    
     if(accessToken){
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
@@ -45,8 +46,13 @@ function App() {
       if(el.data.data.kakao){
         dispatch(setOauth(true))
       }
-    })
+      if(el.data.data.admin){
+        dispatch(setAdmin(true))
+      }
+      setIsLoading(false);
+    })    
     }
+    else setIsLoading(false);
 }, [])
   // const [isLogin, setlogin] = useState(false)
 
@@ -69,10 +75,11 @@ function App() {
 
   function PrivateRoute() {
     return isLogin ? <Outlet /> : <>{setTimeout(() => {
-      alert('로그인하세욧!!!')
+      // alert('로그인하세욧!!!')
     }, 0)}<Navigate replace to='/login' /></>;
   }
  
+  if (isLoading) return <Loader type="spin" color="#999999" />
   return (
     <div className="App">
       

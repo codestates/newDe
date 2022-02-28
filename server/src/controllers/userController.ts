@@ -181,7 +181,7 @@ const setUserPenalty = async (req:Request, res:Response) => {
 
     const targetUser = await userRepository.findOne(userId);
 
-    targetUser.penalty = new Date(Date.now() + (new Date(penalty*24*60*60*1000).getTime() - new Date(0).getTime())).toString();
+    targetUser.penalty = new Date(Date.now() + (penalty*24*60*60*1000)).toString();
 
     await userRepository.save(targetUser);
 
