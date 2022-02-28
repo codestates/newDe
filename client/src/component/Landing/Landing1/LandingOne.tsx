@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { EffectCoverflow, Autoplay, Navigation, Pagination } from 'swiper';
+import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
 import { SwiperContainer, StyledSwiper, SwiperWrapper } from './LandingOneStyle';
 
 import 'swiper/css';
