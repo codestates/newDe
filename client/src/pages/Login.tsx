@@ -11,75 +11,108 @@ import { setLogin, setOauth, setAdmin } from '../features/info';
 
 
 //배경
-const MainContainer = styled.div`
-display: flex;
-position: absolute;
-background : #F3F3F3;
-width: 100%;
-height: 100%;
-text-align: center;
-align-items: center;
-justify-content: center;
-
-
-`
-//로그인 컨테이너
+const LoginWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: whitesmoke;
+`;
 const LoginContainer = styled.div`
-
-display: flex;
-flex-direction: column;
-align-items: center;
-width: 40%;
-
-
-@media ${(props)=> props.theme.mobile}{
+  width: 300px;
+  height: 570px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 2px solid #F1F1F1;
+  .img {
+    height: 250px;
+  }
+  div {
     width: 100%;
-    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .signup {
+    cursor: pointer;
+    background-color: white;
+    border: 0;
+    outline: 0;
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 10px;
+    font-family: 'Do Hyeon', sans-serif;
+  }
+  .signup:hover {
+    color: #34495E;
+  }
+`;
 
-}
-`
-//로고부분 
-const LogoWrap = styled.div` 
-margin-right: 3%;
-width: 50%;
-align-items: center;
-text-align: center;`
+const InputWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: center;
+`;
 
+const LoginInput = styled.input`
+  border: 2px solid #F1F1F1;
+  border-radius: 7px;
+  height: 40px;
+  width: 250px;
+  font-size: 16px;
+  margin-bottom: 3px;
+`;
 
-//입력창 위 설명부분(email, 비밀번호 )
-const NameWrap = styled.div`
-margin: 4;
-width: 80%;
-text-align: left;
-padding-left: 10px;
-` 
+const FloatingText = styled.div`
+  text-align: center;
+  color: #C4C4C4;
+  line-height: 40px;
+`;
 
+const LoginButton = styled.button`
+    width: 80%;
+    height: 2.5rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #34495E;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.5s;
+    &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+      background-color: #000;
+    }
+`;
 
-
-//입력창 부분 
-const InputWrap = styled.input`
-margin: 2%;
-width: 80%;
-background-color: seashell;
-
-
-`
-
-const BtnContainer = styled.div`
-display: flex;
-flex-direction: column;
-width: 80%;
-align-items: center;
-justify-content: center;
-margin: 10px;
-`
-
-const BtnBox = styled.button`
-border: 1px solid black;
-border-radius: 3px;
-width: 60%;
-margin: 5px;
-`
+const KaKaoButton = styled.button`
+    width: 80%;
+    height: 2.5rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #FEE521;    
+    color: #ffffff;
+    font-weight: 700;
+    transition: all 0.5s;
+    &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+    }
+    .cacao {
+      height: 2.45rem;
+    }
+`;
 
 
 
@@ -149,40 +182,20 @@ function Login (props: any):JSX.Element {
 
 
     return  (
-        <MainContainer>
-            <LoginContainer>
-                
-                <LogoWrap>
-                    
-                    <img src = "images/biglogo.png" width= "100%"></img>
-                </LogoWrap>
-                <NameWrap>
-                    email
-                </NameWrap>
-                <InputWrap type = 'email' placeholder = 'email' onChange = {handleInput} />
-                    
-                
-                <NameWrap>
-                    password
-                </NameWrap>
-                <InputWrap type= 'password' placeholder = 'password' onChange= {handleInput} />
-                
-                <BtnContainer>
-                    
-                    <BtnBox onClick = {loginSubmit}>로그인</BtnBox>
-                    <BtnBox onClick = {kakaologinSubmit}>카카오 로그인</BtnBox>
-                    <BtnBox onClick = {handleSignUpSubmit}>회원가입</BtnBox>
-
-                </BtnContainer>
-
-            </LoginContainer>
-
-
-
-        </MainContainer>
-            
-
-
+      <LoginWrap>
+        <LoginContainer>
+          <img src='images/logodd.png' alt='logo' className='img' />
+          <InputWrap>
+            <LoginInput type='email' placeholder='email' onChange={handleInput} />
+            <LoginInput type='password' placeholder='password' onChange={handleInput} />
+          </InputWrap>
+          <br />
+          <button className='signup' onClick={handleSignUpSubmit}>아직 계정이 없습니까?</button>
+          <LoginButton className='loginBtn' onClick={loginSubmit}>Login</LoginButton>
+          <FloatingText>──────   또는   ──────</FloatingText>
+          <KaKaoButton className='githubBtn' onClick={kakaologinSubmit}><img src='/images/kakao.png' alt='logo' className='cacao' /></KaKaoButton>
+        </LoginContainer>
+      </LoginWrap>         
     )
         
 }

@@ -118,6 +118,7 @@ function Nav (props:Iprops):JSX.Element  {
              navigate('/')     
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
+             dispatch(setAdmin(false))
          }).catch(err=>{
              console.log(err)
          })
@@ -134,11 +135,18 @@ function Nav (props:Iprops):JSX.Element  {
                 </Items>
             </Col>
             {isLogin 
+            ? isAdmin 
             ?
             <Col>
+                <Item><Link to ='/admin'>admin</Link></Item>
                 <Item><Link to = "/mypage">Mypage {mypageMatch && <Circle />}</Link></Item>
                 <Item onClick = {handleLogout}>Logout</Item>
             </Col> 
+            :
+            <Col>
+                <Item><Link to = "/login">Login</Link></Item>
+                <Item><Link to = "/signup">Join</Link></Item>
+            </Col>
             :
             <Col>
                 <Item><Link to = "/login">Login</Link></Item>

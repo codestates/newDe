@@ -61,7 +61,7 @@ html,body {
 
 body {
   font-weight: 300;
-  font-family: 'NotoSans-Light';
+  font-family: 'Do Hyeon', sans-serif;
   line-height: 1.2;
   background-color: white;
 }

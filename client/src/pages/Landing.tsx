@@ -7,7 +7,7 @@ const LandingWholeContainer = styled.div`
   /* border: 10px solid black; */
   overflow: hidden;
   position: relative;
-  height: 2850px;
+  height: 2900px;
   width: 100vw;
 `
 
@@ -16,7 +16,7 @@ const LandingWrapperOne = styled.div`
   justify-content: center;
   align-items: center;
   /* border: 1px solid red; */
-  height: 950px;
+  height: 1000px;
 `;
 
 const LandingWrapperTwo = styled.div`
