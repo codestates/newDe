@@ -22,12 +22,18 @@ function Callback(props:any):JSX.Element {
         const url = new URL(window.location.href);
 
         const login = url.searchParams.get('islogin')
+        const isbanned = url.searchParams.get('isbanned')
         if(login === 'success') {
             
             dispatch(setLogin(true))
             
             navigate('/MyPage')
             }
+
+        if(isbanned === 'true'){
+            alert("차단된 유저입니다.")
+            navigate('/')
+        }
         
         
     }, [])
