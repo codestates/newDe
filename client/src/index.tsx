@@ -5,11 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './style/global'
 import { Provider} from 'react-redux'
 import {store} from './store/index'
+import './index.css'
 
 
 
 ReactDOM.render(
-  <Provider store ={ store}>
+  <Provider store ={store}>
       <GlobalStyle />
       <App />
   </Provider>,
