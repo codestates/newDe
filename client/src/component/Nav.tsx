@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin, setOauth } from '../features/info';
+import { setLogin, setOauth, setAdmin } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
 import { setOriginalNode } from 'typescript';
@@ -122,6 +122,7 @@ function Nav (props:Iprops):JSX.Element  {
          .then((res) => {
              dispatch(setLogin(false))
              dispatch(setOauth(false))
+             dispatch(setAdmin(false))
              alert('로그아웃 되었습니다')
              navigate('/')
          }).catch(err=>{
