@@ -29,7 +29,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (userInfo) {
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             // console.log(token);
-            res.cookie('accessToken', token, { domain: 'newb-d.com', sameSite: 'none', secure: true });
+            res.cookie('accessToken', token);
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
         else {
@@ -39,7 +39,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.clearCookie('accessToken', { domain: 'newb-d.com', sameSite: 'none', secure: true }).status(205).json({ message: 'Logout Success' });
+    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' });
 });
 exports.logout = logout;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

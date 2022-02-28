@@ -63,11 +63,11 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const kakaoEmail = yield userRepository.findOne({ email: kakaoInfo.kakao_account.email });
         //쿼리문 읽어서 모달창 띄우기
         if (kakaoEmail && !kakaoEmail.kakao) {
-            return res.status(409).redirect(`${process.env.CLIENT_URI}/login?islogin=fail`);
+            return res.status(409).redirect(`${process.env.KINGSENAL_URI}/login?islogin=fail`);
         }
         if (kakaoEmail && kakaoEmail.kakao) {
             const accessToken = yield (0, generateToken_1.generateToken)(kakaoEmail);
-            return res.status(201).cookie('accessToken', accessToken, { domain: 'newb-d.com', sameSite: 'none', secure: true }).redirect(`${process.env.CLIENT_URI}/callback?islogin=success`);
+            return res.status(201).cookie('accessToken', accessToken).redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`);
         }
         let count = 1;
         let nickname = kakaoInfo.properties.nickname;
@@ -89,8 +89,8 @@ const kakaologin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.log(accessToken);
         return res
             .status(201)
-            .cookie('accessToken', accessToken, { domain: 'newb-d.com', sameSite: 'none', secure: true })
-            .redirect(`${process.env.CLIENT_URI}/callback?islogin=success`);
+            .cookie('accessToken', accessToken)
+            .redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`);
     }
     catch (e) {
         console.log(e);
