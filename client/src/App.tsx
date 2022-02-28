@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback } from './pages'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin} from './pages'
 import {Nav, BoardModal} from './component';
 import {ThemeProvider} from 'styled-components'
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from './store/hooks'
 import { setLogin, setOauth } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
+import { Outlet, Navigate } from 'react-router';
 
 
 
@@ -40,20 +41,19 @@ function App() {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
     .then(el => {
-      console.log(el.data.data.kakao)
       dispatch(setLogin(true))
       if(el.data.data.kakao){
         dispatch(setOauth(true))
       }
     })
     }
-        
-    
-    
-    
 }, [])
   // const [isLogin, setlogin] = useState(false)
 
+  const pathUrl ={
+    landing:'/',
+    board:''
+  }
   const [isModalOpened, setModal] = useState(false)
   function modalHandler () {
     setModal(!isModalOpened)
@@ -67,9 +67,12 @@ function App() {
     dispatch(setLogin(true))
   }
 
-  
-  
-
+  function PrivateRoute() {
+    return isLogin ? <Outlet /> : <>{setTimeout(() => {
+      alert('로그인하세욧!!!')
+    }, 0)}<Navigate replace to='/login' /></>;
+  }
+ 
   return (
     <div className="App">
       
@@ -84,12 +87,19 @@ function App() {
             <Route path='/:id' element={<ContentView />} />
             <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
             <Route path='/mainboard' element={<MainBoard />} />
-            <Route path='/mypage' element={<MyPage />} />
-            <Route path='/mypageedit' element={<MyPageEdit />} />
+            <Route path='/mypage/*' element={<PrivateRoute />}>
+              <Route path='' element={<MyPage />} />
+            </Route>
+            <Route path='/mypageedit' element={<PrivateRoute />}>
+              <Route path='' element={<MyPageEdit />} />
+            </Route>
             <Route path='/signup' element={<SignUp />} />
-            <Route path='/writing' element={<Writing />} />
+            <Route path='/writing' element={<PrivateRoute />}>
+              <Route path='' element={<Writing />} />
+            </Route>
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
+            <Route path='/admin' element={<Admin />} />
             
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
