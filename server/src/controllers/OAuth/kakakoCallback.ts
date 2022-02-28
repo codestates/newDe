@@ -47,11 +47,11 @@ const kakaologin = async (req:Request, res:Response) => {
          //쿼리문 읽어서 모달창 띄우기
          
          if(kakaoEmail && !kakaoEmail.kakao) {              
-              return res.status(409).redirect(`${process.env.CLIENT_URI}/login?islogin=fail`);
+              return res.status(409).redirect(`${process.env.KINGSENAL_URI}/login?islogin=fail`);
             }
          if(kakaoEmail && kakaoEmail.kakao) {
              const accessToken = await generateToken(kakaoEmail) 
-              return res.status(201).cookie('accessToken', accessToken, {domain : 'newb-d.com', sameSite: 'none', secure: true}).redirect(`${process.env.CLIENT_URI}/callback?islogin=success`);
+              return res.status(201).cookie('accessToken', accessToken).redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`);
          }
 
          let count = 1
@@ -77,8 +77,8 @@ const kakaologin = async (req:Request, res:Response) => {
 
         return res
             .status(201)
-            .cookie('accessToken', accessToken, {domain : 'newb-d.com', sameSite: 'none', secure: true})
-            .redirect(`${process.env.CLIENT_URI}/callback?islogin=success`)
+            .cookie('accessToken', accessToken)
+            .redirect(`${process.env.KINGSENAL_URI}/callback?islogin=success`)
     }
 
     catch(e) {

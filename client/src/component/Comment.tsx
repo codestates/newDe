@@ -67,6 +67,12 @@ function Comment(props: any):JSX.Element {
         .then(el => alert('신고되었습니다.'))
     }
 
+    const deleteHandler = () => {
+
+        axios.delete(`${apiURL}/comment/${props.id}`, config)
+            .then(el=>alert("삭제되었습니다"))
+    }
+
     return (
         <CommentContainer>
             <UpperWrap>

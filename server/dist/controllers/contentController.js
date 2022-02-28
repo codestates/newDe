@@ -12,16 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getReportedContent = exports.deleteContent = exports.editContent = exports.getContentDetail = exports.createContent = exports.allContent = exports.reportContent = exports.recommentContent = void 0;
 const typeorm_1 = require("typeorm");
 const content_1 = require("../entities/content");
+const contentLike_1 = require("../entities/contentLike");
+const contentReport_1 = require("../entities/contentReport");
 const authorizeToken_1 = require("../middleware/token/authorizeToken");
 const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { contentId } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    console.log(contentId);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const ContentLikeRepository = (0, typeorm_1.getRepository)(contentLike_1.ContentLike);
     const contentInfo = yield ContentRepository.findOne({
         where: { id: contentId }
     });
+    const overlap = yield ContentLikeRepository.findOne({
+        where: { content: contentId, user: verify.userInfo.id }
+    });
+    console.log(overlap);
+    if (overlap) {
+        return res.status(400).json({ message: "Fail" });
+    }
     yield (0, typeorm_1.getConnection)()
         .createQueryBuilder()
         .update(content_1.Content)
@@ -29,6 +40,15 @@ const recommentContent = (req, res) => __awaiter(void 0, void 0, void 0, functio
         like: contentInfo.like + 1
     })
         .where({ id: contentId })
+        .execute();
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .insert()
+        .into(contentLike_1.ContentLike)
+        .values([
+        { user: verify.userInfo.id,
+            content: contentId }
+    ])
         .execute();
     res.status(200).json({ message: "success" });
 });
@@ -152,8 +172,15 @@ const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     const targetContent = yield ContentRepository.findOne({ id: Number(req.params.contentid) });
+    console.log(verify.userInfo);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
+    if (!targetContent)
+        return res.status(400).json({ message: 'no article' });
+    if (verify.userInfo.admin) {
+        yield ContentRepository.delete(req.params.contentid);
+        return res.status(200).json({ message: 'Deleted' });
+    }
     if (targetContent.userId !== verify.userInfo.id)
         return res.status(400).json({ message: 'different user' });
     yield ContentRepository.delete(req.params.contentid);
@@ -162,14 +189,38 @@ const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.deleteContent = deleteContent;
 // report
 const reportContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { contentId } = req.body;
+    const { contentId, initialrize } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
+    const ContentReportRepository = (0, typeorm_1.getRepository)(contentReport_1.ContentReport);
+    if (initialrize && verify.userInfo.admin) {
+        yield (0, typeorm_1.getConnection)()
+            .createQueryBuilder()
+            .update(content_1.Content)
+            .set({
+            report: 0
+        })
+            .where({ id: contentId })
+            .execute();
+        yield (0, typeorm_1.getConnection)()
+            .createQueryBuilder()
+            .delete()
+            .from(contentReport_1.ContentReport)
+            .where("content = :content", { content: contentId })
+            .execute();
+        return res.status(200).json({ message: "success" });
+    }
     const contentInfo = yield ContentRepository.findOne({
         where: { id: contentId }
     });
+    const overlap = yield ContentReportRepository.findOne({
+        where: { content: contentId, user: verify.userInfo.id }
+    });
+    if (overlap) {
+        return res.status(400).json({ message: "Fail" });
+    }
     yield (0, typeorm_1.getConnection)()
         .createQueryBuilder()
         .update(content_1.Content)
@@ -178,14 +229,27 @@ const reportContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     })
         .where({ id: contentId })
         .execute();
-    res.status(200).json({ message: "success" });
+    yield (0, typeorm_1.getConnection)()
+        .createQueryBuilder()
+        .insert()
+        .into(contentReport_1.ContentReport)
+        .values([
+        { user: verify.userInfo.id,
+            content: contentId }
+    ])
+        .execute();
+    return res.status(200).json({ message: "success" });
 });
 exports.reportContent = reportContent;
 const getReportedContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
-    const contents = yield ContentRepository.find({
-        report: (0, typeorm_1.MoreThanOrEqual)(5)
-    });
+    const contents = yield ContentRepository
+        .createQueryBuilder('content')
+        .leftJoin('content.user', 'contents')
+        .select(['content', 'contents.nickname'])
+        .where('content.report >= :report', { report: 5 })
+        .getMany();
+    console.log(contents);
     res.status(200).json({ data: contents, message: "ok" });
 });
 exports.getReportedContent = getReportedContent;

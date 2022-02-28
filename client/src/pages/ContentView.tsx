@@ -179,6 +179,17 @@ const getComment = async () => {
         axios.patch(`${apiURL}/board/report`,{contentId: path}, config)
         .then(el => alert('신고되었습니다.'))
     }
+
+    const handleModify = () =>{
+
+
+    }
+
+    const handleDelete = () =>{
+        axios.delete(`${apiURL}/board/${path}`, config)
+            .then(el=>alert("삭제되었습니다"))
+
+    }
     return (
         
         <MainContainer>
@@ -189,8 +200,8 @@ const getComment = async () => {
                         <TitleSec>{content.title}</TitleSec>
                         {usernickname === content.nickname ? 
                         <ButtonSec>
-                            <ContentBtn>수정</ContentBtn>
-                            <ContentBtn>삭제</ContentBtn>
+                            <ContentBtn onClick = {handleModify}>수정</ContentBtn>
+                            <ContentBtn onClick = {handleDelete}>삭제</ContentBtn>
                         </ButtonSec>
                         : (isLogin ?
                             <ButtonSec>
