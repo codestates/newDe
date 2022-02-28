@@ -31,7 +31,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', default: null }),
+    (0, typeorm_1.Column)({ default: Date() }),
     __metadata("design:type", String)
 ], User.prototype, "penalty", void 0);
 __decorate([
