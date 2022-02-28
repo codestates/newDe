@@ -1,1 +1,1 @@
-export const apiURL = 'http://localhost:4000'
+export const apiURL = 'https://server.newb-d.com'
