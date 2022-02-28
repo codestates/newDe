@@ -6,6 +6,7 @@ export interface infoState {
   login:boolean
   oauth:boolean
   nickname:string
+  manager:boolean
 }
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   child:'',
   login:false,
   oauth:false,
-  nickname:''
+  nickname:'',
+  manager:false
 } as infoState
 
 export const info = createSlice({
@@ -35,9 +37,12 @@ export const info = createSlice({
     setNickname:(state,action:PayloadAction<any>)=>{
       state.nickname=action.payload
     },
+    setManager:(state,action:PayloadAction<any>)=>{
+      state.manager=action.payload
+    },
   },
 })
 
-export const { setParent,setChild,setLogin,setOauth ,setNickname} = info.actions
+export const { setParent,setChild,setLogin,setOauth ,setNickname,setManager} = info.actions
 
 export default info.reducer
