@@ -106,9 +106,12 @@ function App() {
               <Route path='' element={<MyPageEdit />} />
             </Route>
             <Route path='/signup' element={<SignUp />} />
+
             <Route path='/writing' element={<PrivateRoute />}>
               <Route path='' element={<Writing />} />
-            </Route>
+              <Route path=':contentId' element={<Writing />} />
+            </Route>    
+
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
             <Route path='/admin' element={<AdminPrivate />}>
