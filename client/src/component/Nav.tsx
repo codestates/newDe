@@ -104,7 +104,6 @@ function Nav (props:Iprops):JSX.Element  {
          .get(`${apiURL}/user/logout`,config)
 
          .then((res) => {                   
-             alert('로그아웃 되었습니다')
              navigate('/')     
              dispatch(setLogin(false))
              dispatch(setOauth(false))  

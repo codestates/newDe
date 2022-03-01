@@ -7,6 +7,7 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { Navigate } from "react-router";
 import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 const ContainerWrap = styled.div`
@@ -187,8 +188,10 @@ function Writing(): JSX.Element {
     },[])
     return (
 
+
         <ContainerWrap>
             <input placeholder="title" style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px'}} onChange={onChange}></input>
+
             <a>
 
             </a>
@@ -209,6 +212,7 @@ function Writing(): JSX.Element {
             </div>
             <button onClick={clickhandler}>전송</button>
         </ContainerWrap>
+
     );
 }
 
