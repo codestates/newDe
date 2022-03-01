@@ -7,6 +7,11 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { Navigate } from "react-router";
 import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+
+const Hi = styled.div`
+  margin-top: 100px;
+`
 
 function Writing(): JSX.Element {
     const navigate = useNavigate()
@@ -150,7 +155,7 @@ function Writing(): JSX.Element {
     },[])
     return (
 
-        <div>
+        <Hi>
             <input placeholder="title" style={{ height: "35px", width: '835px', padding: '15px', margin: '10px 0px 10px 0px' }} onChange={onChange}></input>
             <a>
 
@@ -171,7 +176,7 @@ function Writing(): JSX.Element {
 
             </div>
             <button onClick={clickhandler}>전송</button>
-        </div>
+        </Hi>
     );
 }
 

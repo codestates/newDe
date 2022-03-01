@@ -14,13 +14,13 @@ import { setChild, setParent } from '../features/info';
 const MainContainer = styled.div`
 display: flex;
 flex-direction: column;
-position: absolute;
 background : #F3F3F3;
 width: 100%;
 height: 100%;
 text-align: center;
 align-items: center;
 justify-content: center;
+margin-top: 100px;
 .btn {
     text-decoration-line: none;
     color: #34495E;

@@ -104,7 +104,6 @@ function Nav (props:Iprops):JSX.Element  {
          .get(`${apiURL}/user/logout`,config)
 
          .then((res) => {                   
-             alert('로그아웃 되었습니다')
              navigate('/')     
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
@@ -134,8 +133,8 @@ function Nav (props:Iprops):JSX.Element  {
             </Col> 
             :
             <Col>
-                <Item><Link to = "/login">Login</Link></Item>
-                <Item><Link to = "/signup">Join</Link></Item>
+                <Item><Link to = "/mypage">Mypage {mypageMatch && <Circle />}</Link></Item>
+                <Item onClick = {handleLogout}>Logout</Item>
             </Col>
             :
             <Col>
