@@ -134,8 +134,8 @@ function Nav (props:Iprops):JSX.Element  {
             </Col> 
             :
             <Col>
-                <Item><Link to = "/login">Login</Link></Item>
-                <Item><Link to = "/signup">Join</Link></Item>
+                <Item><Link to = "/mypage">Mypage {mypageMatch && <Circle />}</Link></Item>
+                <Item onClick = {handleLogout}>Logout</Item>
             </Col>
             :
             <Col>
