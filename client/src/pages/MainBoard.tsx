@@ -10,6 +10,7 @@ import { apiURL } from '../url'
 
 
 const MainContainer = styled.div`
+margin-top: 100px;
 display: flex;
 background : #F3F3F3;
 width: 100%;

@@ -32,7 +32,7 @@ app.use(express.json()); //body parser(json)
 app.use(cookieParser());
 app.use(express.urlencoded({extended:false}))
 // app.use(express.static(__dirname+'/../src/imageStorage'));
-app.use(express.static(__dirname+'/../src/imageStorage'));
+app.use(express.static('./src/imageStorage'));
 // app.use(express.static('.'));
 
 app.use(logger);
