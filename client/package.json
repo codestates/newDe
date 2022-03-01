@@ -16,6 +16,7 @@
     "@types/react-redux": "^7.1.22",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
+    "aos": "^2.3.4",
     "axios": "^0.26.0",
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
@@ -60,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@types/aos": "^3.0.4",
     "@types/smoothscroll-polyfill": "^0.3.1",
     "@types/styled-components": "^5.1.22"
   }
