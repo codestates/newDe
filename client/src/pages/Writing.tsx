@@ -7,11 +7,46 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { Navigate } from "react-router";
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const ContainerWrap = styled.div`
+border: 1px solid black;
+position: absolute;
+width: 50%;
+background: Whitesmoke;
+opacity: 90%;
+padding: 10px;
+margin-top: 100px;
+z-index: 1;
+
+@media ${(props)=> props.theme.mobile}{
+    width: 100%;
+}
+`
+
 
 function Writing(): JSX.Element {
+    useEffect(() => {
+        // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
+        // then으로 바꿔서 만들어 보자
+        const callback = async () => {
+            const response = await axios.get(`${apiURL}/board/${contentId}`, config);
+            return response;
+        }
+        
+        console.log('~~~~~~~~~~~', callback());
+        
+    }, [])
+
+    const url = window.location.href;
+    const contentId = url.split('/')[url.split('/').length - 1];
+
+    const [getContentMain, setGetContentMain] = useState<string>('');
+
     const navigate = useNavigate()
 
     const QuillRef = useRef<ReactQuill>()
+
     const [contents, setContents] = useState({
         title: '',
         main: '',
@@ -24,8 +59,10 @@ function Writing(): JSX.Element {
         withCredentials: true
     }
     const clickhandler = async (e: any) => {
-        try {
-            await axios.post(`${apiURL}/board`, contents, config)
+        try {            
+            if(contentId) await axios.patch(`${apiURL}/board`, contents, config)
+            else await axios.post(`${apiURL}/board`, contents, config)
+
             navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
         } catch (err) {
             console.log(err)
@@ -150,8 +187,8 @@ function Writing(): JSX.Element {
     },[])
     return (
 
-        <div>
-            <input placeholder="title" style={{ height: "35px", width: '835px', padding: '15px', margin: '10px 0px 10px 0px' }} onChange={onChange}></input>
+        <ContainerWrap>
+            <input placeholder="title" style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px'}} onChange={onChange}></input>
             <a>
 
             </a>
@@ -171,7 +208,7 @@ function Writing(): JSX.Element {
 
             </div>
             <button onClick={clickhandler}>전송</button>
-        </div>
+        </ContainerWrap>
     );
 }
 
