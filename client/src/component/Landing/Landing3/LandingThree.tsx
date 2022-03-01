@@ -56,7 +56,11 @@ export const Landing3 = () => {
       <>
         <SectionContainer>
            <Title>
-               <TitleText>
+               <TitleText
+                 data-aos="fade-up"
+                 data-aos-delay="50"
+                 data-aos-duration="1300"
+                 data-aos-easing="ease-out">
                  당신에게 맞는 성향을 추천해드립니다 !
                  <br />
                  지금 바로 테스트해보세요 !  
@@ -64,6 +68,10 @@ export const Landing3 = () => {
            </Title>
            <BtnWrap>
                <button
+                 data-aos="fade" 
+                 data-aos-delay="50"
+                 data-aos-duration="1300"
+                 data-aos-easing="ease-in-out"
                  onClick={() => navigate('/roadmap')}
                  className='btn'
                >
