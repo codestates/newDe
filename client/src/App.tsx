@@ -18,7 +18,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 
-
+const ContentWrap = styled.div`
+  display: flex;`
 
 function App() {
   const config = {
@@ -27,8 +28,7 @@ function App() {
     },
     withCredentials: true
   };
-  const ContentWrap = styled.div`
-  display: flex;`
+  
   const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)

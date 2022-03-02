@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 
+
 const SectionContainer = styled.div`
   position: relative;
   background-color: black;
@@ -44,12 +45,13 @@ const BtnWrap = styled.div`
       color: #000;
       transition: #fff 1s ease-in-out;
       background-color: #fff;
+      cursor: pointer;
       }
     }
 `
 
 export const Landing3 = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
     return(
