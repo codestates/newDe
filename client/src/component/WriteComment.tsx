@@ -35,7 +35,7 @@ interface writingprops {
 
 
 function WriteComment(props: writingprops):JSX.Element {
-    const [inputText, setText] = useState('')
+    const [inputText, setText] = useState(props.content)
     const config = {
         headers: {
             'Content-Type': 'application/json'
