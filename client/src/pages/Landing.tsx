@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Landing1 } from '../component/Landing/Landing1/LandingOne';
-import { Landing2 } from '../component/Landing/Landing2/LandingTwo';
-import { Landing3 } from '../component/Landing/Landing3/LandingThree';
+import { Landing1 } from '../component/Landingpage/Landing1/LandingOne';
+import { Landing2 } from '../component/Landingpage/Landing2/LandingTwo';
+import { Landing3 } from '../component/Landingpage/Landing3/LandingThree';
 
 const LandingWholeContainer = styled.div`
   /* border: 10px solid black; */
@@ -37,7 +37,7 @@ const LandingWrapperThree = styled.div`
 
 function Landing ():JSX.Element {
     return (
-        <>
+      <>
         <LandingWholeContainer>
 
           <LandingWrapperOne>
