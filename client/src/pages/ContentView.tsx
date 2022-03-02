@@ -166,7 +166,7 @@ const getComment = async () => {
     const datatoComment = commentlist.map((el:any)=>{
         return (
             <CommentWrap key = {el.id}>
-                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname}  />
+                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname} contentid = {path}  />
 
             </CommentWrap>
         )
@@ -225,7 +225,7 @@ const getComment = async () => {
                     {datatoComment}
                 
                 <WritingBox>
-                {isLogin ? <WriteComment contentid = {path}/> :null}
+                {isLogin ? <WriteComment contentid = {path} ismodify = {false} content = {''} commentid = {''}/> :null}
                 
                 </WritingBox>
                 

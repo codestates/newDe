@@ -8,6 +8,7 @@ import axios from 'axios';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { apiURL } from '../url';
+import {WriteComment} from '../component';
 
 const CommentContainer = styled.div`
 display: flex;
@@ -56,6 +57,8 @@ function Comment(props: any):JSX.Element {
     // console.log(props)
     const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
 
+    const [updated, setUpdated] =useState(false )
+
     const config = {
         headers: {
           'Content-Type': 'application/json'
@@ -75,14 +78,24 @@ function Comment(props: any):JSX.Element {
             window.location.reload();
             
     }
+    
+    const modifyHandler = () => {
+        
+        setUpdated(true)
 
+    }
     return (
         <CommentContainer>
+
+            {updated ? 
+            <WriteComment contentid = {props.contentid} ismodify = {true} content = {props.main} commentid= {props.id}/> 
+            : 
+            <div>
             <UpperWrap>
                 <UserPart>{props.nickname}</UserPart>
                 {isLogin ? (usernickname === props.nickname || isAdmin === true ?
                 <ButtonSec>
-                <CommentBtn>수정</CommentBtn>
+                <CommentBtn onClick = {modifyHandler}>수정</CommentBtn>
                 <CommentBtn onClick = {deleteHandler}>삭제</CommentBtn>
                 </ButtonSec>
                 : 
@@ -93,7 +106,9 @@ function Comment(props: any):JSX.Element {
 
             </UpperWrap>
             <CommentContent>{props.main}</CommentContent>
-        
+            </div>
+        }
+            
         
         </CommentContainer>
 

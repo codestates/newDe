@@ -12,6 +12,16 @@ import { useMatch } from 'react-router';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
+const nowURL = new URL(window.location.href); //URL값 따오기 
+const path = nowURL.pathname
+console.log(path)
+
+if (path === '/'){
+    const isLanding = true 
+}
+else {
+    const isLanding = false
+}
 const Navi = styled.nav`
   display: flex;
   justify-content: space-between;
