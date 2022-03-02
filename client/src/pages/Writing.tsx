@@ -14,7 +14,7 @@ const ContainerWrap = styled.div`
 border: 1px solid black;
 position: absolute;
 width: 50%;
-background: Whitesmoke;
+background: White;
 opacity: 90%;
 padding: 10px;
 margin-top: 100px;
@@ -27,23 +27,51 @@ z-index: 1;
 
 
 function Writing(): JSX.Element {
+    // 글쓰기 할때 useEffect 였는데 글 수정시 useEffect랑 통합하기
+    // useEffect(()=>{
+    //     setContents({ ...contents, parentCategory: parent ,childCategory:child})
+    // },[])
+
+
     useEffect(() => {
         // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
         // then으로 바꿔서 만들어 보자
-        const callback = async () => {
-            const response = await axios.get(`${apiURL}/board/${contentId}`, config);
-            return response;
-        }
-        
-        console.log('~~~~~~~~~~~', callback());
-        
-    }, [])
 
+        async function fetchData() {
+            try {
+                const res = await axios.get(`${apiURL}/board/${contentId}`, config)
+                
+                console.log('~~~!!!~~~', res.data)
+                setContents({
+                    title: res.data.data.title,
+                    main: res.data.data.main,
+                    parentCategory: res.data.data.parentCategory,
+                    childCategory: res.data.data.childCategory
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        console.log(typeof(contentId));
+        if(Number(contentId)) fetchData();        
+        
+        // axios.get(`${apiURL}/board/${contentId}`, config)
+        //     .then((res) => {
+        //         console.log(res.data.main);
+        //         setGetContentMain(res.data.main);
+        //     })        
+    }, [])
+    
     const url = window.location.href;
     const contentId = url.split('/')[url.split('/').length - 1];
     console.log(contentId)
 
-    const [getContentMain, setGetContentMain] = useState<string>('');
+    const [editContents, setEditContents] = useState({
+        title: '',
+        main: '',
+        parentCategory: '',
+        childCategory: ''
+    });    
 
     const navigate = useNavigate()
 
@@ -55,14 +83,16 @@ function Writing(): JSX.Element {
         parentCategory: '',
         childCategory: ''
     });// 에디터 속 콘텐츠를 저장하는 state
+    
     const { parent, child } = useAppSelector((state: RootState) => state.info)
     const config = {
         headers: { "Content-type": "application/json" },
         withCredentials: true
     }
+
     const clickhandler = async (e: any) => {
         try {            
-            if(contentId) await axios.patch(`${apiURL}/board`, contents, config)
+            if(contentId) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
             else await axios.post(`${apiURL}/board`, contents, config)
 
             navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
@@ -78,7 +108,6 @@ function Writing(): JSX.Element {
         const input = document.createElement("input");
         const formData = new FormData();
         let url = "";
-
 
         input.setAttribute("type", "file");//type="file"
         input.setAttribute("accept", "image/*");//accept="image/*"
@@ -184,14 +213,17 @@ function Writing(): JSX.Element {
     // 백엔드에서 이미지 접근 URL을 돌려 받는다.
     // 받은 URL로 img 요소를 생성한다 <img src=IMG_URL>
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
-    useEffect(()=>{
-        setContents({ ...contents, parentCategory: parent ,childCategory:child})
-    },[])
+    
     return (
 
 
         <ContainerWrap>
-            <input placeholder="title" style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px'}} onChange={onChange}></input>
+            <input 
+                placeholder="title" 
+                style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px'}} 
+                onChange={onChange}
+                value={contents.title}>
+            </input>
 
             <a>
 
@@ -202,11 +234,15 @@ function Writing(): JSX.Element {
                         QuillRef.current = element;
                     }
                 }}
-                onChange={(main) => { setContents({ ...contents, main: main }) }}
+
+                value={contents.main}
+                onChange={(main) => { setContents((prev) => {return { ...prev , main: main }}) }}
+                // onChange={(main) => { setContents({ ...contents , main: main }) }}
+
                 theme="snow"
                 placeholder="main"
                 modules={modules}
-                formats={formats}
+                formats={formats}                
             />
             <div>
 
