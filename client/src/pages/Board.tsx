@@ -135,6 +135,8 @@ const [searching, setSearchWord] = useState('') //검색어
 const [inputInfo, setInputInfo] = useState('')
 const [maxpage, setMax] = useState(1)
 
+const [pageChanged, setPageChanged] = useState(false);
+
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
 
@@ -187,19 +189,18 @@ const handlePage = (el:number) =>{
 
 useEffect(()=>{
     setLoading(true);
-    
+    setPageChanged(false);
     getListData();
-    setLoading(false)
-    
+    setLoading(false)    
 
-},[ParentCategory, ChildCategory, searching, nowpage])
+},[pageChanged, searching, nowpage])
 
 
 
 
     return (
         <MainContainer>
-            <LeftNav />
+            <LeftNav setPageChanged={setPageChanged}/>
     
 
         <BoardWrap>

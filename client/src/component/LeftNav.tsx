@@ -37,7 +37,7 @@ const ChildMenuWrap = styled.li`
 
 function leftnav (props:any):JSX.Element  {
     return (
-        <ContainerWrap>
+        <ContainerWrap onClick={()=>props.setPageChanged(true)}>
             <ParentMenuWrap>
                 <FrontCategory><Link to = '/board?parentcategory=front' className = 'btn'>Front</Link></FrontCategory>
                 <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=html' className = 'btn'>HTML</Link></ChildMenuWrap>
