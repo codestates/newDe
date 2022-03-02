@@ -183,7 +183,7 @@ useEffect(()=>{
     setLoading(true);
     getListData();
     setLoading(false)
-},[searching])
+},[searching, nowpage])
 
 
 

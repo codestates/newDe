@@ -87,7 +87,6 @@ function ContentList(props: ListCompo):JSX.Element {
     const navigate = useNavigate();
     function clickHandler(){
         navigate(`/${props.id}`)
-
     }
 
 
