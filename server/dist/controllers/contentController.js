@@ -123,7 +123,12 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     yield ContentRepository.save(content);
-    return res.status(201).json({ message: 'Success' });
+    // const createdContent = await ContentRepository.findOne({ 
+    //     where: { ...content }
+    // })  
+    console.log('~~~~~', content);
+    //console.log('~~~~~~~~~~~',createdContent);
+    return res.status(201).json({ data: content, message: 'Success' });
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -165,7 +170,7 @@ const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         .where({ id: targetContent.id })
         .execute();
     console.log(targetContent);
-    return res.status(200).json({ message: "edit success" });
+    return res.status(200).json({ data: targetContent, message: "edit success" });
 });
 exports.editContent = editContent;
 const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

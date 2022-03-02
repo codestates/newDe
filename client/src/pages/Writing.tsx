@@ -4,8 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
 import { apiURL } from '../url'
 import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { Navigate } from "react-router";
+import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -95,10 +94,12 @@ function Writing(): JSX.Element {
 
     const clickhandler = async (e: any) => {
         try {
-            if (contentId) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
-            else await axios.post(`${apiURL}/board`, contents, config)
+            let createdContentRes;            
+            if (Number(contentId)) createdContentRes = await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
+            else createdContentRes = await axios.post(`${apiURL}/board`, contents, config)
 
-            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
+            console.log(createdContentRes.data)
+            navigate(`/${createdContentRes.data.data.id}`)
         } catch (err) {
             console.log(err)
         }
@@ -217,12 +218,10 @@ function Writing(): JSX.Element {
     // 받은 URL로 img 요소를 생성한다 <img src=IMG_URL>
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
     const parentDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setParent(event.target.value)
         setSelParent(event.target.value);
         setContents({...contents, parentCategory:event.target.value})
     }
     const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setChild(event.target.value);
         setSelChild(event.target.value);
         setContents({...contents, childCategory:event.target.value})
     }

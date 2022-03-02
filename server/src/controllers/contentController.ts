@@ -127,7 +127,13 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     
     await ContentRepository.save(content);
-    return res.status(201).json({ message: 'Success'})
+    
+    // const createdContent = await ContentRepository.findOne({ 
+    //     where: { ...content }
+    // })  
+    console.log('~~~~~',content);
+    //console.log('~~~~~~~~~~~',createdContent);
+    return res.status(201).json({ data : content, message: 'Success'})
 };
 
 const getContentDetail = async (req:Request, res:Response) => {
@@ -174,7 +180,7 @@ const editContent = async (req:Request, res:Response) => {
 
         console.log(targetContent)
 
-    return res.status(200).json({ message: "edit success" })
+    return res.status(200).json({ data:targetContent, message: "edit success" })
 };
 
 const deleteContent = async (req:Request, res:Response) => {
