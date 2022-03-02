@@ -108,11 +108,7 @@ function Nav (props:Iprops):JSX.Element  {
              navigate('/')     
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
-<<<<<<< HEAD
-             dispatch(setAdmin(false))  
-=======
              dispatch(setAdmin(false))
->>>>>>> d9f3ff0515732d5d43039f741312edf7ce9121f2
          }).catch(err=>{
              console.log(err)
          })

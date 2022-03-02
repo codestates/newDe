@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
 import { SwiperContainer, StyledSwiper, SwiperWrapper } from './LandingOneStyle';
 
+
 import 'swiper/css';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';

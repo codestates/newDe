@@ -37,7 +37,7 @@ const LogoWrap = styled.div`
 
 width: 50%;
 
-aligh-items: center;
+align-items: center;
 text-align: center;
 `
 

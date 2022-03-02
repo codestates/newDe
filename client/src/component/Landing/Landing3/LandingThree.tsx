@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 
+
 const SectionContainer = styled.div`
   position: relative;
   background-color: black;
@@ -44,33 +45,34 @@ const BtnWrap = styled.div`
       color: #000;
       transition: #fff 1s ease-in-out;
       background-color: #fff;
+      cursor: pointer;
       }
     }
 `
 
 export const Landing3 = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
-    return(
-      <>
-        <SectionContainer>
-           <Title>
-               <TitleText>
-                 당신에게 맞는 성향을 추천해드립니다 !
-                 <br />
-                 지금 바로 테스트해보세요 !  
-               </TitleText>
-           </Title>
-           <BtnWrap>
-               <button
-                 onClick={() => navigate('/roadmap')}
-                 className='btn'
-               >
-                   테스트 하러 가기 
-               </button>
-           </BtnWrap>   
-        </SectionContainer> 
-      </>
-    )
+  return (
+    <>
+      <SectionContainer>
+        <Title>
+            <TitleText>
+              당신에게 맞는 성향을 추천해드립니다 !
+              <br />
+              
+            </TitleText>
+        </Title>
+        <BtnWrap>
+          <button
+            onClick={() => navigate('/roadmap')}
+            className='btn'
+          >
+            테스트 하러 가기
+          </button>
+        </BtnWrap>
+      </SectionContainer>
+    </>
+  )
 }
