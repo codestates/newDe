@@ -64,38 +64,60 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!childCategory) {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.childCategory = :childCategory', { childCategory: childCategory })
                 .getMany();
+            // console.log(payload.map(el => el.comments));
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
+            // console.log(payload);
         }
     }
     else {
         if (!childCategory) {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
                 .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.childCategory = :childCategory', { childCategory: childCategory })
                 .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
     }
     payload.reverse();
