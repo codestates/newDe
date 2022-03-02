@@ -35,7 +35,8 @@ const ChildMenuWrap = styled.li`
 
 
 
-function leftnav (props:any):JSX.Element  {
+function Leftnav (props:any):JSX.Element  {
+
     return (
         <ContainerWrap>
             <ParentMenuWrap>
@@ -60,4 +61,4 @@ function leftnav (props:any):JSX.Element  {
     )
 }
 
-export default leftnav;
+export default Leftnav;
