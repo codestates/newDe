@@ -152,7 +152,7 @@ const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(400).json({ message: 'Bad Content' });
     if (!title || !main || !parentCategory || !childCategory)
         return res.status(400).json({ message: 'Bad Request' });
-    if (targetContent.userId !== verify.userInfo.id)
+    if (!verify.userInfo.admin && targetContent.userId !== verify.userInfo.id)
         return res.status(400).json({ message: 'different user' });
     targetContent.title = title;
     targetContent.main = main;

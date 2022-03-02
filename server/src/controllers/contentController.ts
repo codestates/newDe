@@ -158,7 +158,7 @@ const editContent = async (req:Request, res:Response) => {
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
     if(!targetContent) return res.status(400).json({ message: 'Bad Content' });
     if(!title || !main || !parentCategory || !childCategory) return res.status(400).json({ message: 'Bad Request' });
-    if(targetContent.userId !== verify.userInfo.id ) return res.status(400).json({ message: 'different user' })
+    if(!verify.userInfo.admin && targetContent.userId !== verify.userInfo.id ) return res.status(400).json({ message: 'different user' })
 
     targetContent.title = title;
     targetContent.main = main;
