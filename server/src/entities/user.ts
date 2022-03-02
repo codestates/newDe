@@ -1,6 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm";
-import {Content} from './content';
-import {Comment} from './comment';
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, JoinTable, ManyToMany} from "typeorm";
+import { Content } from './content';
+import { Comment } from './comment';
+import { ContentLike } from "./contentLike";
+import { ContentReport } from "./contentReport";
+import { CommentReport } from "./commentReport";
 
 @Entity()
 export class User {
@@ -12,8 +15,8 @@ export class User {
 
     @Column()
     email: string;
-
-    @Column({type:'timestamp', default:null})
+    
+    @Column({default:Date()})
     penalty: string;
 
     @Column()
@@ -36,4 +39,14 @@ export class User {
 
     @OneToMany(()=> Comment, conment=>conment.user)
     comments: Comment[];
+
+    @OneToMany(()=> ContentLike, contentLike=>contentLike.user)
+    contentLikes: ContentLike[];
+
+    @OneToMany(()=> ContentReport, contentReport=>contentReport.user)
+    contentReports: ContentReport[];
+
+    @OneToMany(()=> CommentReport, commentReport=>commentReport.user)
+    commentReports: CommentReport[];
+
 }

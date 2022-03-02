@@ -43,15 +43,16 @@ const kakaologin = async (req:Request, res:Response) => {
 
          const userRepository = getRepository(User)
          const kakaoEmail = await userRepository.findOne({ email : kakaoInfo.kakao_account.email });
-
+         
          //쿼리문 읽어서 모달창 띄우기
          
          if(kakaoEmail && !kakaoEmail.kakao) {              
               return res.status(409).redirect(`${process.env.CLIENT_URI}/login?islogin=fail`);
             }
-         if(kakaoEmail && kakaoEmail.kakao) {
-             const accessToken = await generateToken(kakaoEmail) 
-              return res.status(201).cookie('accessToken', accessToken, {domain : 'newb-d.com', sameSite: 'none', secure: true}).redirect(`${process.env.CLIENT_URI}/callback?islogin=success`);
+         if(kakaoEmail && kakaoEmail.kakao) {            
+            if(new Date(kakaoEmail.penalty).getTime() - Date.now() > 0) return res.status(400).redirect(`${process.env.CLIENT_URI}/callback?ban=${kakaoEmail.penalty}`);
+            const accessToken = await generateToken(kakaoEmail) ;
+            return res.status(201).cookie('accessToken', accessToken, {domain: 'newb-d.com', sameSite: 'none', secure: true}).redirect(`${process.env.CLIENT_URI}/callback?islogin=success`);
          }
 
          let count = 1
@@ -77,7 +78,7 @@ const kakaologin = async (req:Request, res:Response) => {
 
         return res
             .status(201)
-            .cookie('accessToken', accessToken, {domain : 'newb-d.com', sameSite: 'none', secure: true})
+            .cookie('accessToken', accessToken, {domain: 'newb-d.com', sameSite: 'none', secure: true})
             .redirect(`${process.env.CLIENT_URI}/callback?islogin=success`)
     }
 

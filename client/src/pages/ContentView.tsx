@@ -109,6 +109,8 @@ function ContentView ():JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
     // const isLogin = true;
     const usernickname = useAppSelector((state: RootState) => state.info.nickname)
+    const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
+    const navigate = useNavigate()
 
 
     const config = {
@@ -164,7 +166,7 @@ const getComment = async () => {
     const datatoComment = commentlist.map((el:any)=>{
         return (
             <CommentWrap key = {el.id}>
-                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname}  />
+                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname} contentid = {path}  />
 
             </CommentWrap>
         )
@@ -179,6 +181,20 @@ const getComment = async () => {
         axios.patch(`${apiURL}/board/report`,{contentId: path}, config)
         .then(el => alert('신고되었습니다.'))
     }
+
+    const handleModify = () =>{      
+        const url = window.location.href;  
+        const contentId = url.split('/')[url.split('/').length-1];
+        console.log(url.split('/'))
+        navigate(`/writing/${contentId}`)
+    }
+
+    const handleDelete = () =>{
+        axios.delete(`${apiURL}/board/${path}`, config)
+            .then(el=>alert("삭제되었습니다"))
+            navigate('../mainboard')
+
+    }
     return (
         
         <MainContainer>
@@ -187,10 +203,10 @@ const getComment = async () => {
                 <ContentWrap>
                     <TitleWrap>
                         <TitleSec>{content.title}</TitleSec>
-                        {usernickname === content.nickname ? 
+                        {usernickname === content.nickname ||isAdmin === true ? 
                         <ButtonSec>
-                            <ContentBtn>수정</ContentBtn>
-                            <ContentBtn>삭제</ContentBtn>
+                            <ContentBtn onClick = {handleModify}>수정</ContentBtn>
+                            <ContentBtn onClick = {handleDelete}>삭제</ContentBtn>
                         </ButtonSec>
                         : (isLogin ?
                             <ButtonSec>
@@ -209,7 +225,7 @@ const getComment = async () => {
                     {datatoComment}
                 
                 <WritingBox>
-                {isLogin ? <WriteComment contentid = {path}/> :null}
+                {isLogin ? <WriteComment contentid = {path} ismodify = {false} content = {''} commentid = {''}/> :null}
                 
                 </WritingBox>
                 

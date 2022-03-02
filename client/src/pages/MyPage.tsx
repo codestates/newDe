@@ -6,6 +6,11 @@ import Edit from '../component/editPassword'
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
+import styled from 'styled-components';
+
+const Hi = styled.div`
+    margin-top: 100px;
+`
 
 function MyPage() {
     const [userInfo, setUserInfo] = useState<any>({})
@@ -53,7 +58,7 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
-            console.log(res.data)
+            console.log(res.data.data)
             setUserInfo(res.data.data)
             setContent(res.data.data.content)
         } catch (e) {
@@ -72,7 +77,7 @@ function MyPage() {
 
     if (loading) return <Loader type="spin" color="#999999" />
     return (
-        <div>
+        <Hi>
             <div>
                 <div>{userInfo.nickName}</div>
                 <button type='button' onClick={handleModal}>modal open</button>
@@ -84,9 +89,13 @@ function MyPage() {
                 </Edit>
             </div>
             <div>
-                
+                {content.map((el:any,index:number)=>
+                <div key={index}>
+                    <div>title : {el.title}</div>    
+                    <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
+                </div>)}
             </div>
-        </div>
+        </Hi>
     )
 }
 

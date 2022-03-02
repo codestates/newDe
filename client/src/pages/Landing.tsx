@@ -1,21 +1,59 @@
 import styled from 'styled-components';
+import { Landing1 } from '../component/Landingpage/Landing1/LandingOne';
+import { Landing2 } from '../component/Landingpage/Landing2/LandingTwo';
+import { Landing3 } from '../component/Landingpage/Landing3/LandingThree';
 
-const MainDiv = styled.div`
-    position: absolute;
-    display:block;
-    background: #f3f3f3;
-    text-align: center;
-    font-size: 3rem;
+const LandingWholeContainer = styled.div`
+  /* border: 10px solid black; */
+  overflow: hidden;
+  position: relative;
+  height: 2900px;
+  width: 100vw;
 `
+
+const LandingWrapperOne = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  height: 1000px;
+`;
+
+const LandingWrapperTwo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  height: 950px;
+`;
+
+const LandingWrapperThree = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  height: 950px;
+`;
+
 function Landing ():JSX.Element {
     return (
-        <MainDiv>
-            랜딩페이지입니다. 
-        </MainDiv>
-        
+      <>
+        <LandingWholeContainer>
 
+          <LandingWrapperOne>
+              <Landing1 />
+          </LandingWrapperOne>
 
+          <LandingWrapperTwo>
+              <Landing2 />
+          </LandingWrapperTwo>
 
+          <LandingWrapperThree>
+              <Landing3 />
+          </LandingWrapperThree>
+
+        </LandingWholeContainer>
+        </>
     )
 }
         

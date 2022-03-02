@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap');
+
+.section1-swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 350px;
+  height: 200px;
+  background: #fff;
+  padding-right: 50px;
+  -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0006 );
+}
+
+.swiper-wrapper .section1-swiper-slide .imgBx {
+  width: 100%;
+  height: 100%;
+}
+.swiper-wrapper .section1-swiper-slide .imgBx img {
+  width: 100%;
+  height: 100%;
+}

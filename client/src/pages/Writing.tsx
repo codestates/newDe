@@ -4,29 +4,102 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
 import { apiURL } from '../url'
 import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { Navigate } from "react-router";
+import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom';
 
+import styled from 'styled-components';
+import { setChild, setParent } from "../features/info";
+
+const ContainerWrap = styled.div`
+border: 1px solid black;
+position: absolute;
+width: 50%;
+background: White;
+opacity: 90%;
+padding: 10px;
+margin-top: 100px;
+z-index: 1;
+
+@media ${(props) => props.theme.mobile}{
+    width: 100%;
+}
+`
+
+
 function Writing(): JSX.Element {
+    // 글쓰기 할때 useEffect 였는데 글 수정시 useEffect랑 통합하기
+    // useEffect(()=>{
+    //     setContents({ ...contents, parentCategory: parent ,childCategory:child})
+    // },[])
+
+    useEffect(() => {
+        // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
+        // then으로 바꿔서 만들어 보자
+        setContents({ ...contents, parentCategory: parent ,childCategory:child})
+        setSelParent(parent);
+        setSelChild(child);
+        async function fetchData() {
+            try {
+                const res = await axios.get(`${apiURL}/board/${contentId}`, config)
+
+                console.log('~~~!!!~~~', res.data)
+                setContents({
+                    title: res.data.data.title,
+                    main: res.data.data.main,
+                    parentCategory: res.data.data.parentCategory,
+                    childCategory: res.data.data.childCategory
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        console.log(typeof (contentId));
+        if (Number(contentId)) fetchData();
+
+        // axios.get(`${apiURL}/board/${contentId}`, config)
+        //     .then((res) => {
+        //         console.log(res.data.main);
+        //         setGetContentMain(res.data.main);
+        //     })        
+    }, [])
+
+    const url = window.location.href;
+    const contentId = url.split('/')[url.split('/').length - 1];
+    console.log(contentId)
+
+    const [editContents, setEditContents] = useState({
+        title: '',
+        main: '',
+        parentCategory: '',
+        childCategory: ''
+    });
+
     const navigate = useNavigate()
 
     const QuillRef = useRef<ReactQuill>()
+    const [selParent, setSelParent] = useState('')
+    const [selChild, setSelChild] = useState('')
     const [contents, setContents] = useState({
         title: '',
         main: '',
         parentCategory: '',
         childCategory: ''
     });// 에디터 속 콘텐츠를 저장하는 state
+
     const { parent, child } = useAppSelector((state: RootState) => state.info)
     const config = {
         headers: { "Content-type": "application/json" },
         withCredentials: true
     }
+
     const clickhandler = async (e: any) => {
         try {
-            await axios.post(`${apiURL}/board`, contents, config)
-            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
+            let createdContentRes;            
+            if (Number(contentId)) createdContentRes = await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
+            else createdContentRes = await axios.post(`${apiURL}/board`, contents, config)
+
+            console.log(createdContentRes.data)
+            navigate(`/${createdContentRes.data.data.id}`)
         } catch (err) {
             console.log(err)
         }
@@ -39,7 +112,6 @@ function Writing(): JSX.Element {
         const input = document.createElement("input");
         const formData = new FormData();
         let url = "";
-
 
         input.setAttribute("type", "file");//type="file"
         input.setAttribute("accept", "image/*");//accept="image/*"
@@ -145,23 +217,66 @@ function Writing(): JSX.Element {
     // 백엔드에서 이미지 접근 URL을 돌려 받는다.
     // 받은 URL로 img 요소를 생성한다 <img src=IMG_URL>
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
-    useEffect(()=>{
-        setContents({ ...contents, parentCategory: parent ,childCategory:child})
-    },[])
+    const parentDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelParent(event.target.value);
+        setContents({...contents, parentCategory:event.target.value})
+    }
+    const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelChild(event.target.value);
+        setContents({...contents, childCategory:event.target.value})
+    }
+
+    console.log(contents);
+    
     return (
 
-        <div>
-            <input placeholder="title" style={{ height: "35px", width: '835px', padding: '15px', margin: '10px 0px 10px 0px' }} onChange={onChange}></input>
-            <a>
 
-            </a>
+        <ContainerWrap>
+            <select value={selParent} onChange={parentDrop}>
+                <option disabled hidden value=''>대분류</option>
+                <option value='front'>Front</option>
+                <option value='back'>Back</option>
+            </select>
+            {selParent ==='front'
+            ?
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
+                <option value='html'>HTML</option>
+                <option value='css'>CSS</option>
+                <option value='javascript'>JavaScript</option>
+                <option value='react'>React</option>
+                <option value='guitar'>기타</option>
+            </select>
+            :
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
+                <option value='php'>PHP</option>
+                <option value='node'>Node.js</option>
+                <option value='javascript'>JavaScript</option>
+                <option value='java'>Java</option>
+                <option value='python'>Python</option>
+                <option value='server'>서버</option>
+                <option value='guitar'>기타</option>
+            </select>
+            }
+            
+            <input
+                placeholder="title"
+                style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px' }}
+                onChange={onChange}
+                value={contents.title}>
+            </input>
             <ReactQuill
                 ref={(element) => {
                     if (element !== null) {
                         QuillRef.current = element;
                     }
                 }}
-                onChange={(main) => { setContents({ ...contents, main: main }) }}
+
+                value={contents.main}
+                onChange={(main) => { setContents((prev) => { return { ...prev, main: main } }) }}
+                // onChange={(main) => { setContents({ ...contents , main: main }) }}
+
                 theme="snow"
                 placeholder="main"
                 modules={modules}
@@ -171,7 +286,8 @@ function Writing(): JSX.Element {
 
             </div>
             <button onClick={clickhandler}>전송</button>
-        </div>
+        </ContainerWrap>
+
     );
 }
 

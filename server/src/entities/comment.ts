@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
 import { User } from "./user"
 import { Content } from "./content";
+import { CommentReport } from "./commentReport";
 
 @Entity()
 export class Comment {
@@ -22,18 +23,22 @@ export class Comment {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(()=> User, user=> user.comments, { onDelete: 'CASCADE' })
-    user: User;
-
     @Column()
     userId: Number   
-
-    @ManyToOne(()=> Content, content=> content.comments)
-    content: Content;
 
     @Column()
     contentId: Number 
 
-    
+    @ManyToOne(()=> User, user=> user.comments, { onDelete: 'CASCADE' })
+    user: User;
 
+
+    @ManyToOne(
+        (type)=> Content, 
+        (content) => content.comments, { nullable: false, onDelete: 'CASCADE'}
+    )
+    content: Content;
+
+    @OneToMany(()=> CommentReport, commentReport=>commentReport.user)
+    commentReports: CommentReport[];
 }
