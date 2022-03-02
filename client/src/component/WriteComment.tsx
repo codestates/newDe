@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { apiURL } from '../url'
 import { useState } from 'react';
 import axios from 'axios';
+import { AiTwotoneWarning } from 'react-icons/ai';
 
 const FormBox = styled.form`
 display: flex;
@@ -27,11 +28,14 @@ height: 50%;
 
 interface writingprops {
     contentid: string;
+    ismodify: boolean;
+    content : string;
+    commentid: string;
 }
 
 
 function WriteComment(props: writingprops):JSX.Element {
-    const [inputText, setText] = useState('')
+    const [inputText, setText] = useState(props.content)
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -50,14 +54,23 @@ function WriteComment(props: writingprops):JSX.Element {
 
     const submitHandler = () => {
         // console.log(props.contentid)
-        axios.post(`${apiURL}/comment`, {contentId: props.contentid, main: inputText}, config)
+        
+        if(props.ismodify === true){
+            axios.patch(`${apiURL}/comment`, {commentId: props.commentid, main: inputText}, config)
+        }
+        else {
+            axios.post(`${apiURL}/comment`, {contentId: props.contentid, main: inputText}, config)
+        }
+        
+        
 
 
     }
     return (
         <FormBox>
-            <TextArea onChange = {handleinput}/>
-            <SubmitBtn onClick = {submitHandler}>댓글 쓰기</SubmitBtn>
+            <TextArea defaultValue = {props.content} onChange = {handleinput}/>
+            {props.ismodify ? <SubmitBtn onClick = {submitHandler}>댓글 수정</SubmitBtn>: <SubmitBtn onClick = {submitHandler}>댓글 쓰기</SubmitBtn>}
+            
         </FormBox>
     )
     

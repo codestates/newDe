@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
+exports.setUserPenalty = exports.checkInfo = exports.deleteUser = exports.editUser = exports.profile = exports.signup = exports.logout = exports.login = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../entities/user");
 const content_1 = require("../entities/content");
@@ -27,9 +27,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password: password,
         });
         if (userInfo) {
+            if (new Date(userInfo.penalty).getTime() - Date.now() > 0)
+                return res.status(400).json({ date: null, message: 'temporarily banned user' });
             const token = yield (0, generateToken_1.generateToken)(userInfo);
-            // console.log(token);
+            console.log(token);
             res.cookie('accessToken', token);
+            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
         else {
@@ -128,31 +131,43 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (email) {
         const userInfo = yield userRepository.findOne({ email: email });
         if (userInfo) {
-            return res.status(409).json({ message: 'Account already exisits' });
+            return res.status(200).json({ message: 'Account already exisits' });
         }
         return res.status(200).json({ message: 'email available' });
     }
     if (password) {
         const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
         if (!verify)
-            return res.status(403).json({ message: 'Invalid Accesstoken' });
+            return res.status(200).json({ message: 'Invalid Accesstoken' });
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
         if (userInfo.password === password) {
             return res.status(200).json({ message: 'password correct!' });
         }
         else {
-            return res.status(400).json({ message: 'incorrect password' });
+            return res.status(200).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' });
+            return res.status(200).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }
     return res.status(404).json({ message: 'Bad Request' });
 });
 exports.checkInfo = checkInfo;
+const setUserPenalty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    if (!verify.userInfo.admin)
+        return res.status(400).json({ data: null, message: 'this request only allowed for administrator' });
+    const { userId, penalty } = req.body;
+    const userRepository = (0, typeorm_1.getRepository)(user_1.User);
+    const targetUser = yield userRepository.findOne(userId);
+    targetUser.penalty = new Date(Date.now() + (penalty * 24 * 60 * 60 * 1000)).toString();
+    yield userRepository.save(targetUser);
+    return res.status(200).json({ data: null, message: 'ok' });
+});
+exports.setUserPenalty = setUserPenalty;
 //# sourceMappingURL=userController.js.map

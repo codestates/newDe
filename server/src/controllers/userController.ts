@@ -16,12 +16,14 @@ const login = async (req:Request, res:Response) => {
         const userInfo = await userRepository.findOne({
             email : email,
             password : password,
-        });
+        });        
 
         if(userInfo) {
+            if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
-            // console.log(token);
-            res.cookie('accessToken', token);
+            console.log(token);
+            res.cookie('accessToken', token); 
+            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
             res.status(200).json({ data : userInfo, message: 'Login Success'})
         } else {
             res.status(404).send('invalid user');
@@ -139,14 +141,14 @@ const checkInfo = async (req:Request, res:Response) => {
     if(email) {
         const userInfo = await userRepository.findOne({ email : email });
         if (userInfo) {
-            return res.status(409).json({ message: 'Account already exisits' })
+            return res.status(200).json({ message: 'Account already exisits' })
         }
         return res.status(200).json({ message: 'email available'})
     } 
     
     if(password) {
         const verify = await authorizeToken(req, res);
-        if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+        if(!verify) return res.status(200).json({ message: 'Invalid Accesstoken' })
         const userRepository = getRepository(User);
 
         const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
@@ -154,20 +156,37 @@ const checkInfo = async (req:Request, res:Response) => {
         if(userInfo.password === password) {
             return res.status(200).json({ message: 'password correct!' });
         } else {
-            return res.status(400).json({ message: 'incorrect password' })
+            return res.status(200).json({ message: 'incorrect password' })
         }
     } 
     
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' })
+            return res.status(200).json({ message: 'nickname already exisits' })
         }
         return res.status(200).json({ message: 'nickname available'})
     } 
 
     return res.status(404).json({ message: 'Bad Request' })
 };
+
+const setUserPenalty = async (req:Request, res:Response) => {
+    const verify = await authorizeToken(req, res);
+    if(!verify.userInfo.admin) return res.status(400).json({data: null, message: 'this request only allowed for administrator'});
+
+    const { userId, penalty } = req.body;
+
+    const userRepository = getRepository(User);
+
+    const targetUser = await userRepository.findOne(userId);
+
+    targetUser.penalty = new Date(Date.now() + (penalty*24*60*60*1000)).toString();
+
+    await userRepository.save(targetUser);
+
+    return res.status(200).json({data: null, message: 'ok'});
+}
 
 export {
     login,
@@ -176,5 +195,6 @@ export {
     profile,
     editUser,
     deleteUser,
-    checkInfo
+    checkInfo,
+    setUserPenalty
 };

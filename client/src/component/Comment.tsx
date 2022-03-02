@@ -8,6 +8,7 @@ import axios from 'axios';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { apiURL } from '../url';
+import {WriteComment} from '../component';
 
 const CommentContainer = styled.div`
 display: flex;
@@ -54,6 +55,9 @@ function Comment(props: any):JSX.Element {
     const usernickname = useAppSelector((state: RootState) => state.info.nickname)
     // const usernickname = props.nickname
     // console.log(props)
+    const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
+
+    const [updated, setUpdated] =useState(false )
 
     const config = {
         headers: {
@@ -71,16 +75,28 @@ function Comment(props: any):JSX.Element {
 
         axios.delete(`${apiURL}/comment/${props.id}`, config)
             .then(el=>alert("삭제되었습니다"))
+            window.location.reload();
+            
     }
+    
+    const modifyHandler = () => {
+        
+        setUpdated(true)
 
+    }
     return (
         <CommentContainer>
+
+            {updated ? 
+            <WriteComment contentid = {props.contentid} ismodify = {true} content = {props.main} commentid= {props.id}/> 
+            : 
+            <div>
             <UpperWrap>
                 <UserPart>{props.nickname}</UserPart>
-                {isLogin ? (usernickname === props.nickname ?
+                {isLogin ? (usernickname === props.nickname || isAdmin === true ?
                 <ButtonSec>
-                <CommentBtn>수정</CommentBtn>
-                <CommentBtn>삭제</CommentBtn>
+                <CommentBtn onClick = {modifyHandler}>수정</CommentBtn>
+                <CommentBtn onClick = {deleteHandler}>삭제</CommentBtn>
                 </ButtonSec>
                 : 
                 <ButtonSec><CommentBtn onClick = {reportHandler}>신고</CommentBtn></ButtonSec>
@@ -90,7 +106,9 @@ function Comment(props: any):JSX.Element {
 
             </UpperWrap>
             <CommentContent>{props.main}</CommentContent>
-        
+            </div>
+        }
+            
         
         </CommentContainer>
 
