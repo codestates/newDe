@@ -22,7 +22,7 @@ const login = async (req:Request, res:Response) => {
             if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
             console.log(token);
-            res.cookie('accessToken', token);
+            res.cookie('accessToken', token, {domain: 'newb-d.com', sameSite: 'none', secure: true});
             res.status(200).json({ data : userInfo, message: 'Login Success'})
         } else {
             res.status(404).send('invalid user');

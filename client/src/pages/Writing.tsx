@@ -108,7 +108,6 @@ function Writing(): JSX.Element {
         const formData = new FormData();
         let url = "";
 
-
         input.setAttribute("type", "file");//type="file"
         input.setAttribute("accept", "image/*");//accept="image/*"
         input.click();//에디터 이미지버튼을 클릭하면 이 input이 클릭됨
