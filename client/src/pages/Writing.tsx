@@ -65,6 +65,7 @@ function Writing(): JSX.Element {
 
     const url = window.location.href;
     const contentId = url.split('/')[url.split('/').length - 1];
+    console.log(contentId)
 
     const [editContents, setEditContents] = useState({
         title: '',
