@@ -36,7 +36,8 @@ function Writing(): JSX.Element {
     useEffect(() => {
         // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
         // then으로 바꿔서 만들어 보자
-        // setContents({ ...contents, parentCategory: parent ,childCategory:child})
+        setContents({ ...contents, parentCategory: parent ,childCategory:child})
+        setSelParent(parent);
         async function fetchData() {
             try {
                 const res = await axios.get(`${apiURL}/board/${contentId}`, config)
@@ -215,26 +216,28 @@ function Writing(): JSX.Element {
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
     const parentDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setParent(event.target.value)
+        setSelParent(event.target.value);
         setContents({...contents, parentCategory:event.target.value})
     }
     const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setContents({...contents, childCategory:event.target.value})
-
     }
+
+    console.log(selParent);
     
     return (
 
 
         <ContainerWrap>
-            <select onChange={parentDrop}>
-                <option disabled selected hidden value='none'>대분류</option>
+            <select value={selParent} onChange={parentDrop}>
+                <option disabled hidden value=''>대분류</option>
                 <option value='front'>Front</option>
                 <option value='back'>Back</option>
             </select>
             {selParent ==='front'
             ?
             <select onChange={childDrop}>
-                <option disabled selected hidden value='none'>소분류</option>
+                <option disabled hidden value='none'>소분류</option>
                 <option value='html'>HTML</option>
                 <option value='css'>CSS</option>
                 <option value='javascript'>JavaScript</option>
