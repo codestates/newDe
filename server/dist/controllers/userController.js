@@ -130,27 +130,27 @@ const checkInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (email) {
         const userInfo = yield userRepository.findOne({ email: email });
         if (userInfo) {
-            return res.status(409).json({ message: 'Account already exisits' });
+            return res.status(200).json({ message: 'Account already exisits' });
         }
         return res.status(200).json({ message: 'email available' });
     }
     if (password) {
         const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
         if (!verify)
-            return res.status(403).json({ message: 'Invalid Accesstoken' });
+            return res.status(200).json({ message: 'Invalid Accesstoken' });
         const userRepository = (0, typeorm_1.getRepository)(user_1.User);
         const userInfo = yield userRepository.findOne({ email: verify.userInfo.email });
         if (userInfo.password === password) {
             return res.status(200).json({ message: 'password correct!' });
         }
         else {
-            return res.status(400).json({ message: 'incorrect password' });
+            return res.status(200).json({ message: 'incorrect password' });
         }
     }
     if (nickname) {
         const userInfo = yield userRepository.findOne({ nickname: nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' });
+            return res.status(200).json({ message: 'nickname already exisits' });
         }
         return res.status(200).json({ message: 'nickname available' });
     }
