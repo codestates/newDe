@@ -9,7 +9,7 @@ import { Cookies } from 'react-cookie';
 import react, { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
-import { setLogin, setOauth, setAdmin } from './features/info';
+import { setLogin, setOauth, setAdmin, setNickname } from './features/info';
 import axios from 'axios';
 import { apiURL } from './url'
 import { Outlet, Navigate } from 'react-router';
@@ -33,6 +33,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const isAdmin = useAppSelector((state: RootState) => state.info.admin)
+  
   const cookies = new Cookies();
 
   const accessToken = cookies.get("accessToken")
@@ -44,6 +45,7 @@ function App() {
       axios.get(`${apiURL}/user`, config)
     .then(el => {
       dispatch(setLogin(true))
+      dispatch(setNickname(el.data.data.nickname))
       if(el.data.data.kakao){
         dispatch(setOauth(true))
       }

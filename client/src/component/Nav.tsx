@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin, setOauth, setAdmin } from '../features/info';
+import { setLogin, setOauth, setAdmin, setNickname } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
 import { setOriginalNode } from 'typescript';
@@ -108,6 +108,7 @@ function Nav (props:Iprops):JSX.Element  {
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
              dispatch(setAdmin(false))
+             dispatch(setNickname(''))
          }).catch(err=>{
              console.log(err)
          })

@@ -7,7 +7,7 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import axios from 'axios';
 import { apiURL } from '../url'
-import { setLogin, setOauth, setAdmin } from '../features/info';
+import { setLogin, setOauth, setAdmin, setNickname } from '../features/info';
 
 
 //배경
@@ -157,6 +157,7 @@ function Login (props: any):JSX.Element {
             {email: inputInfo.email, password: inputInfo.password}, 
             config).then(el=>{
                 dispatch(setLogin(true))
+                dispatch(setNickname(el.data.data.nickname))
                 if(el.data.data.admin){
                     dispatch(setAdmin(true))
                 }
