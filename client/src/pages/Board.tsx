@@ -146,6 +146,7 @@ const nowURL = new URL(window.location.href); //URL값 따오기
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
 // console.log(!!ChildCategory)
+console.log(ChildCategory)
 
 dispatch(setParent(ParentCategory))
 dispatch(setChild(ChildCategory))

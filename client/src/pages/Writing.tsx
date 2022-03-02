@@ -4,12 +4,11 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
 import { apiURL } from '../url'
 import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { Navigate } from "react-router";
+import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { setParent } from "../features/info";
+import { setChild, setParent } from "../features/info";
 
 const ContainerWrap = styled.div`
 border: 1px solid black;
@@ -38,6 +37,7 @@ function Writing(): JSX.Element {
         // then으로 바꿔서 만들어 보자
         setContents({ ...contents, parentCategory: parent ,childCategory:child})
         setSelParent(parent);
+        setSelChild(child);
         async function fetchData() {
             try {
                 const res = await axios.get(`${apiURL}/board/${contentId}`, config)
@@ -94,10 +94,12 @@ function Writing(): JSX.Element {
 
     const clickhandler = async (e: any) => {
         try {
-            if (Number(contentId)) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
-            else await axios.post(`${apiURL}/board`, contents, config)
+            let createdContentRes;            
+            if (Number(contentId)) createdContentRes = await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
+            else createdContentRes = await axios.post(`${apiURL}/board`, contents, config)
 
-            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
+            console.log(createdContentRes.data)
+            navigate(`/${createdContentRes.data.data.id}`)
         } catch (err) {
             console.log(err)
         }
@@ -216,15 +218,15 @@ function Writing(): JSX.Element {
     // 받은 URL로 img 요소를 생성한다 <img src=IMG_URL>
     // 생성한 img 요소를 현재 에디터 커서 위치에 삽입한다.
     const parentDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setParent(event.target.value)
         setSelParent(event.target.value);
         setContents({...contents, parentCategory:event.target.value})
     }
     const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelChild(event.target.value);
         setContents({...contents, childCategory:event.target.value})
     }
 
-    console.log(selParent);
+    console.log(contents);
     
     return (
 
@@ -237,8 +239,8 @@ function Writing(): JSX.Element {
             </select>
             {selParent ==='front'
             ?
-            <select onChange={childDrop}>
-                <option disabled hidden value='none'>소분류</option>
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
                 <option value='html'>HTML</option>
                 <option value='css'>CSS</option>
                 <option value='javascript'>JavaScript</option>
@@ -246,8 +248,8 @@ function Writing(): JSX.Element {
                 <option value='guitar'>기타</option>
             </select>
             :
-            <select onChange={childDrop}>
-                <option disabled selected hidden value='none'>소분류</option>
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
                 <option value='php'>PHP</option>
                 <option value='node'>Node.js</option>
                 <option value='javascript'>JavaScript</option>
