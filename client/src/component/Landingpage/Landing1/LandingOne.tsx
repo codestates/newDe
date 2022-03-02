@@ -31,7 +31,7 @@ export const Landing1 = () => {
   return (
     <SwiperContainer>
       <div className='title-container'>
-        <h1>NewDe</h1>
+        <h1>NEWDE</h1>
       </div>
       <StyledSwiper
         effect='coverflow'

@@ -1,32 +1,26 @@
 //메인 게시판
-import react, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList} from '../component';
+import {ContentList, LeftNav} from '../component';
 import { apiURL } from '../url'
 
 
 const MainContainer = styled.div`
-margin-top: 100px;
+margin-top: 7%;
 display: flex;
-background : #F3F3F3;
+background : white;
 width: 100%;
-height: 100%;
 text-align: center;
-align-items: center;
-justify-content: center;
-
-
 `
 
 const BoardWrap = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 80%;
+width: 100%;
 
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
@@ -38,50 +32,28 @@ width: 80%;
 `
 
 const BoardName = styled.div`
-
-width : 80%;
+width: 60%;
 text-align: left;
-
 font-size: 1.5rem;
-margin: 2%;
-margin-top: 5%;
 `
 
 const ChildBoard = styled.div`
 display: flex;
 flex-direction: column;
-width: 90%;
+width: 100%;
 margin-top: 1%;
 align-items: center;
 text-align: center;
-margin-bottom: 5%;
+margin-bottom: 2%;
 `
 
 const ContentWrap = styled.div`
 display: flex;
 justify-content: center;
-width: 90%;
+width: 55%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%;
+margin: 0.5%;
 `
-
-const Contenttitle = styled.div`
-width: 70%;
-text-align: left;
-font-weight: bold;
-`
-
-
-const Contentusersec = styled.div`
-width: 10%;
-font-weight: bold;
-`
-
-const Contentlike = styled.div`
-width: 10%;
-font-weight: bold;
-`
-
 
 function MainBoard():JSX.Element{
     //axios를 이용 게시글 정보 받아와서 렌더링  
@@ -99,6 +71,7 @@ function MainBoard():JSX.Element{
         const front = await axios(`${apiURL}/board?page=1&parentCategory=front`)
         try{
             setFront(front.data.data.slice(0,5))
+            console.log(front.data.data)
         }
         catch{console.log("error!")}
 
@@ -107,11 +80,12 @@ function MainBoard():JSX.Element{
             setBack(back.data.data.slice(0,5))
         }
         catch{console.log("error!")}
+
     }
     
     const fronttoList = frontlist.map((el:any)=>{
         return (<ContentWrap key = {el.id}>
-            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
         </ContentWrap>)
         
 
@@ -121,7 +95,7 @@ function MainBoard():JSX.Element{
         
     const backtoList = backlist.map((el:any)=>{
         return (<ContentWrap key = {el.id}>
-            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
         </ContentWrap>)
         
 
@@ -141,37 +115,17 @@ function MainBoard():JSX.Element{
 
     return(
         <MainContainer>
-    
-
-        <BoardWrap>
+            <LeftNav />
+          <BoardWrap>
             <BoardName>프론트 게시판</BoardName>
             <ChildBoard>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-
-                </ContentWrap>
-                
-                {fronttoList}
-                
+                {fronttoList}        
             </ChildBoard>
-
             <BoardName>백엔드 게시판</BoardName>
             <ChildBoard>
-            <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-
-                </ContentWrap>
                 {backtoList}
             </ChildBoard>
-
-
-
-        </BoardWrap>
+          </BoardWrap>
         </MainContainer>
     )
         
