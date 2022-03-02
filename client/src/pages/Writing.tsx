@@ -94,7 +94,7 @@ function Writing(): JSX.Element {
 
     const clickhandler = async (e: any) => {
         try {
-            if (contentId) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
+            if (Number(contentId)) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
             else await axios.post(`${apiURL}/board`, contents, config)
 
             navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
