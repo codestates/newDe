@@ -140,14 +140,14 @@ const checkInfo = async (req:Request, res:Response) => {
     if(email) {
         const userInfo = await userRepository.findOne({ email : email });
         if (userInfo) {
-            return res.status(409).json({ message: 'Account already exisits' })
+            return res.status(200).json({ message: 'Account already exisits' })
         }
         return res.status(200).json({ message: 'email available'})
     } 
     
     if(password) {
         const verify = await authorizeToken(req, res);
-        if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
+        if(!verify) return res.status(200).json({ message: 'Invalid Accesstoken' })
         const userRepository = getRepository(User);
 
         const userInfo = await userRepository.findOne({ email : verify.userInfo.email });
@@ -155,14 +155,14 @@ const checkInfo = async (req:Request, res:Response) => {
         if(userInfo.password === password) {
             return res.status(200).json({ message: 'password correct!' });
         } else {
-            return res.status(400).json({ message: 'incorrect password' })
+            return res.status(200).json({ message: 'incorrect password' })
         }
     } 
     
     if(nickname) {
         const userInfo = await userRepository.findOne({ nickname : nickname });
         if (userInfo) {
-            return res.status(409).json({ message: 'nickname already exisits' })
+            return res.status(200).json({ message: 'nickname already exisits' })
         }
         return res.status(200).json({ message: 'nickname available'})
     } 

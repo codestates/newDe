@@ -6,6 +6,11 @@ import Edit from '../component/editPassword'
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
+import styled from 'styled-components';
+
+const Hi = styled.div`
+    margin-top: 100px;
+`
 
 function MyPage() {
     const [userInfo, setUserInfo] = useState<any>({})
@@ -72,7 +77,7 @@ function MyPage() {
 
     if (loading) return <Loader type="spin" color="#999999" />
     return (
-        <div>
+        <Hi>
             <div>
                 <div>{userInfo.nickName}</div>
                 <button type='button' onClick={handleModal}>modal open</button>
@@ -90,7 +95,7 @@ function MyPage() {
                     <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
                 </div>)}
             </div>
-        </div>
+        </Hi>
     )
 }
 

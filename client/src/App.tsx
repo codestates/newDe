@@ -14,6 +14,8 @@ import axios from 'axios';
 import { apiURL } from './url'
 import { Outlet, Navigate } from 'react-router';
 import Loader from './component/Loader';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 
@@ -36,6 +38,7 @@ function App() {
   const accessToken = cookies.get("accessToken")
 
   useEffect(() => {
+    AOS.init();
     if (accessToken) {
       // console.log(accessToken)
       axios.get(`${apiURL}/user`, config)
@@ -106,9 +109,12 @@ function App() {
               <Route path='' element={<MyPageEdit />} />
             </Route>
             <Route path='/signup' element={<SignUp />} />
+
             <Route path='/writing' element={<PrivateRoute />}>
               <Route path='' element={<Writing />} />
-            </Route>
+              <Route path=':contentId' element={<Writing />} />
+            </Route>    
+
             <Route path='/roadmap' element={<RoadMap />} />
             <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
             <Route path='/admin' element={<AdminPrivate />}>
@@ -129,3 +135,4 @@ function App() {
 }
 
 export default App
+

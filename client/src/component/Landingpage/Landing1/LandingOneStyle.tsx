@@ -9,7 +9,7 @@ import 'swiper/css/bundle';
 
 export const SwiperContainer = styled.div`
   font-family: "Noto Sans KR",sans-serif;
-  background: linear-gradient(transparent, transparent, #F5EAE5 );
+  background-color: #ffffff;
   width: 100vw;
   height: 100%;
   text-align: center;
@@ -19,8 +19,6 @@ export const SwiperContainer = styled.div`
     font-size: 50px;
     color: black;
     margin: 40px 0 0 0;
-    text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.4),
-        0px -5px 35px rgba(255, 255, 255, 0.3);
     @media screen and (max-width: 500px) {
       margin: 0 0 0 0;
       font-size: 15px;
@@ -41,8 +39,6 @@ export const SwiperContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 30px;
     font-family: 'Black Han Sans', sans-serif;
-    text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.4),
-        0px -5px 35px rgba(255, 255, 255, 0.3);
     @media screen and (max-width: 500px) {
       font-size: 50px;
       margin-bottom: 0px;

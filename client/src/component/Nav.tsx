@@ -12,6 +12,16 @@ import { useMatch } from 'react-router';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
+const nowURL = new URL(window.location.href); //URL값 따오기 
+const path = nowURL.pathname
+console.log(path)
+
+if (path === '/'){
+    const isLanding = true 
+}
+else {
+    const isLanding = false
+}
 const Navi = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -104,7 +114,6 @@ function Nav (props:Iprops):JSX.Element  {
          .get(`${apiURL}/user/logout`,config)
 
          .then((res) => {                   
-             alert('로그아웃 되었습니다')
              navigate('/')     
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
@@ -134,8 +143,8 @@ function Nav (props:Iprops):JSX.Element  {
             </Col> 
             :
             <Col>
-                <Item><Link to = "/login">Login</Link></Item>
-                <Item><Link to = "/signup">Join</Link></Item>
+                <Item><Link to = "/mypage">Mypage {mypageMatch && <Circle />}</Link></Item>
+                <Item onClick = {handleLogout}>Logout</Item>
             </Col>
             :
             <Col>

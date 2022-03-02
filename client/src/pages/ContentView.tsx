@@ -166,7 +166,7 @@ const getComment = async () => {
     const datatoComment = commentlist.map((el:any)=>{
         return (
             <CommentWrap key = {el.id}>
-                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname}  />
+                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname} contentid = {path}  />
 
             </CommentWrap>
         )
@@ -182,9 +182,11 @@ const getComment = async () => {
         .then(el => alert('신고되었습니다.'))
     }
 
-    const handleModify = () =>{
-
-
+    const handleModify = () =>{      
+        const url = window.location.href;  
+        const contentId = url.split('/')[url.split('/').length-1];
+        console.log(url.split('/'))
+        navigate(`/writing/${contentId}`)
     }
 
     const handleDelete = () =>{
@@ -223,7 +225,7 @@ const getComment = async () => {
                     {datatoComment}
                 
                 <WritingBox>
-                {isLogin ? <WriteComment contentid = {path}/> :null}
+                {isLogin ? <WriteComment contentid = {path} ismodify = {false} content = {''} commentid = {''}/> :null}
                 
                 </WritingBox>
                 
