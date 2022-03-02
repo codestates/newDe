@@ -9,7 +9,7 @@ import { Navigate } from "react-router";
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { setParent } from "../features/info";
+import { setChild, setParent } from "../features/info";
 
 const ContainerWrap = styled.div`
 border: 1px solid black;
@@ -38,6 +38,7 @@ function Writing(): JSX.Element {
         // then으로 바꿔서 만들어 보자
         setContents({ ...contents, parentCategory: parent ,childCategory:child})
         setSelParent(parent);
+        setSelChild(child);
         async function fetchData() {
             try {
                 const res = await axios.get(`${apiURL}/board/${contentId}`, config)
@@ -221,10 +222,12 @@ function Writing(): JSX.Element {
         setContents({...contents, parentCategory:event.target.value})
     }
     const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setChild(event.target.value);
+        setSelChild(event.target.value);
         setContents({...contents, childCategory:event.target.value})
     }
 
-    console.log(selParent);
+    console.log(contents);
     
     return (
 
@@ -237,8 +240,8 @@ function Writing(): JSX.Element {
             </select>
             {selParent ==='front'
             ?
-            <select onChange={childDrop}>
-                <option disabled hidden value='none'>소분류</option>
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
                 <option value='html'>HTML</option>
                 <option value='css'>CSS</option>
                 <option value='javascript'>JavaScript</option>
@@ -246,8 +249,8 @@ function Writing(): JSX.Element {
                 <option value='guitar'>기타</option>
             </select>
             :
-            <select onChange={childDrop}>
-                <option disabled selected hidden value='none'>소분류</option>
+            <select value={selChild} onChange={childDrop}>
+                <option disabled hidden value=''>소분류</option>
                 <option value='php'>PHP</option>
                 <option value='node'>Node.js</option>
                 <option value='javascript'>JavaScript</option>
