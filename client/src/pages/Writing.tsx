@@ -32,7 +32,6 @@ function Writing(): JSX.Element {
     //     setContents({ ...contents, parentCategory: parent ,childCategory:child})
     // },[])
 
-
     useEffect(() => {
         // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
         // then으로 바꿔서 만들어 보자
