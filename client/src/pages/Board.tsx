@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList, PageNav} from '../component';
+import {ContentList, PageNav, LeftNav} from '../component';
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
@@ -12,15 +12,12 @@ import { setChild, setParent } from '../features/info';
 
 
 const MainContainer = styled.div`
+margin-top: 7%;
 display: flex;
-flex-direction: column;
-background : #F3F3F3;
-width: 100%;
-height: 100%;
 text-align: center;
-align-items: center;
-justify-content: center;
-margin-top: 100px;
+flex-direction: column;
+background : white;
+width: 100%;
 .btn {
     text-decoration-line: none;
     color: #34495E;
@@ -55,8 +52,6 @@ width : 80%;
 text-align: left;
 
 font-size: 1.5rem;
-margin: 2%;
-margin-top: 5%;
 `
 
 const ChildBoard = styled.div`
@@ -75,22 +70,6 @@ justify-content: center;
 width: 90%;
 align-items: center;
 margin: 0.5% 0.5% 0.5% 0.5%;
-`
-
-const Contenttitle = styled.div`
-width: 70%;
-font-weight: bold;
-text-align: left;`
-
-
-const Contentusersec = styled.div`
-width: 10%;
-font-weight: bold;
-`
-
-const Contentlike = styled.div`
-width: 10%;
-font-weight: bold;
 `
 
 
@@ -142,7 +121,7 @@ const config = {
 
 const dispatch = useAppDispatch()
 const nowURL = new URL(window.location.href); //URL값 따오기 
-// console.log(nowURL)
+console.log(nowURL.href)
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
 // console.log(!!ChildCategory)
@@ -162,7 +141,7 @@ const [maxpage, setMax] = useState(1)
 
 const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
     </ContentWrap>)
     })
 
@@ -221,6 +200,7 @@ useEffect(()=>{
 
     return (
         <MainContainer>
+            <LeftNav />
     
 
         <BoardWrap>
@@ -232,17 +212,7 @@ useEffect(()=>{
 
             </BoardName>
             <ChildBoard>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-                    
-
-
-                </ContentWrap>
-                
-                {datatoList}
-                
+                {datatoList}               
             </ChildBoard>
 
             
