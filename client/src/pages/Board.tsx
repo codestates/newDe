@@ -217,8 +217,6 @@ useEffect(()=>{
 
             
 
-
-
         </BoardWrap>
         <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNavWrap>

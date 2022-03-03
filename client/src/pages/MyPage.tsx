@@ -8,8 +8,22 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import styled from 'styled-components';
 
-const Hi = styled.div`
+const MyPageWrap = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width:100%;
     margin-top: 100px;
+`
+
+const MyInfo = styled.div`
+    margin: 50px 50px 50px 50px;
+
+
+`
+
+const MyContents = styled.div`
+    margin: 50px 50px 50px 50px;
+
 `
 
 function MyPage() {
@@ -77,25 +91,32 @@ function MyPage() {
 
     if (loading) return <Loader type="spin" color="#999999" />
     return (
-        <Hi>
-            <div>
-                <div>{userInfo.nickName}</div>
-                <button type='button' onClick={handleModal}>modal open</button>
-                <Edit visible={isOpen} onClose={handleModal}>
-                    <div>current password</div>
-                    <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
-                    <span><button onClick={passwordCheck}>submit</button></span>
-                    <div>{checkText}</div>
-                </Edit>
-            </div>
-            <div>
-                {content.map((el:any,index:number)=>
-                <div key={index}>
-                    <div>title : {el.title}</div>    
-                    <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
-                </div>)}
-            </div>
-        </Hi>
+        <MyPageWrap>
+
+            <MyInfo>
+                내정보
+            </MyInfo>      
+
+            <MyContents>   
+                <div>
+                    {content.map((el:any,index:number)=>
+                    <div key={index}>
+                        <div>title : {el.title}</div>    
+                        <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
+                    </div>)}
+                </div>
+                <div>
+                    <div>{userInfo.nickName}</div>
+                    <button type='button' onClick={handleModal}>정보 수정</button>
+                    <Edit visible={isOpen} onClose={handleModal}>
+                        <div>current password</div>
+                        <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
+                        <span><button onClick={passwordCheck}>submit</button></span>
+                        <div>{checkText}</div>
+                    </Edit>
+                </div>
+            </MyContents>   
+        </MyPageWrap>
     )
 }
 
