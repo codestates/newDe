@@ -91,6 +91,7 @@ const profile = async (req:Request, res:Response) => {
 const editUser = async (req:Request, res:Response) => {
     const { nickname, password } = req.body;
     const verify = await authorizeToken(req, res)
+    console.log(verify)
     const userRepository = getRepository(User)
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
@@ -114,7 +115,9 @@ const editUser = async (req:Request, res:Response) => {
 };
 
 const deleteUser = async (req:Request, res:Response) => {
+    console.log(req.headers)
     const verify = await authorizeToken(req, res);
+    // console.log(verify)
     const userRepository = getRepository(User);
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })

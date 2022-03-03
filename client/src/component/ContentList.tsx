@@ -29,6 +29,9 @@ const Content = styled.div`
  width: 80%;
  flex-direction: column;
  align-items: flex-start;
+ @media ${(props)=> props.theme.mobile}{
+    margin-left: 12%;
+} 
 `
 
 const TitleWrap = styled.div`

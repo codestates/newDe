@@ -16,6 +16,7 @@ opacity: 90%;
 padding: 10px;
 z-index: 2;
 
+
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
 }

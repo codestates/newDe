@@ -15,6 +15,8 @@ height: 100%;
 text-align: center;
 align-items: center;
 justify-content: center;
+flex-direction: column;
+
 `
 
 const BoardWrap = styled.div`
@@ -24,13 +26,12 @@ align-items: center;
 width: 80%;
 background: yellow;
 
+
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
 
 }
-
-
 `
 
 const ReportedContentWrap = styled.div`
@@ -261,6 +262,7 @@ function Admin(): JSX.Element {
     })
     
     return (
+        
         <MainContainer>
             <BoardWrap>
                 <ReportedContentWrap>
