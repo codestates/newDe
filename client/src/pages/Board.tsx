@@ -129,12 +129,7 @@ const nowURL = new URL(window.location.href); //URL값 따오기
 
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
-<<<<<<< HEAD
-// console.log(!!ChildCategory)
-console.log(ChildCategory)
-=======
 // console.log(ParentCategory)
->>>>>>> 6ce26bfb6fc09dc0de059d88c25e2c956e5a37f6
 
 const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
