@@ -79,6 +79,9 @@ const CommentNum = styled.div`
 const Contentusersec = styled.div`
  margin-right: 10px;
 `
+const CommentCount = styled.div`
+width: 10%;
+`
 
 const Contentlike = styled.div`
 color: gray;
