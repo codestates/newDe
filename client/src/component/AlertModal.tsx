@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom'
 
 const Background = styled.div`
-margin-top: 7%;
+
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -13,7 +13,7 @@ width: 100%;
 height: 100%;
 `
 const ContainerWrap = styled.div`
-
+margin-bottom: 20%;
 display: flex;
 flex-direction: column;
 border: 1px solid black;
