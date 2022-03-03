@@ -160,7 +160,7 @@ const getComment = async () => {
     setComment(commentresult.data.data)
 }
 
-console.log(commentlist)
+// console.log(commentlist)
 
     useEffect(()=>{
         setLoading(true);
@@ -199,7 +199,7 @@ console.log(commentlist)
     const handleModify = () =>{      
         const url = window.location.href;  
         const contentId = url.split('/')[url.split('/').length-1];
-        console.log(url.split('/'))
+        // console.log(url.split('/'))
         navigate(`/writing/${contentId}`)
     }
 
