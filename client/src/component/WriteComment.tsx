@@ -61,13 +61,17 @@ function WriteComment(props: writingprops):JSX.Element {
 
     const submitHandler = () => {
         // console.log(props.contentid)
+        if(inputText){
+            if(props.ismodify === true){
+                axios.patch(`${apiURL}/comment`, {commentId: props.commentid, main: inputText}, config)
+            }
+            else {
+                axios.post(`${apiURL}/comment`, {contentId: props.contentid, main: inputText}, config)
+            }
+
+        }
         
-        if(props.ismodify === true){
-            axios.patch(`${apiURL}/comment`, {commentId: props.commentid, main: inputText}, config)
-        }
-        else {
-            axios.post(`${apiURL}/comment`, {contentId: props.contentid, main: inputText}, config)
-        }
+        
         
         
 
