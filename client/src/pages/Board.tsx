@@ -1,7 +1,7 @@
 //게시판 보기 
 import react, { useEffect } from 'react'
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import {ContentList, PageNav, LeftNav} from '../component';
@@ -9,6 +9,7 @@ import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
+
 
 
 const MainContainer = styled.div`
@@ -120,21 +121,29 @@ const config = {
   };
 
 const dispatch = useAppDispatch()
+const location = useLocation()
+
+const queryParams = new URLSearchParams()
+console.log(queryParams)
 const nowURL = new URL(window.location.href); //URL값 따오기 
-console.log(nowURL.href)
+
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
+<<<<<<< HEAD
 // console.log(!!ChildCategory)
 console.log(ChildCategory)
+=======
+// console.log(ParentCategory)
+>>>>>>> 6ce26bfb6fc09dc0de059d88c25e2c956e5a37f6
 
-dispatch(setParent(ParentCategory))
-dispatch(setChild(ChildCategory))
 const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
 const [searching, setSearchWord] = useState('') //검색어
 const [inputInfo, setInputInfo] = useState('')
 const [maxpage, setMax] = useState(1)
+
+const [pageChanged, setPageChanged] = useState(false);
 
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
@@ -149,25 +158,13 @@ const datatoList = contentlist.map((el:any)=>{
 
 
 const getListData = async () =>{
-    //URL값 따오기 
-// console.log(nowURL)
-
-    
-    
-    
-    
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
     // console.log(listData.data.pageCount)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)
-        
-        
     }
-    catch{console.log("error!")}
-    
-    
-    
+    catch{console.log("error!")} 
 }
 
 
@@ -185,22 +182,23 @@ const handlePage = (el:number) =>{
     // console.log(nowpage)
 
 }
+dispatch(setParent(ParentCategory))
+dispatch(setChild(ChildCategory))
 
 useEffect(()=>{
     setLoading(true);
-    
+    setPageChanged(false);
     getListData();
-    setLoading(false)
-    
+    setLoading(false)    
 
-},[ParentCategory, ChildCategory, searching, nowpage])
+},[pageChanged, searching, nowpage])
 
 
 
 
     return (
         <MainContainer>
-            <LeftNav />
+            <LeftNav setPageChanged={setPageChanged}/>
     
 
         <BoardWrap>
