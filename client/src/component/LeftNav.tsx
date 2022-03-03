@@ -43,12 +43,6 @@ function Leftnav (props:any):JSX.Element  {
        
     console.log(targetBoard)
 
-<<<<<<< HEAD
-=======
-
-function Leftnav (props:any):JSX.Element  {
-
->>>>>>> cb0ac2efa69955e6b982ef4e96db7427481a3c08
     return (
         <ContainerWrap onClick={
             ()=>{
