@@ -17,7 +17,9 @@ const nests = require ('./nest.png')
 const nexts = require ('./next.png')
 const sequelize = require ('./sequelize.png')
 const spring = require('./spring.png')
+const java = require('./Java.png')
+const html = require('./HTML.png')
 
 
-export const stackimage = [css,js,nodes,reacts,nexts,reduxss,expresss,nests,jwt,go,fire,phps,python,c,kotlin,ruby,docker,sequelize,spring];
+export const stackimage = [html,css,js,nodes,reacts,nexts,reduxss,expresss,nests,java,jwt,go,fire,phps,python,c,kotlin,ruby,docker,sequelize,spring];
   
