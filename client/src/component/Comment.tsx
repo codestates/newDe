@@ -8,7 +8,7 @@ import axios from 'axios';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { apiURL } from '../url';
-import {WriteComment} from '../component';
+import {WriteComment, CommentDeleteModal} from '../component';
 
 const CommentContainer = styled.div`
 display: flex;
@@ -58,6 +58,7 @@ function Comment(props: any):JSX.Element {
     const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
 
     const [updated, setUpdated] =useState(false )
+    const [modalopened, setmodal] = useState(false)
 
     const config = {
         headers: {
@@ -72,10 +73,10 @@ function Comment(props: any):JSX.Element {
     }
 
     const deleteHandler = () => {
-
-        axios.delete(`${apiURL}/comment/${props.id}`, config)
-            .then(el=>alert("삭제되었습니다"))
-            window.location.reload();
+        setmodal(true)
+        // axios.delete(`${apiURL}/comment/${props.id}`, config)
+        //     .then(el=>alert("삭제되었습니다"))
+        //     window.location.reload();
             
     }
     
@@ -84,8 +85,12 @@ function Comment(props: any):JSX.Element {
         setUpdated(true)
 
     }
+    const deletehandler = () => {
+        setmodal(false)
+    }
     return (
         <CommentContainer>
+            {modalopened ? <CommentDeleteModal modalhandler = {deletehandler} path = {props.id}  />: null}
 
             {updated ? 
             <WriteComment contentid = {props.contentid} ismodify = {true} content = {props.main} commentid= {props.id}/> 

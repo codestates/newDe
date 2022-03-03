@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {Comment, WriteComment, AlertModal} from '../component';
+import {Comment, WriteComment, AlertModal, DeleteAlert} from '../component';
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
@@ -112,7 +112,7 @@ function ContentView ():JSX.Element {
     const usernickname = useAppSelector((state: RootState) => state.info.nickname)
     const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
     const navigate = useNavigate()
-
+    const [deleteModal, setDelModal] = useState(false)
 
     const config = {
         headers: {
@@ -130,6 +130,8 @@ function ContentView ():JSX.Element {
     const [content, setContent] = useState({id: '',
 title: '', main : '', like: 0, nickname: ''})
     const [commentlist, setComment] = useState([])
+    
+
 
 
 const getcontent = async () =>{
@@ -199,18 +201,18 @@ const getComment = async () => {
     }
 
     const handleDelete = () =>{
-        axios.delete(`${apiURL}/board/${path}`, config)
-            .then(el=>{
-                setAlert(true)
-                setMessage('삭제되었습니다.')
-            })
-            .then(el => setTimeout(()=> {navigate('../mainboard')}, 1000) )
-            // navigate('../mainboard')
+        setDelModal(true)
+            //삭제확인모달을 띄워주고 실제 삭제는 해당 모달에서 진행하세요 
 
     }
 
     const alerthandler = () => {
         setAlert(false)
+    }
+    const deletehandler = () => {
+
+        setDelModal(false)
+        
     }
     return (
         
@@ -251,6 +253,7 @@ const getComment = async () => {
             
             
         {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null} 
+        {deleteModal ? <DeleteAlert modalhandler = {deletehandler} path = {path}  />: null}
         </MainContainer>
         
         

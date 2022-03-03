@@ -6,6 +6,85 @@ import { text } from 'stream/consumers';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
+import styled from 'styled-components';
+
+
+const Back = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: whitesmoke;
+`
+const Container = styled.div`
+  width: 400px;
+  height: 500px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 2px solid #F1F1F1;
+
+`
+const MyPageEditInput = styled.input`
+  border: 2px solid #F1F1F1;
+  border-radius: 7px;
+  height: 40px;
+  width: 250px;
+  margin-top: 5px;
+  font-size: 16px;
+`;
+
+const ModifyButton = styled.button`
+    width: 100px;
+    height: 2rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #9e9e9e;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1em;
+    transition: all 0.5s;
+    margin-right: 10px;
+    &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+      background-color: #000;
+    }
+`;
+const Item = styled.div`
+    width: 300px;
+    font-size: 18px;
+    margin-top: 15px;
+    `
+const InputWrap = styled.div`
+display: flex;
+height: 30px;
+
+
+
+span {
+    font-size: 15px;
+    color: red;
+    margin-bottom: 2px;
+}
+span.green {
+    font-size: 15px;
+    color: green;
+}
+`;
+
+const Bb=styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+    column-gap: 40px;
+`
 
 function MyPageEdit() {
     const [loading, setLoading] = useState(false)
@@ -111,23 +190,51 @@ function MyPageEdit() {
     if (loading) return <Loader type="spin" color="#999999" />
 
     return (
-        <div>
-            <div>이메일</div>
-            <input type='email' placeholder='email' disabled />
-            <div>변경할 닉네임</div>
-            <input type='text' placeholder='nickname' value={checkInfo.nickname} onChange={onChange} onBlur={handleOnBlur} />
-            <div>{text.nickname}</div>
-            {isOauth ? 
-            <div></div>
-            :<><div>변경할 비밀번호</div>
-            <input type='password' placeholder='password' value={checkInfo.password} onChange={onChange} onBlur={handleOnBlur} />
-            <div>{text.password}</div>
-            <div>비밀번호 확인</div>
-            <input type='password' placeholder='checkPassword' value={checkInfo.checkPassword} onChange={onChange} onBlur={handleOnBlur} />
-            <div>{text.checkPassword}</div></>}
-            <button onClick={fatchData}>수정 완료</button>
-            <button onClick={()=> navigate('/mypage')}>수정 취소</button>
-        </div>
+        <Back>
+            <Container>
+                <Item>
+                    <Item>변경할 닉네임</Item>
+                    <MyPageEditInput type='text' placeholder='nickname' value={checkInfo.nickname} onChange={onChange} onBlur={handleOnBlur} />
+                    <InputWrap>
+                        {text.nickname === '사용가능한 닉네임 입니다'
+                        ?
+                        <span className='green'>{text.nickname}</span>
+                        :
+                        <span>{text.nickname}</span>
+                        }
+                    </InputWrap>
+                    
+                    {isOauth ? 
+                    <div></div>
+                    :<><Item>변경할 비밀번호</Item>
+                    <MyPageEditInput type='password' placeholder='password' value={checkInfo.password} onChange={onChange} onBlur={handleOnBlur} />
+                    <InputWrap>
+                        {text.password === '사용가능한 비밀번호 입니다'
+                        ?
+                        <span className='green'>{text.password}</span>
+                        :
+                        <span>{text.password}</span>
+                        }
+                    </InputWrap>
+                    
+                    <Item>비밀번호 확인</Item>
+                    <MyPageEditInput type='password' placeholder='checkPassword' value={checkInfo.checkPassword} onChange={onChange} onBlur={handleOnBlur} />
+                    <InputWrap>
+                        {text.checkPassword === '비밀번호가 일치합니다'
+                        ?
+                        <span className='green'>{text.checkPassword}</span>
+                        :
+                        <span>{text.checkPassword}</span>
+                        }
+                    </InputWrap>
+                    </>}
+                </Item>
+                <Bb>
+                    <ModifyButton onClick={fatchData}>수정 완료</ModifyButton>
+                    <ModifyButton onClick={()=> navigate('/mypage')}>수정 취소</ModifyButton>
+                </Bb>
+            </Container>
+        </Back>
     );
 }
 
