@@ -11,7 +11,6 @@ import { apiURL } from '../url'
 const MainContainer = styled.div`
 margin-top: 7%;
 display: flex;
-background : white;
 width: 100%;
 text-align: center;
 `
@@ -79,6 +78,7 @@ function MainBoard():JSX.Element{
         const back = await axios(`${apiURL}/board?page=1&parentCategory=back`)
         try{
             setBack(back.data.data.slice(0,5))
+            // console.log(back.data.data)
         }
         catch{console.log("error!")}
 
@@ -86,7 +86,7 @@ function MainBoard():JSX.Element{
     
     const fronttoList = frontlist.map((el:any)=>{
         return (<ContentWrap key = {el.id}>
-            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} childCategory = {el.childCategory} />
         </ContentWrap>)
         
 
@@ -96,7 +96,7 @@ function MainBoard():JSX.Element{
         
     const backtoList = backlist.map((el:any)=>{
         return (<ContentWrap key = {el.id}>
-            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
+            <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} childCategory = {el.childCategory} />
         </ContentWrap>)
         
 
