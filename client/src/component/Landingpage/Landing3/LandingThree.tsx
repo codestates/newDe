@@ -10,6 +10,8 @@ const SectionContainer = styled.div`
   /* border: 10px solid black; */
   width: 100%;
   height: 100%;
+  
+
 `
 const Title = styled.div`
     position: absolute;
@@ -25,6 +27,10 @@ const TitleText = styled.h1`
     color: white;
     text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
         0px -5px 35px rgba(255, 255, 255, 0.3);
+        @media ${(props)=> props.theme.mobile}{
+    height: 50%;
+    font-size: 25px;
+} 
 `
 
 const BtnWrap = styled.div`
@@ -32,6 +38,10 @@ const BtnWrap = styled.div`
     left: 50%;
     bottom: 25%;
     transform: translate(-50%, 25%);
+    @media ${(props)=> props.theme.mobile}{
+    font-size: 10px;
+    width: 120%;
+} 
 
     .btn {
       background-color: black;

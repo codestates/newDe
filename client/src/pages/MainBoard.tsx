@@ -13,6 +13,10 @@ margin-top: 7%;
 display: flex;
 width: 100%;
 text-align: center;
+@media ${(props)=> props.theme.mobile}{
+    margin-top: 30%;
+    
+} 
 `
 
 const BoardWrap = styled.div`
@@ -41,6 +45,7 @@ margin-top: 1%;
 align-items: center;
 text-align: center;
 margin-bottom: 2%;
+
 `
 
 const ContentWrap = styled.div`
@@ -49,6 +54,10 @@ justify-content: center;
 width: 55%;
 align-items: center;
 margin: 0.5%;
+@media ${(props)=> props.theme.mobile}{
+    width: 70%;
+    margin-left: 25%;
+} 
 `
 
 function MainBoard():JSX.Element{
