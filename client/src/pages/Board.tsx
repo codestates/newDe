@@ -123,8 +123,8 @@ const config = {
 const dispatch = useAppDispatch()
 const location = useLocation()
 
-const queryParams = new URLSearchParams()
-console.log(queryParams)
+// const queryParams = new URLSearchParams()
+// console.log(queryParams)
 const nowURL = new URL(window.location.href); //URL값 따오기 
 
 const ParentCategory = nowURL.searchParams.get('parentcategory');
@@ -180,6 +180,10 @@ const handlePage = (el:number) =>{
 dispatch(setParent(ParentCategory))
 dispatch(setChild(ChildCategory))
 
+const pagehandler = () => {
+    setPageChanged(true)
+}
+
 useEffect(()=>{
     setLoading(true);
     setPageChanged(false);
@@ -193,7 +197,7 @@ useEffect(()=>{
 
     return (
         <MainContainer>
-            <LeftNav setPageChanged={setPageChanged}/>
+            <LeftNav setPageChanged={pagehandler}/>
     
 
         <BoardWrap>
