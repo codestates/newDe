@@ -46,11 +46,17 @@ font-size: 200%;
 margin: 5%;
 `
 const Question = [
-    [1, '보기좋은 떡이 맛도 좋다는 말에 동의한다 ','Yes','No'],
-    [2, '모로가도 서울만 가면 된다는 말에 동의한다.','Yes','No']
+    [1, '보기좋은 떡이 맛도 좋다.','Yes','No'],
+    [2, '계획대로만 진행하기 보다는 유동적인 것이 좋다.','Yes','No'],
+    [3, '더 좋아하는 게임은?', '실력뿐 아니라 운도 중요한 게임', '실력이 중요한 게임'],
+    [4, '전통을 지키는 것은?', '중요하지 않다.', '필요하다'],
+    [5, '친구를 만날때는? ', '30분전에 약속을 잡는다', '이주일 전에 약속을 잡는다'],
+    [6, '좋아하는 소설은?', '판타지 소설', '추리 소설'],
+    [7, '결과가 바로 보이는게 좋다', 'Yes', 'No']
+
 ]
 
-const Result = ['백엔드', '풀스택', '프론트엔드']
+const Result = [ '누가봐도 백엔드', '감성적인 백엔드','배려심 많은 프론트엔드', '인싸 프론트엔드'  ]
 
 
 
@@ -64,26 +70,23 @@ function Test(): JSX.Element {
     const [nextisQ, setNext] = useState(true)
     
     const leftbtnclickhandler = () => {
-        if(nowQ === 1){
-            setScore(score +1)
-            setQ(nowQ+1)
-        }
-        else {
-            setScore(score -1)
+        setScore(score +1)
+        if(nowQ >= 7){
             setNext(false)
+        }
+        else{
+            setQ(nowQ+1)
         }
         
         
     
     }
     const rightbtnclickhandler = () =>{
-        if(nowQ === 1){
-            setScore(score -1 )
-            setQ(nowQ+1)
-        }
-        else {
-            setScore(score +1)
+        if(nowQ >= 7){
             setNext(false)
+        }
+        else{
+            setQ(nowQ+1)
         }
         
         
@@ -124,7 +127,7 @@ function Test(): JSX.Element {
         <MainContainer>
             <ConWrap>
                 <ResultSec>
-                    당신은 {Result[score/2+1]} 입니다.
+                    당신은 {Result[Math.floor(score/2)]} 입니다.
                 </ResultSec>
                 
             </ConWrap>
