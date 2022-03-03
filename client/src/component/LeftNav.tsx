@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom' 
+import { useState } from 'react';
 
 const ContainerWrap = styled.div`
   position: fixed;
@@ -11,10 +11,14 @@ const ContainerWrap = styled.div`
     text-decoration-line: none;
     color: #34495E;
     &:hover {
-      cursor: pointer;
-      outline: none;
-      color: black;
+    cursor: pointer;
+    outline: none;
+    color: black;
     }
+&.target {
+    color: blue;
+    text-shadow: 2px 2px 2px gray;
+}
 }`
 
 const BackCategory = styled.li`
@@ -34,28 +38,37 @@ const ChildMenuWrap = styled.li`
  font-size: 20px;
 `
 
-
-
 function Leftnav (props:any):JSX.Element  {
+    const [targetBoard, setTargetBoard] = useState<any>(['','']);
+       
+    console.log(targetBoard)
 
     return (
-        <ContainerWrap onClick={()=>props.setPageChanged(true)}>
+        <ContainerWrap onClick={
+            ()=>{
+                props.setPageChanged(true); 
+                const nowURL = new URL(window.location.href);
+                const parentCategory = nowURL.searchParams.get('parentcategory');
+                const childCategory = nowURL.searchParams.get('childcategory');
+                setTargetBoard([parentCategory, childCategory])}
+            }>
             <ParentMenuWrap>
-                <FrontCategory><Link to = '/board?parentcategory=Front' className = 'btn'>Front</Link></FrontCategory>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=HTML' className = 'btn'>HTML</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=CSS' className = 'btn'>CSS</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=JavaScript' className = 'btn'>JavaScript</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=React' className = 'btn'>React</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=기타' className = 'btn'>기타</Link></ChildMenuWrap>
+                <FrontCategory><Link to = '/board?parentcategory=front' className = {`btn ${targetBoard[0]==='front' && !targetBoard[1]?'target':''}`}>Front</Link></FrontCategory>
+                <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=html' className = {`btn ${targetBoard[1]==='html'?'target':''}`}>HTML</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=css' className = {`btn ${targetBoard[1]==='css'?'target':''}`}>CSS</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=javascript' className = {`btn ${targetBoard[1]==='javascript' && targetBoard[0] === 'front'?'target':''}`}>JavaScript</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=react' className = {`btn ${targetBoard[1]==='react'?'target':''}`}>React</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=front&childcategory=프론트 기타' className = {`btn ${targetBoard[1]==='프론트 기타'?'target':''}`}>기타</Link></ChildMenuWrap>
             </ParentMenuWrap>
             <ParentMenuWrap>
-                <BackCategory><Link to = '/board?parentcategory=Back' className = 'btn'>Back</Link></BackCategory>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=php' className = 'btn'>php</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=Node' className = 'btn'>Node.js</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=Java' className = 'btn'>Java</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=Python' className = 'btn'>Python</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=서버' className = 'btn'>서버</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=기타' className = 'btn'>기타</Link></ChildMenuWrap>
+                <BackCategory><Link to = '/board?parentcategory=back' className = {`btn ${targetBoard[0]==='back' && !targetBoard[1]?'target':''}`}>Back</Link></BackCategory>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=php' className = {`btn ${targetBoard[1]==='php'?'target':''}`}>PHP</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=node.js' className = {`btn ${targetBoard[1]==='node.js'?'target':''}`}>Node.js</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=javascript' className = {`btn ${targetBoard[1]==='javascript' && targetBoard[0]==='back'?'target':''}`}>JavaScript</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=java' className = {`btn ${targetBoard[1]==='java'?'target':''}`}>Java</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=python' className = {`btn ${targetBoard[1]==='python'?'target':''}`}>Python</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=server' className = {`btn ${targetBoard[1]==='server'?'target':''}`}>서버</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=백엔드 기타' className = {`btn ${targetBoard[1]==='백엔드 기타'?'target':''}`}>기타</Link></ChildMenuWrap>
             </ParentMenuWrap>
         </ContainerWrap>       
     )
