@@ -74,7 +74,7 @@ export const Landing3 = () => {
                  data-aos-delay="50"
                  data-aos-duration="1300"
                  data-aos-easing="ease-in-out"
-                 onClick={() => navigate('/roadmap')}
+                 onClick={() => navigate('/test')}
                  className='btn'
                >
                    테스트 하러 가기 
