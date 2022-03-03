@@ -176,6 +176,10 @@ const handlePage = (el:number) =>{
 dispatch(setParent(ParentCategory))
 dispatch(setChild(ChildCategory))
 
+const pagehandler = () => {
+    setPageChanged(true)
+}
+
 useEffect(()=>{
     setLoading(true);
     setPageChanged(false);
@@ -189,7 +193,9 @@ useEffect(()=>{
 
     return (
         <MainContainer>
-            <LeftNav setPageChanged={setPageChanged}/>
+            <LeftNav setPageChanged={pagehandler}/>
+    
+
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
