@@ -20,14 +20,11 @@ display: flex;
 flex-direction: column;
 align-items: center;
 width: 100%;
-
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
 
 }
-
-
 `
 
 const BoardName = styled.div`

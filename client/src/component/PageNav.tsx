@@ -6,9 +6,25 @@ const NavBarContainer = styled.div`
 display:flex;
 `
 const PageBtn = styled.button`
-
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #d3d3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    background-color: #fbfbfb;
+    transition: all 0.5s;
+    margin-bottom: 15px;
+    &:hover {
+      cursor: pointer;
+      outline: none;
+      color: black;
+    }
 `
 const SkipSec = styled.div`
+margin: 7px 7px 0 7px;
 `
 function PageNav(props: any):JSX.Element {
 
