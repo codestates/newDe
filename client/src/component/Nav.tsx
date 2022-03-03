@@ -56,7 +56,7 @@ const Item = styled.li`
   justify-content: center;
   flex-direction: column;
   font-family: 'Do Hyeon', sans-serif;
-  font-size: 20px;
+  font-size: 21px;
   &:hover {
     cursor: pointer;
     color: gray
@@ -84,6 +84,7 @@ function Nav (props:Iprops):JSX.Element  {
     const homeMatch = useMatch("mainboard")
     const roadMatch = useMatch("roadmap")
     const mypageMatch = useMatch("mypage")
+
     
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
