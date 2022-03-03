@@ -21,6 +21,9 @@ display: flex;
 text-align: center;
 flex-direction: column;
 width: 100%;
+@media ${(props)=> props.theme.mobile}{
+  margin-top: 30%;
+} 
 .btn {
     text-decoration-line: none;
     &:hover {
@@ -40,8 +43,7 @@ align-items: center;
 width: 100%;
 
 @media ${(props)=> props.theme.mobile}{
-    width: 100%;
-    height: 100%;
+    
 }
 
 
@@ -53,6 +55,9 @@ display: flex;
 align-items: center;
 text-align: left;
 font-size: 30px;
+@media ${(props)=> props.theme.mobile}{
+  font-size: 27px;
+} 
 `
 
 const ChildBoard = styled.div`
@@ -71,6 +76,10 @@ justify-content: center;
 width: 55%;
 align-items: center;
 margin: 0.5%;
+@media ${(props)=> props.theme.mobile}{
+  width: 70%;
+  margin-left: 25%;
+} 
 `
 
 
@@ -107,6 +116,11 @@ width: 40%;
 display: flex;
 align-items: center;
 justify-content: flex-end;
+@media ${(props)=> props.theme.mobile}{
+  width: 100px;
+  justify-content: space-between;
+} 
+
 `
 
 const InputWrap = styled.input`
@@ -117,6 +131,10 @@ const InputWrap = styled.input`
   font-size: 16px;
   font-weight: 400;
   outline: 0;
+  @media ${(props)=> props.theme.mobile}{
+   width: 140px;
+}  
+ 
 `
 
 const SearchBtn = styled.button`
@@ -128,6 +146,9 @@ const SearchBtn = styled.button`
   outline: 0;
   border: 0;
   color: black;
+  @media ${(props)=> props.theme.mobile}{
+    margin-left: 7px;
+} 
   &:hover,:focus {
       cursor: pointer;
       outline: none;

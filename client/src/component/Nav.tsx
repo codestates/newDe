@@ -23,12 +23,19 @@ const Navi = styled.nav`
   z-index: 1;
   background-color: white;
   font-size: 15px;
+  @media ${(props)=> props.theme.mobile}{
+    width: 100%;
+}
 `
 const Logo = styled.img`
   margin-left: 30px;
   margin-right: 30px;
   width: 70px;
   height: 40px;
+  @media ${(props)=> props.theme.mobile}{
+    width: 80%;
+    margin-left: 10px;
+}
 `
 
 const Col = styled.div`
@@ -61,6 +68,9 @@ const Item = styled.li`
     cursor: pointer;
     color: gray
   }
+  @media ${(props)=> props.theme.mobile}{
+    font-size: 18px;
+}
 `;
 
 const Circle = styled.span`

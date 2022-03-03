@@ -7,6 +7,10 @@ const ContainerWrap = styled.div`
   width: 5%;
   margin-left: 5px;
   background-color: white;
+  @media ${(props)=> props.theme.mobile}{
+    width: 8%;
+    
+} 
 .btn {
     text-decoration-line: none;
     color: #34495E;
@@ -24,10 +28,16 @@ const ContainerWrap = styled.div`
 const BackCategory = styled.li`
  margin-top:20px;
  font-size: 30px;
+ @media ${(props)=> props.theme.mobile}{
+    font-size: 27px;
+} 
 `
 
 const FrontCategory = styled.li`
  font-size: 30px;
+ @media ${(props)=> props.theme.mobile}{
+    font-size: 27px;
+}   
 `
 
 const ParentMenuWrap = styled.ul`
@@ -36,6 +46,9 @@ const ParentMenuWrap = styled.ul`
 const ChildMenuWrap = styled.li`
  margin-top:10px;
  font-size: 20px;
+ @media ${(props)=> props.theme.mobile}{
+    font-size: 18px;
+} 
 `
 
 function Leftnav (props:any):JSX.Element  {
