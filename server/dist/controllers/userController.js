@@ -31,12 +31,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 return res.status(400).json({ date: null, message: 'temporarily banned user' });
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             console.log(token);
-<<<<<<< HEAD
-            res.cookie('accessToken', token);
-            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
-=======
             res.cookie('accessToken', token /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */);
->>>>>>> 785f3297e80bb0a0ba1b3e339d2dd825cbef7b7c
+
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
         else {
