@@ -2,28 +2,36 @@ import styled from 'styled-components';
 import { apiURL } from '../url'
 import { useState } from 'react';
 import axios from 'axios';
-import { AiTwotoneWarning } from 'react-icons/ai';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const FormBox = styled.form`
 display: flex;
-
-margin: 0;
+justify-content: center;
+align-items: center;
 width: 100%;
 height: 100%;
-background-color: seashell;
-
-
 `
 
 
 const TextArea = styled.textarea`
 margin: 2%;
-width: 85%;
+width: 75%;
+resize: none;
 `
 const SubmitBtn = styled.button`
-margin-top: 3%;
-
-height: 50%;
+border: none;
+background-color: white;
+height: 50px;
+width: 100px;
+font-size: 30px;
+&:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+    }
 `
 
 interface writingprops {
@@ -69,8 +77,7 @@ function WriteComment(props: writingprops):JSX.Element {
     return (
         <FormBox>
             <TextArea defaultValue = {props.content} onChange = {handleinput}/>
-            {props.ismodify ? <SubmitBtn onClick = {submitHandler}>댓글 수정</SubmitBtn>: <SubmitBtn onClick = {submitHandler}>댓글 쓰기</SubmitBtn>}
-            
+            {props.ismodify ? <SubmitBtn onClick = {submitHandler}>댓글 수정</SubmitBtn>: <SubmitBtn onClick = {submitHandler}><FontAwesomeIcon icon={faKeyboard}/></SubmitBtn>}
         </FormBox>
     )
     

@@ -87,6 +87,11 @@
     font-family: 'Do Hyeon', sans-serif;
     line-height: 1.2;
     background-color: white;
+    -ms-overflow-style: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
   }
   a {
     text-decoration:none;

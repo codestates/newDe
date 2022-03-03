@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom' 
 import { useState } from 'react';
 
+
 const ContainerWrap = styled.div`
   position: fixed;
   width: 5%;
   margin-left: 5px;
+  text-align: center;
   background-color: white;
   @media ${(props)=> props.theme.mobile}{
     width: 8%;
@@ -53,8 +55,6 @@ const ChildMenuWrap = styled.li`
 
 function Leftnav (props:any):JSX.Element  {
     const [targetBoard, setTargetBoard] = useState<any>(['','']);
-       
-    console.log(targetBoard)
 
     return (
         <ContainerWrap onClick={
@@ -79,7 +79,7 @@ function Leftnav (props:any):JSX.Element  {
                 <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=node.js' className = {`btn ${targetBoard[1]==='node.js'?'target':''}`}>Node.js</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=java' className = {`btn ${targetBoard[1]==='java'?'target':''}`}>Java</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=python' className = {`btn ${targetBoard[1]==='python'?'target':''}`}>Python</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=server' className = {`btn ${targetBoard[1]==='server'?'target':''}`}>서버</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=server' className = {`btn ${targetBoard[1]==='server'?'target':''}`}>Server</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=back&childcategory=백엔드기타' className = {`btn ${targetBoard[1]==='백엔드기타'?'target':''}`}>기타</Link></ChildMenuWrap>
             </ParentMenuWrap>
         </ContainerWrap>       

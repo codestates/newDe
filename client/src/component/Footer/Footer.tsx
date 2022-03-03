@@ -20,7 +20,7 @@ const Footer = () => {
             <a href="https://github.com">HakJong Song</a>
             <a href="https://github.com">JunHyuk Kwon</a>
             <a href="https://github.com">SeungHyeon Lee</a>
-            <a href="https://github.com">HyungJin Choi</a>
+            <a href="https://github.com">HyeongJin Choi</a>
           </li>
         </TeamInfoBox>
         <SiteInfoBox>

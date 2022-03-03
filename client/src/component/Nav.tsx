@@ -128,7 +128,7 @@ function Nav (props:Iprops):JSX.Element  {
     return (
         <Navi>
             <Col>
-                {/* <AiOutlineMenu onClick = {props.modalhandler} className='btn' /> */}
+                {/* <AiOutlineMenu onClick = {props.modalhandler} className='btn' size={24} /> */}
                 <Link to = "/"><Logo src= "images/name.png"></Logo></Link>
                 <Items>
                     <Item><Link to = "/mainboard">Community {homeMatch && <Circle /> }</Link></Item>

@@ -59,7 +59,6 @@ const DelButtonSec = styled.button`
 width: 30%;
 margin-top: 5%;
 margin : 5%;
-background-color: red;
 
 
 `

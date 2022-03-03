@@ -109,15 +109,15 @@ function ContentList(props: ListCompo):JSX.Element {
     const [logo, setLogo] = useState('');
 
     const getLogo = () => {
-        if(props.childCategory === "React") {
+        if(props.childCategory === "react") {
             setLogo(React)
         }
         
-        if(props.childCategory === "JavaScript") {
+        if(props.childCategory === "javascript") {
             setLogo(JavaScript)
         }
 
-        if(props.childCategory === "Node") {
+        if(props.childCategory === "node.js") {
             setLogo(Node)
         }
 
@@ -125,23 +125,23 @@ function ContentList(props: ListCompo):JSX.Element {
             setLogo(php)
         }
 
-        if(props.childCategory === "Python") {
+        if(props.childCategory === "python") {
             setLogo(Python)
         }
 
-        if(props.childCategory === "CSS") {
+        if(props.childCategory === "css") {
             setLogo(CSSS)
         }
 
-        if(props.childCategory === "HTML") {
+        if(props.childCategory === "html") {
             setLogo(HTML)
         }
 
-        if(props.childCategory === "Java") {
+        if(props.childCategory === "java") {
             setLogo(Java)
         }
 
-        if(props.childCategory === "서버") {
+        if(props.childCategory === "server") {
             setLogo(Server)
         }
 
