@@ -111,7 +111,7 @@ function ContentList(props: ListCompo):JSX.Element {
             setLogo(JavaScript)
         }
 
-        if(props.childCategory === "Node") {
+        if(props.childCategory === "node.js") {
             setLogo(Node)
         }
 
@@ -135,7 +135,7 @@ function ContentList(props: ListCompo):JSX.Element {
             setLogo(Java)
         }
 
-        if(props.childCategory === "서버") {
+        if(props.childCategory === "server") {
             setLogo(Server)
         }
 
