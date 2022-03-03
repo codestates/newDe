@@ -234,29 +234,28 @@ function Writing(): JSX.Element {
         <ContainerWrap>
             <select value={selParent} onChange={parentDrop}>
                 <option disabled hidden value=''>대분류</option>
-                <option value='front'>Front</option>
-                <option value='back'>Back</option>
+                <option value='Front'>Front</option>
+                <option value='Back'>Back</option>
             </select>
-            {selParent ==='front'
+            {selParent ==='Front'
             ?
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
-                <option value='html'>HTML</option>
-                <option value='css'>CSS</option>
-                <option value='javascript'>JavaScript</option>
-                <option value='react'>React</option>
-                <option value='guitar'>기타</option>
+                <option value='HTML'>HTML</option>
+                <option value='CSS'>CSS</option>
+                <option value='JavaScript'>JavaScript</option>
+                <option value='React'>React</option>
+                <option value='기타'>기타</option>
             </select>
             :
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
-                <option value='php'>PHP</option>
-                <option value='node'>Node.js</option>
-                <option value='javascript'>JavaScript</option>
-                <option value='java'>Java</option>
-                <option value='python'>Python</option>
-                <option value='server'>서버</option>
-                <option value='guitar'>기타</option>
+                <option value='php'>php</option>
+                <option value='Node'>Node.js</option>
+                <option value='Java'>Java</option>
+                <option value='Python'>Python</option>
+                <option value='서버'>서버</option>
+                <option value='기타'>기타</option>
             </select>
             }
             

@@ -41,7 +41,6 @@ width: 80%;
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
-
 }
 
 
@@ -121,10 +120,7 @@ const config = {
   };
 
 const dispatch = useAppDispatch()
-const location = useLocation()
 
-const queryParams = new URLSearchParams()
-console.log(queryParams)
 const nowURL = new URL(window.location.href); //URL값 따오기 
 
 const ParentCategory = nowURL.searchParams.get('parentcategory');
@@ -145,7 +141,7 @@ const [pageChanged, setPageChanged] = useState(false);
 
 const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
+        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} childCategory = {el.childCategory} />
     </ContentWrap>)
     })
 
@@ -154,7 +150,7 @@ const datatoList = contentlist.map((el:any)=>{
 
 const getListData = async () =>{
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    // console.log(listData.data.pageCount)
+    console.log(listData.data)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)
@@ -194,24 +190,15 @@ useEffect(()=>{
     return (
         <MainContainer>
             <LeftNav setPageChanged={setPageChanged}/>
-    
-
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
                 {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null) : null}
                 {/* {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null } */}
-                
-
             </BoardName>
             <ChildBoard>
                 {datatoList}               
             </ChildBoard>
-
-            
-
-
-
         </BoardWrap>
         <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNavWrap>
