@@ -65,16 +65,17 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
                 .select(['content', 'contents.nickname'])
+                .addSelect('COUNT(content.comments) AS cnt111')
                 .leftJoin('content.user', 'contents')
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
+                .groupBy('content.comments')
                 .getMany();
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
-                .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
-                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+                .createQueryBuilder('c')
+                .leftJoinAndSelect('c.contents', 'ct')
+                .leftJoinAndSelect('c.comments', 'cm')
                 .getMany();
         }
     }
@@ -106,6 +107,7 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     payload = payload.filter((el, idx) => {
         return Math.floor(idx / 10) + 1 === Number(page);
     });
+    console.log(payload);
     return res.status(200).json({ data: payload, pageCount, message: 'ok' });
 });
 exports.allContent = allContent;

@@ -66,15 +66,16 @@ const allContent = async (req:Request, res:Response) => {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
                 .select(['content', 'contents.nickname'])
+                .addSelect('COUNT(content.comments) AS cnt111')
                 .leftJoin('content.user', 'contents')
                 .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
-                .getMany();     
-        } else {
-            payload = await getRepository(Content)
-                .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
-                .where('content.childCategory = :childCategory',{ childCategory : childCategory })
+                .groupBy('content.comments')
+                .getMany();
+            } else {
+                payload = await getRepository(Content)
+                .createQueryBuilder('c')
+                .leftJoinAndSelect('c.contents','ct')
+                .leftJoinAndSelect('c.comments','cm')
                 .getMany();
         }
     } else {
@@ -105,6 +106,7 @@ const allContent = async (req:Request, res:Response) => {
     payload = payload.filter((el:object, idx:number) => {
         return Math.floor(idx/10)+1 === Number(page);
     })    
+    console.log(payload)
 
     return res.status(200).json({data : payload, pageCount, message : 'ok'}); 
 

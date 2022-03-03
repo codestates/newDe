@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
+import {AiOutlineComment} from 'react-icons/ai'
 
 
 
@@ -24,6 +25,9 @@ cursor:pointer;
 const Contentusersec = styled.div`
 width: 10%;
 `
+const CommentCount = styled.div`
+width: 10%;
+`
 
 const Contentlike = styled.div`
 width: 10%;
@@ -32,7 +36,8 @@ interface ListCompo {
     id: number,
     title: string,
     user: string,
-    like: number
+    like: number,
+    
 
 }
 
@@ -52,6 +57,7 @@ function ContentList(props: ListCompo):JSX.Element {
         <ContentWrap>
             
             <Contenttitle onClick = {clickHandler}>{props.title}</Contenttitle>
+            {/* <CommentCount><AiOutlineComment size={19}/>{props.comment}</CommentCount> */}
             <Contentusersec>{props.user?props.user:'탈퇴한 회원'}</Contentusersec>
             <Contentlike>{props.like}</Contentlike>
             

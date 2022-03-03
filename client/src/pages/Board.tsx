@@ -9,6 +9,7 @@ import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
+import {AiOutlineComment} from 'react-icons/ai'
 
 
 const MainContainer = styled.div`
@@ -81,6 +82,7 @@ const Contenttitle = styled.div`
 width: 70%;
 font-weight: bold;
 text-align: left;`
+
 
 
 const Contentusersec = styled.div`
@@ -161,7 +163,7 @@ const [maxpage, setMax] = useState(1)
 
 const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+        <ContentList id = {el.id} title = {el.title}  like = {el.like} user = {el.user.nickname} />
     </ContentWrap>)
     })
 
