@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {AiOutlineMenu} from 'react-icons/ai'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setLogin, setOauth, setAdmin } from '../features/info';
+import { setLogin, setOauth, setAdmin, setNickname } from '../features/info';
 import axios from 'axios';
 import { apiURL } from '../url';
 import { setOriginalNode } from 'typescript';
@@ -12,16 +12,6 @@ import { useMatch } from 'react-router';
 
 // let isLogin = false//나중에 props나 redux등으로 받을것 
 
-const nowURL = new URL(window.location.href); //URL값 따오기 
-const path = nowURL.pathname
-console.log(path)
-
-if (path === '/'){
-    const isLanding = true 
-}
-else {
-    const isLanding = false
-}
 const Navi = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -66,7 +56,7 @@ const Item = styled.li`
   justify-content: center;
   flex-direction: column;
   font-family: 'Do Hyeon', sans-serif;
-  font-size: 20px;
+  font-size: 21px;
   &:hover {
     cursor: pointer;
     color: gray
@@ -92,8 +82,9 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     const homeMatch = useMatch("mainboard")
-    const roadMatch = useMatch("roadmap")
+    const testMatch = useMatch("test")
     const mypageMatch = useMatch("mypage")
+
     
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
@@ -118,6 +109,7 @@ function Nav (props:Iprops):JSX.Element  {
              dispatch(setLogin(false))
              dispatch(setOauth(false))  
              dispatch(setAdmin(false))
+             dispatch(setNickname(''))
          }).catch(err=>{
              console.log(err)
          })
@@ -126,11 +118,15 @@ function Nav (props:Iprops):JSX.Element  {
     return (
         <Navi>
             <Col>
+<<<<<<< HEAD
                 <AiOutlineMenu onClick = {props.modalhandler} className='btn' size={24} />
+=======
+                {/* <AiOutlineMenu onClick = {props.modalhandler} className='btn' /> */}
+>>>>>>> 161305aa4d4f13fad5bfbacf5c64c2af00fd49dc
                 <Link to = "/"><Logo src= "images/name.png"></Logo></Link>
                 <Items>
                     <Item><Link to = "/mainboard">Community {homeMatch && <Circle /> }</Link></Item>
-                    <Item><Link to = "/roadmap">RoadMap {roadMatch && <Circle />}</Link></Item>
+                    <Item><Link to = "/test">Test {testMatch && <Circle />}</Link></Item>
                 </Items>
             </Col>
             {isLogin 

@@ -64,39 +64,73 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!childCategory) {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
+<<<<<<< HEAD
                 .select(['content', 'contents.nickname'])
                 .addSelect('COUNT(content.comments) AS cnt111')
                 .leftJoin('content.user', 'contents')
+=======
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
+>>>>>>> 161305aa4d4f13fad5bfbacf5c64c2af00fd49dc
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
                 .groupBy('content.comments')
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
+<<<<<<< HEAD
                 .createQueryBuilder('c')
                 .leftJoinAndSelect('c.contents', 'ct')
                 .leftJoinAndSelect('c.comments', 'cm')
+=======
+                .createQueryBuilder('content')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
+                .where('content.childCategory = :childCategory', { childCategory: childCategory })
+>>>>>>> 161305aa4d4f13fad5bfbacf5c64c2af00fd49dc
                 .getMany();
+            // console.log(payload.map(el => el.comments));
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
+            // console.log(payload);
         }
     }
     else {
         if (!childCategory) {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
                 .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')
+                .leftJoin('content.comments', 'commentNum')
+                .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.childCategory = :childCategory', { childCategory: childCategory })
                 .andWhere('content.title like :searching', { searching: '%' + searching + '%' })
                 .getMany();
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            });
         }
     }
     payload.reverse();
@@ -125,7 +159,12 @@ const createContent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     content.childCategory = childCategory;
     const ContentRepository = (0, typeorm_1.getRepository)(content_1.Content);
     yield ContentRepository.save(content);
-    return res.status(201).json({ message: 'Success' });
+    // const createdContent = await ContentRepository.findOne({ 
+    //     where: { ...content }
+    // })  
+    console.log('~~~~~', content);
+    //console.log('~~~~~~~~~~~',createdContent);
+    return res.status(201).json({ data: content, message: 'Success' });
 });
 exports.createContent = createContent;
 const getContentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -167,7 +206,7 @@ const editContent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         .where({ id: targetContent.id })
         .execute();
     console.log(targetContent);
-    return res.status(200).json({ message: "edit success" });
+    return res.status(200).json({ data: targetContent, message: "edit success" });
 });
 exports.editContent = editContent;
 const deleteContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

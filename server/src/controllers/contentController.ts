@@ -65,36 +65,62 @@ const allContent = async (req:Request, res:Response) => {
         if(!childCategory) {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .addSelect('COUNT(content.comments) AS cnt111')
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
-                .groupBy('content.comments')
+                .getMany(); 
+            
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
+        } else {
+            payload = await getRepository(Content)
+                .createQueryBuilder('content')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum'])       
+                .where('content.childCategory = :childCategory',{ childCategory : childCategory })                
                 .getMany();
-            } else {
-                payload = await getRepository(Content)
-                .createQueryBuilder('c')
-                .leftJoinAndSelect('c.contents','ct')
-                .leftJoinAndSelect('c.comments','cm')
-                .getMany();
+            
+            // console.log(payload.map(el => el.comments));
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
+
+            // console.log(payload);
         }
     } else {
         if(!childCategory) {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
                 .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
                 .getMany();     
+
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
         } else {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.childCategory = :childCategory',{ childCategory : childCategory })
                 .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
                 .getMany();
+                
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
         }
     }
     payload.reverse();
@@ -129,7 +155,13 @@ const createContent = async (req:Request, res:Response) => {
     const ContentRepository = getRepository(Content)
     
     await ContentRepository.save(content);
-    return res.status(201).json({ message: 'Success'})
+    
+    // const createdContent = await ContentRepository.findOne({ 
+    //     where: { ...content }
+    // })  
+    console.log('~~~~~',content);
+    //console.log('~~~~~~~~~~~',createdContent);
+    return res.status(201).json({ data : content, message: 'Success'})
 };
 
 const getContentDetail = async (req:Request, res:Response) => {
@@ -176,7 +208,7 @@ const editContent = async (req:Request, res:Response) => {
 
         console.log(targetContent)
 
-    return res.status(200).json({ message: "edit success" })
+    return res.status(200).json({ data:targetContent, message: "edit success" })
 };
 
 const deleteContent = async (req:Request, res:Response) => {

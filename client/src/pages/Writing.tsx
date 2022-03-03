@@ -4,12 +4,11 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
 import { apiURL } from '../url'
 import { RootState } from '../store'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { Navigate } from "react-router";
+import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { setParent } from "../features/info";
+import { setChild, setParent } from "../features/info";
 
 const ContainerWrap = styled.div`
 border: 1px solid black;
@@ -33,13 +32,12 @@ function Writing(): JSX.Element {
     //     setContents({ ...contents, parentCategory: parent ,childCategory:child})
     // },[])
 
-
     useEffect(() => {
         // 뭔가 안에서 async를 해도 프라미스 내용물이 안나온다. 바깥함수가 async가 아니라서 그런가?
         // then으로 바꿔서 만들어 보자
         setContents({ ...contents, parentCategory: parent ,childCategory:child})
-        setSelParent(parent)
-        setSelChild(child)
+        setSelParent(parent);
+        setSelChild(child);
         async function fetchData() {
             try {
                 const res = await axios.get(`${apiURL}/board/${contentId}`, config)
@@ -67,6 +65,7 @@ function Writing(): JSX.Element {
 
     const url = window.location.href;
     const contentId = url.split('/')[url.split('/').length - 1];
+    console.log(contentId)
 
     const [editContents, setEditContents] = useState({
         title: '',
@@ -95,10 +94,12 @@ function Writing(): JSX.Element {
 
     const clickhandler = async (e: any) => {
         try {
-            // if (contentId) await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
-             await axios.post(`${apiURL}/board`, contents, config)
+            let createdContentRes;            
+            if (Number(contentId)) createdContentRes = await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
+            else createdContentRes = await axios.post(`${apiURL}/board`, contents, config)
 
-            navigate(`/board?parentcategory=${parent}&childcategory=${child}`)
+            console.log(createdContentRes.data)
+            navigate(`/${createdContentRes.data.data.id}`)
         } catch (err) {
             console.log(err)
         }
@@ -111,7 +112,6 @@ function Writing(): JSX.Element {
         const input = document.createElement("input");
         const formData = new FormData();
         let url = "";
-
 
         input.setAttribute("type", "file");//type="file"
         input.setAttribute("accept", "image/*");//accept="image/*"
@@ -224,9 +224,9 @@ function Writing(): JSX.Element {
     const childDrop = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelChild(event.target.value);
         setContents({...contents, childCategory:event.target.value})
-
     }
-    console.log(parent)
+
+    console.log(contents);
     
     return (
 
@@ -234,29 +234,28 @@ function Writing(): JSX.Element {
         <ContainerWrap>
             <select value={selParent} onChange={parentDrop}>
                 <option disabled hidden value=''>대분류</option>
-                <option value='front'>Front</option>
-                <option value='back'>Back</option>
+                <option value='Front'>Front</option>
+                <option value='Back'>Back</option>
             </select>
-            {selParent ==='front'
+            {selParent ==='Front'
             ?
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
-                <option value='html'>HTML</option>
-                <option value='css'>CSS</option>
-                <option value='javascript'>JavaScript</option>
-                <option value='react'>React</option>
-                <option value='guitar'>기타</option>
+                <option value='HTML'>HTML</option>
+                <option value='CSS'>CSS</option>
+                <option value='JavaScript'>JavaScript</option>
+                <option value='React'>React</option>
+                <option value='프론트기타'>프론트기타</option>
             </select>
             :
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
-                <option value='php'>PHP</option>
-                <option value='node'>Node.js</option>
-                <option value='javascript'>JavaScript</option>
-                <option value='java'>Java</option>
-                <option value='python'>Python</option>
-                <option value='server'>서버</option>
-                <option value='guitar'>기타</option>
+                <option value='php'>php</option>
+                <option value='Node'>Node.js</option>
+                <option value='Java'>Java</option>
+                <option value='Python'>Python</option>
+                <option value='서버'>서버</option>
+                <option value='백엔드기타'>백엔드기타</option>
             </select>
             }
             

@@ -60,7 +60,7 @@ const SignUpButton = styled.button`
     height: 2.5rem;
     border: none;
     border-radius: 10px;
-    background-color: #9e9e9e;
+    background-color: #34495E;
     color: #ffffff;
     font-weight: 700;
     font-size: 1.1em;

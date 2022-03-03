@@ -32,6 +32,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             console.log(token);
             res.cookie('accessToken', token);
+            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
         else {

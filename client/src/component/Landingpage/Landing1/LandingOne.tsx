@@ -31,13 +31,13 @@ export const Landing1 = () => {
   return (
     <SwiperContainer>
       <div className='title-container'>
-        <h1>NewDe</h1>
+        <h1>NEWDE</h1>
       </div>
       <StyledSwiper
         effect='coverflow'
         grabCursor // 마우스 커서 그랩
         autoplay={{ // 자동넘김 기능
-          delay: 3500,
+          delay: 2000,
           disableOnInteraction: false
         }}
         slidesPerView='auto' // 한 번에 볼 수 있는 슬라이드 숫자
