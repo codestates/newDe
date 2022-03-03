@@ -5,18 +5,19 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {Comment, WriteComment} from '../component';
+import {Comment, WriteComment, AlertModal} from '../component';
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 
 const MainContainer = styled.div`
+margin-top: 7%;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
 position: absolute;
-background: #F3F3F3;
+background: white;
 width: 100%;
 height: 100%;
 
@@ -123,7 +124,8 @@ function ContentView ():JSX.Element {
     const path = nowURL.pathname.slice(1) //해당 게시글 번호 이 번호로 axios 를 보내면 된다 
    
 
-   
+    const [alertOpened, setAlert] = useState(false)
+    const [modalMessage, setMessage] = useState('')
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState({id: '',
 title: '', main : '', like: 0, nickname: ''})
@@ -174,12 +176,19 @@ const getComment = async () => {
 
     const likehandler = () => {
         axios.patch(`${apiURL}/board/recommend`, {contentId: path}, config)
-        .then(el=>alert('추천되었습니다'))
+        .then(el=>{
+            setAlert(true)
+            setMessage('추천되었습니다.')
+        }
+            )
     }
     
     const reporthandler = () => {
         axios.patch(`${apiURL}/board/report`,{contentId: path}, config)
-        .then(el => alert('신고되었습니다.'))
+        .then(el=>{
+            setAlert(true)
+            setMessage('신고되었습니다.')
+        })
     }
 
     const handleModify = () =>{      
@@ -191,9 +200,17 @@ const getComment = async () => {
 
     const handleDelete = () =>{
         axios.delete(`${apiURL}/board/${path}`, config)
-            .then(el=>alert("삭제되었습니다"))
-            navigate('../mainboard')
+            .then(el=>{
+                setAlert(true)
+                setMessage('삭제되었습니다.')
+            })
+            .then(el => setTimeout(()=> {navigate('../mainboard')}, 1000) )
+            // navigate('../mainboard')
 
+    }
+
+    const alerthandler = () => {
+        setAlert(false)
     }
     return (
         
@@ -233,7 +250,7 @@ const getComment = async () => {
                 </PageWrap> }
             
             
-            
+        {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null} 
         </MainContainer>
         
         

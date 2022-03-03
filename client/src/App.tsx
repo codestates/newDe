@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
-import { Nav, BoardModal, LeftNav } from './component';
+import { Nav, BoardModal, AlertModal } from './component';
 import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
@@ -33,8 +33,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const isLogin = useAppSelector((state: RootState) => state.info.login)
   const isAdmin = useAppSelector((state: RootState) => state.info.admin)
-  
+  const [alertOpened, setAlert] = useState(false)
   const cookies = new Cookies();
+  const [modalMessage, setMessage] = useState('')
 
   const accessToken = cookies.get("accessToken")
 
@@ -77,17 +78,24 @@ function App() {
   function loginHandler() {
     dispatch(setLogin(true))
   }
+  function alerthandler () {
+    setAlert(false)
+  }
 
   function PrivateRoute() {
     useEffect(()=>{
-      if(!isLogin) alert('로그인하세욧!');
+      if(!isLogin) {
+        setAlert(true);
+        setMessage('로그인이 필요한 서비스입니다.')}
+
     }, []);
     return isLogin ? <Outlet /> : <Navigate replace to='/login' />;
   }
  
   function AdminPrivate() {
     return isAdmin ? <Outlet /> : <>{setTimeout(() => {
-      alert('권한이 없습니다.!!!')
+      setAlert(true);
+      setMessage('권한이 없습니다.')
     }, 0)}<Navigate replace to='/' /></>;
   }
   if (isLoading) return <Loader type="spin" color="#999999" />
@@ -128,6 +136,7 @@ function App() {
           </Routes>
           {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
+          {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null}
           </ContentWrap>
         </BrowserRouter>
       </ThemeProvider>
