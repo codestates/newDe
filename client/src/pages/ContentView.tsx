@@ -243,7 +243,7 @@ console.log(commentlist)
                         <UserName>{content.nickname ? content.nickname: "탈퇴한 회원입니다."}</UserName>
                     </WriterSec>
                     <MainContent dangerouslySetInnerHTML={{__html:content.main}}></MainContent>
-                    {isLogin ? <LikeBtn onClick = {likehandler}><FontAwesomeIcon icon={faHeart}/> {content.like}</LikeBtn> : null}
+                    <LikeBtn onClick = {likehandler}><FontAwesomeIcon icon={faHeart}/> {content.like}</LikeBtn>
                 </ContentWrap>
                 <WritingBox>
                 {isLogin ? <WriteComment contentid = {path} ismodify = {false} content = {''} commentid = {''}/> :null}
