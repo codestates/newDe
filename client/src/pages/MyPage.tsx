@@ -18,7 +18,6 @@ const MyPageWrap = styled.div`
 const MyInfo = styled.div`
     margin: 50px 50px 50px 50px;
 
-
 `
 
 const MyContents = styled.div`
@@ -72,8 +71,10 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
+            const userInfo = {...res.data.data};
+            delete userInfo.content;
             console.log(res.data.data)
-            setUserInfo(res.data.data)
+            setUserInfo(userInfo)
             setContent(res.data.data.content)
         } catch (e) {
             console.log(e)
@@ -94,19 +95,11 @@ function MyPage() {
         <MyPageWrap>
 
             <MyInfo>
-                내정보
-            </MyInfo>      
-
-            <MyContents>   
-                <div>
-                    {content.map((el:any,index:number)=>
-                    <div key={index}>
-                        <div>title : {el.title}</div>    
-                        <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
-                    </div>)}
-                </div>
-                <div>
-                    <div>{userInfo.nickName}</div>
+                <div>내정보</div>
+                <div>이메일:{userInfo.email}</div>
+                <div>닉네임:{userInfo.nickname}</div>
+                <div>가입유형:{userInfo.kakao? '카카오': '일반'}</div>
+                <div>                    
                     <button type='button' onClick={handleModal}>정보 수정</button>
                     <Edit visible={isOpen} onClose={handleModal}>
                         <div>current password</div>
@@ -115,6 +108,20 @@ function MyPage() {
                         <div>{checkText}</div>
                     </Edit>
                 </div>
+
+            </MyInfo>      
+
+            <MyContents>   
+                <div>
+                    내가 쓴 글
+                </div>
+                <div>
+                    {content.map((el:any,index:number)=>
+                    <div key={index}>
+                        <div>title : {el.title}</div>    
+                        <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
+                    </div>)}
+                </div>                
             </MyContents>   
         </MyPageWrap>
     )
