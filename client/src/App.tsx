@@ -60,12 +60,7 @@ function App() {
   }, [])
 
 
-  // const [isLogin, setlogin] = useState(false)
 
-  const pathUrl = {
-    landing: '/',
-    board: ''
-  }
   const [isModalOpened, setModal] = useState(false)
   function modalHandler() {
     setModal(!isModalOpened)

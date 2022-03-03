@@ -91,6 +91,7 @@ exports.profile = profile;
 const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nickname, password } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    console.log(verify);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
@@ -109,7 +110,9 @@ const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.editUser = editUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.headers);
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    // console.log(verify)
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
