@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 const ContainerWrap = styled.div`
   position: fixed;
-  height: 100%;
   width: 5%;
   margin-left: 5px;
   background-color: white;
@@ -24,11 +23,11 @@ const ContainerWrap = styled.div`
 
 const BackCategory = styled.li`
  margin-top:20px;
- font-size: 25px;
+ font-size: 30px;
 `
 
 const FrontCategory = styled.li`
- font-size: 25px;
+ font-size: 30px;
 `
 
 const ParentMenuWrap = styled.ul`
@@ -36,6 +35,7 @@ const ParentMenuWrap = styled.ul`
 `
 const ChildMenuWrap = styled.li`
  margin-top:10px;
+ font-size: 20px;
 `
 
 function Leftnav (props:any):JSX.Element  {
@@ -43,6 +43,12 @@ function Leftnav (props:any):JSX.Element  {
        
     console.log(targetBoard)
 
+<<<<<<< HEAD
+=======
+
+function Leftnav (props:any):JSX.Element  {
+
+>>>>>>> cb0ac2efa69955e6b982ef4e96db7427481a3c08
     return (
         <ContainerWrap onClick={
             ()=>{

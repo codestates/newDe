@@ -1,7 +1,7 @@
 //게시판 보기 
 import react, { useEffect } from 'react'
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import {ContentList, PageNav, LeftNav} from '../component';
@@ -9,6 +9,7 @@ import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
+
 
 
 const MainContainer = styled.div`
@@ -40,7 +41,6 @@ width: 80%;
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
     height: 100%;
-
 }
 
 
@@ -120,14 +120,13 @@ const config = {
   };
 
 const dispatch = useAppDispatch()
+
 const nowURL = new URL(window.location.href); //URL값 따오기 
-console.log(nowURL.href)
+
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
-// console.log(!!ChildCategory)
+// console.log(ParentCategory)
 
-dispatch(setParent(ParentCategory))
-dispatch(setChild(ChildCategory))
 const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
@@ -142,7 +141,7 @@ const [pageChanged, setPageChanged] = useState(false);
 
 const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} />
+        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} childCategory = {el.childCategory} />
     </ContentWrap>)
     })
 
@@ -150,25 +149,13 @@ const datatoList = contentlist.map((el:any)=>{
 
 
 const getListData = async () =>{
-    //URL값 따오기 
-// console.log(nowURL)
-
-    
-    
-    
-    
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    // console.log(listData.data.pageCount)
+    console.log(listData.data)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)
-        
-        
     }
-    catch{console.log("error!")}
-    
-    
-    
+    catch{console.log("error!")} 
 }
 
 
@@ -186,6 +173,12 @@ const handlePage = (el:number) =>{
     // console.log(nowpage)
 
 }
+dispatch(setParent(ParentCategory))
+dispatch(setChild(ChildCategory))
+
+const pagehandler = () => {
+    setPageChanged(true)
+}
 
 useEffect(()=>{
     setLoading(true);
@@ -200,7 +193,7 @@ useEffect(()=>{
 
     return (
         <MainContainer>
-            <LeftNav setPageChanged={setPageChanged}/>
+            <LeftNav setPageChanged={pagehandler}/>
     
 
         <BoardWrap>
@@ -208,15 +201,10 @@ useEffect(()=>{
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
                 {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null) : null}
                 {/* {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null } */}
-                
-
             </BoardName>
             <ChildBoard>
                 {datatoList}               
             </ChildBoard>
-
-            
-
         </BoardWrap>
         <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNavWrap>

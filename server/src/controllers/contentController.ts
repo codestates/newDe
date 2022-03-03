@@ -65,35 +65,62 @@ const allContent = async (req:Request, res:Response) => {
         if(!childCategory) {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
-                .getMany();     
+                .getMany(); 
+            
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
         } else {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
-                .where('content.childCategory = :childCategory',{ childCategory : childCategory })
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum'])       
+                .where('content.childCategory = :childCategory',{ childCategory : childCategory })                
                 .getMany();
+            
+            // console.log(payload.map(el => el.comments));
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
+
+            // console.log(payload);
         }
     } else {
         if(!childCategory) {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.parentCategory = :parentCategory',{ parentCategory : parentCategory })
                 .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
                 .getMany();     
+
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
         } else {
             payload = await getRepository(Content)
                 .createQueryBuilder('content')
-                .select(['content', 'contents.nickname'])
-                .leftJoin('content.user', 'contents')
+                .leftJoin('content.user', 'user')                
+                .leftJoin('content.comments', 'commentNum')     
+                .select(['content', 'user.nickname', 'commentNum']) 
                 .where('content.childCategory = :childCategory',{ childCategory : childCategory })
                 .andWhere('content.title like :searching', { searching : '%'+searching+'%'})
                 .getMany();
+                
+            payload = payload.map(el => {
+                el.comments = el.comments.length;
+                return el;
+            })
         }
     }
     payload.reverse();
