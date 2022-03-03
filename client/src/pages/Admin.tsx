@@ -9,7 +9,7 @@ import { stringify } from 'querystring';
 const MainContainer = styled.div`
 display: flex;
 position: absolute;
-background : #F3F3F3;
+background : white;
 width: 100%;
 height: 100%;
 text-align: center;
@@ -24,7 +24,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 width: 80%;
-background: yellow;
+
 
 
 @media ${(props)=> props.theme.mobile}{
@@ -36,19 +36,19 @@ background: yellow;
 
 const ReportedContentWrap = styled.div`
 width: 90%;
-background: red;
+margin: 1%;
+
 `
 const ReportedSec = styled.div`
 display: flex;
-background: papayawhip;
+
 `
 const NameSec = styled.div`
 width: 70%;
-background: pink;
 cursor:pointer;`
 const UserSec = styled.div`
 width: 10%;
-background: violet;`
+`
 
 const ManageBtn = styled.button`
 ` 
