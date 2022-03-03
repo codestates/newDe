@@ -10,3 +10,4 @@ export { default as Writing} from './Writing';
 export { default as RoadMap} from './RoadMap';
 export { default as Callback} from './Callback';
 export { default as Admin} from './Admin';
+export { default as Test} from './Test';

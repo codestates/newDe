@@ -8,8 +8,21 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import styled from 'styled-components';
 
-const Hi = styled.div`
+const MyPageWrap = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width:100%;
     margin-top: 100px;
+`
+
+const MyInfo = styled.div`
+    margin: 50px 50px 50px 50px;
+
+`
+
+const MyContents = styled.div`
+    margin: 50px 50px 50px 50px;
+
 `
 
 function MyPage() {
@@ -58,8 +71,10 @@ function MyPage() {
         try {
             setLoading(true)
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
+            const userInfo = {...res.data.data};
+            delete userInfo.content;
             console.log(res.data.data)
-            setUserInfo(res.data.data)
+            setUserInfo(userInfo)
             setContent(res.data.data.content)
         } catch (e) {
             console.log(e)
@@ -77,25 +92,38 @@ function MyPage() {
 
     if (loading) return <Loader type="spin" color="#999999" />
     return (
-        <Hi>
-            <div>
-                <div>{userInfo.nickName}</div>
-                <button type='button' onClick={handleModal}>modal open</button>
-                <Edit visible={isOpen} onClose={handleModal}>
-                    <div>current password</div>
-                    <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
-                    <span><button onClick={passwordCheck}>submit</button></span>
-                    <div>{checkText}</div>
-                </Edit>
-            </div>
-            <div>
-                {content.map((el:any,index:number)=>
-                <div key={index}>
-                    <div>title : {el.title}</div>    
-                    <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
-                </div>)}
-            </div>
-        </Hi>
+        <MyPageWrap>
+
+            <MyInfo>
+                <div>내정보</div>
+                <div>이메일:{userInfo.email}</div>
+                <div>닉네임:{userInfo.nickname}</div>
+                <div>가입유형:{userInfo.kakao? '카카오': '일반'}</div>
+                <div>                    
+                    <button type='button' onClick={handleModal}>정보 수정</button>
+                    <Edit visible={isOpen} onClose={handleModal}>
+                        <div>current password</div>
+                        <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
+                        <span><button onClick={passwordCheck}>submit</button></span>
+                        <div>{checkText}</div>
+                    </Edit>
+                </div>
+
+            </MyInfo>      
+
+            <MyContents>   
+                <div>
+                    내가 쓴 글
+                </div>
+                <div>
+                    {content.map((el:any,index:number)=>
+                    <div key={index}>
+                        <div>title : {el.title}</div>    
+                        <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div>
+                    </div>)}
+                </div>                
+            </MyContents>   
+        </MyPageWrap>
     )
 }
 

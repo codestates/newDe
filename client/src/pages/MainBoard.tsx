@@ -57,6 +57,7 @@ function MainBoard():JSX.Element{
     const [loading, setLoading] = useState(false);
     const [frontlist, setFront] = useState([]);
     const [backlist, setBack] = useState([]);
+    const [pageChanged, setPageChanged] = useState(false);
     
 //arr.map 시 id = contentId로 주면 됨 해당 콘텐츠 아이디는 콘텐츠뷰로 넘길 때 /board/113 식으로 넘기면 됨 
     
@@ -99,6 +100,10 @@ function MainBoard():JSX.Element{
 
         })
 
+    const pagehandler = () => {
+    setPageChanged(true)
+}
+
     useEffect(()=>{
 
         setLoading(true)
@@ -112,7 +117,7 @@ function MainBoard():JSX.Element{
 
     return(
         <MainContainer>
-            <LeftNav />
+            <LeftNav setPageChanged={pagehandler}/>
           <BoardWrap>
             <BoardName>프론트 게시판</BoardName>
             <ChildBoard>

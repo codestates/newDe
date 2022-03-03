@@ -82,7 +82,7 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     const homeMatch = useMatch("mainboard")
-    const roadMatch = useMatch("roadmap")
+    const testMatch = useMatch("test")
     const mypageMatch = useMatch("mypage")
 
     
@@ -122,7 +122,7 @@ function Nav (props:Iprops):JSX.Element  {
                 <Link to = "/"><Logo src= "images/name.png"></Logo></Link>
                 <Items>
                     <Item><Link to = "/mainboard">Community {homeMatch && <Circle /> }</Link></Item>
-                    <Item><Link to = "/roadmap">RoadMap {roadMatch && <Circle />}</Link></Item>
+                    <Item><Link to = "/test">Test {testMatch && <Circle />}</Link></Item>
                 </Items>
             </Col>
             {isLogin 

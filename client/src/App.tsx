@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
+import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin, Test } from './pages'
 import { Nav, BoardModal, AlertModal, Footer } from './component';
 import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
@@ -131,6 +131,7 @@ function App() {
               <Route path='' element={<Admin />} />
             </Route>
             <Route path='/' element={<Landing />} />
+            <Route path='/test' element={<Test />} />
             {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
