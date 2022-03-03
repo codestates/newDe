@@ -18,6 +18,7 @@ import { faBug } from '@fortawesome/free-solid-svg-icons';
 const MainContainer = styled.div`
 margin-top: 7%;
 width: 100%;
+margin-bottom: 3%;
 `
 
 const PageWrap = styled.div`
