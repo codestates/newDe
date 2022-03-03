@@ -139,7 +139,11 @@ function ContentList(props: ListCompo):JSX.Element {
             setLogo(Server)
         }
 
-        if(props.childCategory === "기타") {
+        if(props.childCategory === "프론트기타") {
+            setLogo(guitar)
+        }
+
+        if(props.childCategory === "백엔드기타") {
             setLogo(guitar)
         }
     }

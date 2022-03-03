@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin } from './pages'
-import { Nav, BoardModal, AlertModal } from './component';
+import { Nav, BoardModal, AlertModal, Footer } from './component';
 import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
@@ -138,6 +138,7 @@ function App() {
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
           {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null}
           </ContentWrap>
+          <Footer />
         </BrowserRouter>
       </ThemeProvider>
 

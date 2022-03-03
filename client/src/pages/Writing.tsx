@@ -245,7 +245,7 @@ function Writing(): JSX.Element {
                 <option value='CSS'>CSS</option>
                 <option value='JavaScript'>JavaScript</option>
                 <option value='React'>React</option>
-                <option value='기타'>기타</option>
+                <option value='프론트기타'>프론트기타</option>
             </select>
             :
             <select value={selChild} onChange={childDrop}>
@@ -255,7 +255,7 @@ function Writing(): JSX.Element {
                 <option value='Java'>Java</option>
                 <option value='Python'>Python</option>
                 <option value='서버'>서버</option>
-                <option value='기타'>기타</option>
+                <option value='백엔드기타'>백엔드기타</option>
             </select>
             }
             

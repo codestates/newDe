@@ -46,7 +46,7 @@ function Leftnav (props:any):JSX.Element  {
                 <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=CSS' className = 'btn'>CSS</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=JavaScript' className = 'btn'>JavaScript</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=React' className = 'btn'>React</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=기타' className = 'btn'>기타</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=Front&childcategory=프론트기타' className = 'btn'>기타</Link></ChildMenuWrap>
             </ParentMenuWrap>
             <ParentMenuWrap>
                 <BackCategory><Link to = '/board?parentcategory=Back' className = 'btn'>Back</Link></BackCategory>
@@ -55,7 +55,7 @@ function Leftnav (props:any):JSX.Element  {
                 <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=Java' className = 'btn'>Java</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=Python' className = 'btn'>Python</Link></ChildMenuWrap>
                 <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=서버' className = 'btn'>서버</Link></ChildMenuWrap>
-                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=기타' className = 'btn'>기타</Link></ChildMenuWrap>
+                <ChildMenuWrap><Link to = '/board?parentcategory=Back&childcategory=백엔드기타' className = 'btn'>기타</Link></ChildMenuWrap>
             </ParentMenuWrap>
         </ContainerWrap>       
     )
