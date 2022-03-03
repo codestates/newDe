@@ -139,6 +139,7 @@ function ContentView ():JSX.Element {
     const [content, setContent] = useState({id: '',
 title: '', main : '', like: 0, nickname: '', createdat: ''})
     const [commentlist, setComment] = useState([])
+    const [like, setlike] = useState(0)
     
 
 
@@ -146,9 +147,10 @@ title: '', main : '', like: 0, nickname: '', createdat: ''})
 const getcontent = async () =>{
     const result =  await axios.get(`${apiURL}/board/${path}`)
     const info = result.data.data
-    console.log(info)
+    // console.log(info)
     setContent({id: info.id,
     title: info.title, main : info.main, like: info.like, nickname: info.user.nickname, createdat: info.createdAt.slice(0,10)})
+    setlike(info.user.like)
 }
 
 const getComment = async () => {
@@ -164,7 +166,7 @@ console.log(commentlist)
         getcontent()
         getComment()
         setLoading(false)
-    }, [])
+    }, [like])
     
     
     const datatoComment = commentlist.map((el:any)=>{
@@ -178,8 +180,9 @@ console.log(commentlist)
     const likehandler = () => {
         axios.patch(`${apiURL}/board/recommend`, {contentId: path}, config)
         .then(el=>{
-            setAlert(true)
-            setMessage('추천되었습니다.')
+            
+            setlike(like+1)
+            
         }
             )
     }
