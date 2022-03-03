@@ -64,17 +64,10 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!childCategory) {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
                 .createQueryBuilder('content')
-<<<<<<< HEAD
-                .select(['content', 'contents.nickname'])
-                .addSelect('COUNT(content.comments) AS cnt111')
-                .leftJoin('content.user', 'contents')
-=======
                 .leftJoin('content.user', 'user')
                 .leftJoin('content.comments', 'commentNum')
                 .select(['content', 'user.nickname', 'commentNum'])
->>>>>>> 161305aa4d4f13fad5bfbacf5c64c2af00fd49dc
                 .where('content.parentCategory = :parentCategory', { parentCategory: parentCategory })
-                .groupBy('content.comments')
                 .getMany();
             payload = payload.map(el => {
                 el.comments = el.comments.length;
@@ -83,17 +76,11 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         else {
             payload = yield (0, typeorm_1.getRepository)(content_1.Content)
-<<<<<<< HEAD
-                .createQueryBuilder('c')
-                .leftJoinAndSelect('c.contents', 'ct')
-                .leftJoinAndSelect('c.comments', 'cm')
-=======
                 .createQueryBuilder('content')
                 .leftJoin('content.user', 'user')
                 .leftJoin('content.comments', 'commentNum')
                 .select(['content', 'user.nickname', 'commentNum'])
                 .where('content.childCategory = :childCategory', { childCategory: childCategory })
->>>>>>> 161305aa4d4f13fad5bfbacf5c64c2af00fd49dc
                 .getMany();
             // console.log(payload.map(el => el.comments));
             payload = payload.map(el => {

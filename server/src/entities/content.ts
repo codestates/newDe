@@ -12,7 +12,7 @@ export class Content {
     @Column()
     title: string;
 
-    @Column()
+    @Column({type: 'mediumtext'})
     main: string;    
 
     @Column({default:0})

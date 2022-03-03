@@ -237,24 +237,24 @@ function Writing(): JSX.Element {
                 <option value='Front'>Front</option>
                 <option value='Back'>Back</option>
             </select>
-            {selParent ==='Front'
+            {selParent ==='front'
             ?
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
                 <option value='HTML'>HTML</option>
-                <option value='CSS'>CSS</option>
-                <option value='JavaScript'>JavaScript</option>
-                <option value='React'>React</option>
+                <option value='css'>CSS</option>
+                <option value='javascript'>JavaScript</option>
+                <option value='react'>React</option>
                 <option value='프론트기타'>프론트기타</option>
             </select>
             :
             <select value={selChild} onChange={childDrop}>
                 <option disabled hidden value=''>소분류</option>
                 <option value='php'>php</option>
-                <option value='Node'>Node.js</option>
-                <option value='Java'>Java</option>
-                <option value='Python'>Python</option>
-                <option value='서버'>서버</option>
+                <option value='node.js'>Node.js</option>
+                <option value='java'>Java</option>
+                <option value='python'>Python</option>
+                <option value='server'>server</option>
                 <option value='백엔드기타'>백엔드기타</option>
             </select>
             }
