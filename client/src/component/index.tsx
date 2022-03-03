@@ -7,3 +7,4 @@ export { default as PageNav } from './PageNav';
 export { default as LeftNav } from './LeftNav';
 export { default as AlertModal } from './AlertModal';
 export { default as DeleteAlert } from './DeleteAlert';
+export { default as Footer } from './Footer/Footer';

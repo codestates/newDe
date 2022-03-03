@@ -9,6 +9,9 @@ import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -17,11 +20,9 @@ margin-top: 7%;
 display: flex;
 text-align: center;
 flex-direction: column;
-background : white;
 width: 100%;
 .btn {
     text-decoration-line: none;
-    color: #34495E;
     &:hover {
       cursor: pointer;
       outline: none;
@@ -36,7 +37,7 @@ const BoardWrap = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 80%;
+width: 100%;
 
 @media ${(props)=> props.theme.mobile}{
     width: 100%;
@@ -47,29 +48,29 @@ width: 80%;
 `
 
 const BoardName = styled.div`
+width: 55%;
 display: flex;
-width : 80%;
+align-items: center;
 text-align: left;
-
-font-size: 1.5rem;
+font-size: 30px;
 `
 
 const ChildBoard = styled.div`
 display: flex;
 flex-direction: column;
-width: 90%;
+width: 100%;
 margin-top: 1%;
 align-items: center;
 text-align: center;
-margin-bottom: 5%;
+margin-bottom: 2%;
 `
 
 const ContentWrap = styled.div`
 display: flex;
 justify-content: center;
-width: 90%;
+width: 55%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%;
+margin: 0.5%;
 `
 
 
@@ -77,7 +78,7 @@ const PageNavWrap = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-
+outline: none;
 `
 
 const PageSec = styled.button`
@@ -85,7 +86,15 @@ background: green;
 margin: 5% ;
 `
 
-const WritingBtn = styled.button`
+const WritingBtn = styled.div`
+  text-decoration-line: none;
+  outline: none;
+  color: black;
+  font-size: 26px;
+  &:hover {
+    cursor: pointer;
+    color: black;
+  }
 `
 
 const NameSec = styled.div`
@@ -94,20 +103,36 @@ font-weight: bold;
 `
 
 const SearchingWrap = styled.div`
+width: 40%;
 display: flex;
-width: 50%;
-margin: 3%;
+align-items: center;
+justify-content: flex-end;
 `
 
 const InputWrap = styled.input`
-margin: 2%;
-width: 80%;
-background-color: seashell;
 
+  border: 2px solid black;
+  border-radius: 15px;
+  background: none;
+  font-size: 16px;
+  font-weight: 400;
+  outline: 0;
 `
 
 const SearchBtn = styled.button`
-margin: 1%;
+  background: none;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  color: black;
+  &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+  }
 `
 function Board(props: any):JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
@@ -199,14 +224,16 @@ useEffect(()=>{
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
-                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null) : null}
-                {/* {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null } */}
+                <SearchingWrap> 
+                    <InputWrap type = 'search' onChange = {handleInput} /> 
+                    <SearchBtn onClick = {handleSubmit}><FontAwesomeIcon className='icon' icon={faSearch} size='2x' /></SearchBtn> 
+                </SearchingWrap>
+                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' ><FontAwesomeIcon className='icon' icon={faEdit} /></Link></WritingBtn> : null) : null}
             </BoardName>
             <ChildBoard>
                 {datatoList}               
             </ChildBoard>
         </BoardWrap>
-        <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNavWrap>
             <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler= {handlePage}/>            
         </PageNavWrap>

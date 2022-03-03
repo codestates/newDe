@@ -12,6 +12,8 @@ import Python from '../images/python.png'
 import CSSS from '../images/css.png'
 import HTML from '../images/HTML.png'
 import Java from '../images/Java.png'
+import Server from '../images/server.png'
+import guitar from '../images/logo2.png'
 
 
 const ContentWrap = styled.div`
@@ -131,6 +133,18 @@ function ContentList(props: ListCompo):JSX.Element {
 
         if(props.childCategory === "Java") {
             setLogo(Java)
+        }
+
+        if(props.childCategory === "서버") {
+            setLogo(Server)
+        }
+
+        if(props.childCategory === "프론트기타") {
+            setLogo(guitar)
+        }
+
+        if(props.childCategory === "백엔드기타") {
+            setLogo(guitar)
         }
     }
 
