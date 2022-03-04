@@ -196,7 +196,7 @@ const datatoList = contentlist.map((el:any)=>{
 
 const getListData = async () =>{
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    console.log(listData.data)
+    // console.log(listData.data)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)

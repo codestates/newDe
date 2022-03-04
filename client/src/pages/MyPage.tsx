@@ -109,7 +109,7 @@ function MyPage() {
             const res = await axios.get(`${apiURL}/user`, { withCredentials: true })
             const userInfo = {...res.data.data};
             delete userInfo.content;
-            console.log(res.data.data)
+            // console.log(res.data.data)
             setUserInfo(userInfo)
             setContent(res.data.data.content)
             setmax(Math.ceil((content.length)/10))

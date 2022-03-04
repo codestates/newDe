@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import styled from 'styled-components';
+import { AlertModal} from '../component';
 
 
 const Back = styled.div`
@@ -89,7 +90,7 @@ const Bb=styled.div`
 function MyPageEdit() {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
-
+    const [alertOpened, setAlert] = useState(false)
     const [checkInfo, setCheckInfo] = useState({
         nickname: '',
         password: '',
@@ -117,6 +118,9 @@ function MyPageEdit() {
     }
     const regNickname = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/
     const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,20}/
+    const alerthandler = () => {
+        setAlert(false)
+    }
 
     const handleOnBlur = (e: any) => {
         if (e.target.placeholder === 'nickname') {
@@ -180,18 +184,20 @@ function MyPageEdit() {
             if(checkInfo.nickname===''&& checkInfo.password===''&&checkInfo.checkPassword===''){
                 alert('수정할 내용이 없습니다')
             }else{
-                alert('수정 완료!')
+                setAlert(true)
+                setTimeout(()=>navigate('/mypage'), 1000)
             }
         }
     }
     const isOauth = useAppSelector((state: RootState) => state.info.oauth)
 
-    console.log(text)
+    // console.log(text)
     if (loading) return <Loader type="spin" color="#999999" />
 
     return (
         <Back>
             <Container>
+                {alertOpened ? <AlertModal message = '수정이 완료되었습니다.' modalhandler = {alerthandler} />: null} 
                 <Item>
                     <Item>변경할 닉네임</Item>
                     <MyPageEditInput type='text' placeholder='nickname' value={checkInfo.nickname} onChange={onChange} onBlur={handleOnBlur} />
