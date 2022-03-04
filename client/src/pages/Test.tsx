@@ -21,7 +21,6 @@ text-align: center;
 flex-direction: column;
 background : white;
 width: 100%;
-height: 70vh;
 .btn {
     text-decoration-line: none;
     color: #34495E;
