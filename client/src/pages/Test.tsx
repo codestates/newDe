@@ -1,17 +1,27 @@
+/* eslint-disable jsx-a11y/alt-text */
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
+import test2 from '../images/test2.jpeg'
+import test3 from '../images/test3.png'
+import test4 from '../images/test4.png'
+import test6 from '../images/test6.png'
+import plus from '../images/plus.png'
+import gasu from '../images/gasu.png'
+import promise from '../images/promise.png'
+import aya from '../images/aya.png'
 
 
 const MainContainer = styled.div`
-margin-top: 7%;
+margin-top: 5%;
 display: flex;
 text-align: center;
 flex-direction: column;
 background : white;
 width: 100%;
+height: 70vh;
 .btn {
     text-decoration-line: none;
     color: #34495E;
@@ -28,7 +38,14 @@ justify-content:center;
 `
 const NumberingSec = styled.div`
 margin-right: 0.5%;
+`
 
+const ImgWrap = styled.div`
+margin: 15px 0 15px 0;
+ > img {
+     height: 400px;
+     width: 500px;
+ }
 `
 
 const QuestionSec = styled.div`
@@ -42,21 +59,32 @@ display: flex;
 justify-content: center;
 `
 const SelectBtn = styled.button`
+border: none;
+background-color: white;
+font-size: 20px;
 font-size: 200%;
-margin: 5%;
+margin: 0 50px 0 50px;
+&:hover {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+      color: red;
+    }
 `
-const Question = [
-    [1, '보기좋은 떡이 맛도 좋다.','Yes','No'],
-    [2, '계획대로만 진행하기 보다는 유동적인 것이 좋다.','Yes','No'],
-    [3, '더 좋아하는 게임은?', '실력뿐 아니라 운도 중요한 게임', '실력이 중요한 게임'],
-    [4, '전통을 지키는 것은?', '중요하지 않다.', '필요하다'],
-    [5, '친구를 만날때는? ', '30분전에 약속을 잡는다', '이주일 전에 약속을 잡는다'],
-    [6, '좋아하는 소설은?', '판타지 소설', '추리 소설'],
-    [7, '결과가 바로 보이는게 좋다', 'Yes', 'No']
-
+const Question:[number, string, string, string, string][] = [
+    [1, '계획대로만 진행하기 보다는 유동적인 것이 좋다.','Yes','No', test2],
+    [2, '기능만 돌아가면 된다', '아니다', '그렇다', test3],
+    [3, '겉보다 속이 중요하다', '겉이 중요하다', '내면이 중요하다', test4],
+    [4, '1+1=?','귀요미','2', plus],
+    [5, '전통을 지키는 것은?', '중요하지 않다.', '필요하다', test6],
+    [6, '처음 보는 게임을 플레이 하려 한다. 이때', '일단 키고 맞아본다.', '공략을 킨다.', aya],
+    [7, '당신은 지금 친구를 불러 점심을 먹으려 하고 있다. 이때 당신은', '친구를 지금 부른다', '어제 불러놨다.', promise],
+    [8, '밴드를 결성하기로 했다. 당신의 포지션은?','보컬','연주자', gasu]
 ]
 
-const Result = [ '누가봐도 백엔드', '감성적인 백엔드','배려심 많은 프론트엔드', '인싸 프론트엔드'  ]
+const Result = ['누가봐도 백엔드', '감성적인 백엔드','중원의 지휘자 풀스택','배려심 많은 프론트엔드', '인싸 프론트엔드']
+
+
 
 
 
@@ -68,10 +96,24 @@ function Test(): JSX.Element {
     const [nowQ, setQ] = useState(1)
     const [score, setScore] = useState(0)
     const [nextisQ, setNext] = useState(true)
+
+    let targetResult;
+
+    if(score < 2) {
+        targetResult = 0
+    } else if (score < 4) {
+        targetResult = 1
+    } else if (score === 4) {
+        targetResult = 2
+    } else if (score < 7) {
+        targetResult = 3
+    } else {
+        targetResult = 4
+    }
     
     const leftbtnclickhandler = () => {
         setScore(score +1)
-        if(nowQ >= 7){
+        if(nowQ >= 8){
             setNext(false)
         }
         else{
@@ -82,7 +124,7 @@ function Test(): JSX.Element {
     
     }
     const rightbtnclickhandler = () =>{
-        if(nowQ >= 7){
+        if(nowQ >= 8){
             setNext(false)
         }
         else{
@@ -99,8 +141,8 @@ function Test(): JSX.Element {
         else{
             navigate('../login')
         }
-        
     }
+
     return (
         <MainContainer>
             {nextisQ ? 
@@ -113,9 +155,12 @@ function Test(): JSX.Element {
                 </QuestionSec>
             </ConWrap> 
             
+            <ImgWrap>
+                <img src={Question[nowQ-1][4]} alt='test' />
+            </ImgWrap>
             
             <BtnWrap>
-                <SelectBtn onClick = {leftbtnclickhandler}>
+                <SelectBtn onClick = {leftbtnclickhandler} className='leftBtn'>
                     {Question[nowQ-1][2]}
                 </SelectBtn>
                 <SelectBtn onClick = {rightbtnclickhandler}>
@@ -127,7 +172,7 @@ function Test(): JSX.Element {
         <MainContainer>
             <ConWrap>
                 <ResultSec>
-                    당신은 {Result[Math.floor(score/2)]} 입니다.
+                    당신은 {Result[targetResult]} 입니다.
                 </ResultSec>
                 
             </ConWrap>

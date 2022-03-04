@@ -108,7 +108,7 @@ const LikeBtn = styled.button`
 border: none;
 background-color: white;
 font-size: 20px;
-&:hover,:focus {
+&:hover {
       cursor: pointer;
       outline: none;
       transform: scale(1.05);
