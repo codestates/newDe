@@ -29,14 +29,47 @@ const MyContents = styled.div`
     margin: 50px 50px 50px 50px;
 
 `
+const BtnPositionWrap = styled.div`
+    display : flex;
+`
+
 const BtnWrap = styled.div`
     margin: 2%;
+`
+
+const MypageBtn = styled.button`
+    width: 100px;
+    height: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: gainsboro;
+    transition: all 0.5s;
+    &:hover, :focus {
+        cursor: pointer;
+        transform: scale(1.05);
+        background-color: gainsboro;
+    }
+
 `
 
 const PageNavWrap = styled.div`
     
     width: 50%;
 `
+
+const TitleWrap = styled.div`
+    font-size: 30px;
+    margin-bottom : 10px;
+`
+
+const InfoWrap = styled.div`
+    font-size: 20px;
+    margin-bottom : 10px;
+    margin-left: 10px;
+`
+
+
+
 function MyPage() {
     const [userInfo, setUserInfo] = useState<any>({})
     const [loading, setLoading] = useState(false)
@@ -137,46 +170,51 @@ function MyPage() {
         }
     }, [maxpage])
 
+    console.log(content);
+
     if (loading) return <Loader type="spin" color="#999999" />
     return (
         <MyPageWrap>
             {isalertopened ? <DropoutModal modalhandler = {dropouthandler} />: null}
             <MyInfo>
-                <div>내정보</div>
-                <div>이메일:{userInfo.email}</div>
-                <div>닉네임:{userInfo.nickname}</div>
-                <div>가입유형:{userInfo.kakao? '카카오': '일반'}</div>
-                <BtnWrap>                    
-                    <button type='button' onClick={handleModal}>정보 수정</button>
-                    <Edit visible={isOpen} onClose={handleModal}>
-                        <div>current password</div>
-                        <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
-                        <span><button onClick={passwordCheck}>submit</button></span>
-                        <div>{checkText}</div>
-                    </Edit>
-                </BtnWrap>
-                <BtnWrap>                    
-                    <button type='button' onClick={handleDropout}>회원 탈퇴</button>
-                    <Edit visible={dropoutmodal} onClose={handleDropout}>
-                        <div>current password</div>
-                        <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
-                        <span><button onClick={passwordCheckforDropout}>submit</button></span>
-                        <div>{checkText}</div>
-                    </Edit>
-                </BtnWrap>
+                <TitleWrap>내정보</TitleWrap>
+                <InfoWrap>이메일:{userInfo.email}</InfoWrap>
+                <InfoWrap>닉네임:{userInfo.nickname}</InfoWrap>
+                <InfoWrap>가입유형:{userInfo.kakao? '카카오': '일반'}</InfoWrap>
+                <BtnPositionWrap>
+                    <BtnWrap>                    
+                        <MypageBtn type='button' onClick={handleModal}>정보 수정</MypageBtn>
+                        <Edit visible={isOpen} onClose={handleModal}>
+                            <div>current password</div>
+                            <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
+                            <span><button onClick={passwordCheck}>submit</button></span>
+                            <div>{checkText}</div>
+                        </Edit>
+                    </BtnWrap>
+                    <BtnWrap>                    
+                        <MypageBtn type='button' onClick={handleDropout}>회원 탈퇴</MypageBtn>
+                        <Edit visible={dropoutmodal} onClose={handleDropout}>
+                            <div>current password</div>
+                            <input type='password' placeholder='current password' onChange={onChange} value={text}></input>
+                            <span><button onClick={passwordCheckforDropout}>submit</button></span>
+                            <div>{checkText}</div>
+                        </Edit>
+                    </BtnWrap>
+                </BtnPositionWrap>
                 
 
             </MyInfo>      
             
             <MyContents>   
-                <div>
+                <TitleWrap>
                     내가 쓴 글
-                </div>
+                </TitleWrap>
                 <div>
-                    {content.slice(10*(nowpage-1), 10*nowpage).map((el:any,index:number)=>
-                    
+                    {content.slice(10*(nowpage-1), 10*nowpage).map((el:any,index:number)=>                    
                     <div key={index}>
-                        <div className = 'btn' onClick = {() => clickhandler(el.id)}>title : {el.title}</div>    
+                        <hr></hr>
+                        <div>게시판 : {el.childCategory? el.childCategory: el.parentCategory}</div>
+                        <div className = 'btn' onClick = {() => clickhandler(el.id)}>제목 : {el.title}</div>    
                         
                         <div> {new Date(el.createdAt).getFullYear()}년 {new Date(el.createdAt).getMonth() + 1}월 {new Date(el.createdAt).getDate()}일</div>
                         {/* <div><span>main : </span><span dangerouslySetInnerHTML={{__html:el.main}}></span></div> */}
