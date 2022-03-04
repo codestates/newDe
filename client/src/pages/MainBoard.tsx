@@ -17,6 +17,7 @@ text-align: center;
     margin-top: 30%;
     
 } 
+
 `
 
 const BoardWrap = styled.div`

@@ -5,7 +5,6 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKeyboard } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const FormBox = styled.form`
 display: flex;
@@ -77,7 +76,7 @@ function WriteComment(props: writingprops):JSX.Element {
     return (
         <FormBox>
             <TextArea defaultValue = {props.content} onChange = {handleinput}/>
-            {props.ismodify ? <SubmitBtn onClick = {submitHandler}>댓글 수정</SubmitBtn>: <SubmitBtn onClick = {submitHandler}><FontAwesomeIcon icon={faKeyboard}/></SubmitBtn>}
+            {props.ismodify ? <SubmitBtn onClick = {submitHandler}><FontAwesomeIcon icon={faPen} /></SubmitBtn>: <SubmitBtn onClick = {submitHandler}><FontAwesomeIcon icon={faKeyboard}/></SubmitBtn>}
         </FormBox>
     )
     
