@@ -7,7 +7,9 @@ export const FooterContainer = styled.footer`
   background-color: #ffffff;
   border-top: 1px solid #f2f2f2;
   height: 100%;
-
+  @media ${(props)=> props.theme.mobile}{
+    display: none;
+}
 `;
 
 export const FooterWrap = styled.div`

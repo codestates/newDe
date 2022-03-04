@@ -22,6 +22,9 @@ flex-direction: column;
 background : white;
 width: 100%;
 height: 70vh;
+@media ${(props)=> props.theme.mobile}{
+    margin-top: 13%;
+}
 .btn {
     text-decoration-line: none;
     color: #34495E;
@@ -45,7 +48,11 @@ margin: 15px 0 15px 0;
  > img {
      height: 400px;
      width: 500px;
+     @media ${(props)=> props.theme.mobile}{
+     width: 100%;
+}
  }
+ 
 `
 
 const QuestionSec = styled.div`
@@ -64,6 +71,7 @@ background-color: white;
 font-size: 20px;
 font-size: 200%;
 margin: 0 50px 0 50px;
+
 &:hover {
       cursor: pointer;
       outline: none;
