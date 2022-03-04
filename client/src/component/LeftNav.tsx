@@ -67,9 +67,11 @@ function Leftnav (props:any):JSX.Element  {
     return (
         <ContainerWrap onClick={
             ()=> {                 
+                props.setPageChanged();
                 nowURL = new URL(window.location.href);
                 const parentCategory = nowURL.searchParams.get('parentcategory');
                 const childCategory = nowURL.searchParams.get('childcategory');
+                
                 setTargetBoard([parentCategory, childCategory])}
             }>
             <ParentMenuWrap>
