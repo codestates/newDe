@@ -42,7 +42,7 @@ function Writing(): JSX.Element {
             try {
                 const res = await axios.get(`${apiURL}/board/${contentId}`, config)
 
-                console.log('~~~!!!~~~', res.data)
+                // console.log('~~~!!!~~~', res.data)
                 setContents({
                     title: res.data.data.title,
                     main: res.data.data.main,
@@ -53,7 +53,7 @@ function Writing(): JSX.Element {
                 console.log(e)
             }
         }
-        console.log(typeof (contentId));
+        // console.log(typeof (contentId));
         if (Number(contentId)) fetchData();
 
         // axios.get(`${apiURL}/board/${contentId}`, config)
@@ -65,7 +65,7 @@ function Writing(): JSX.Element {
 
     const url = window.location.href;
     const contentId = url.split('/')[url.split('/').length - 1];
-    console.log(contentId)
+    // console.log(contentId)
 
     const [editContents, setEditContents] = useState({
         title: '',
@@ -98,13 +98,13 @@ function Writing(): JSX.Element {
             if (Number(contentId)) createdContentRes = await axios.patch(`${apiURL}/board/${contentId}`, contents, config)
             else createdContentRes = await axios.post(`${apiURL}/board`, contents, config)
 
-            console.log(createdContentRes.data)
+            // console.log(createdContentRes.data)
             navigate(`/${createdContentRes.data.data.id}`)
         } catch (err) {
             console.log(err)
         }
 
-        console.log(contents)
+        // console.log(contents)
     }
     // 이미지를 업로드 하기 위한 함수
     const imageHandler = () => {
@@ -204,7 +204,7 @@ function Writing(): JSX.Element {
         'clean',
     ];
 
-    console.log(contents)
+    // console.log(contents)
     const onChange = (e: any) => {
         if (e.target.placeholder === 'title') {
             setContents({ ...contents, title: e.target.value })
@@ -226,7 +226,7 @@ function Writing(): JSX.Element {
         setContents({...contents, childCategory:event.target.value})
     }
 
-    console.log(contents);
+    // console.log(contents);
     
     return (
 

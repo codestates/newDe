@@ -78,7 +78,7 @@ function MainBoard():JSX.Element{
         const front = await axios(`${apiURL}/board?page=1&parentCategory=front`)
         try{
             setFront(front.data.data.slice(0,5))
-            console.log(front.data.data)
+            // console.log(front.data.data)
         }
         catch{console.log("error!")}
 

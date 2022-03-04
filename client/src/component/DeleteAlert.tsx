@@ -8,14 +8,14 @@ margin-top: 7%;
 display: flex;
 flex-direction: column;
 align-items: center;
-justify-content: center;
+
 position: absolute;
 background: ghost;
 width: 100%;
 height: 100%;
 `
 const ContainerWrap = styled.div`
-
+margin-bottom: 60%;
 display: flex;
 flex-direction: column;
 border: 1px solid black;
