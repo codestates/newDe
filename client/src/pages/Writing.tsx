@@ -6,25 +6,52 @@ import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom';
-
+import './Writing.css'
 import styled from 'styled-components';
-import { setChild, setParent } from "../features/info";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 const ContainerWrap = styled.div`
-border: 1px solid black;
-position: absolute;
-width: 50%;
-background: White;
-opacity: 90%;
-padding: 10px;
-margin-top: 100px;
-z-index: 1;
-
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+width: 100%;
+height: 70vh;
+margin-top: 7%;
 @media ${(props) => props.theme.mobile}{
     width: 100%;
 }
 `
+const Title = styled.h1`
+ text-align: start;
+ width: 855px;
+ font-size: x-large;
+ margin-bottom: 5px;
+`
 
+const WritingWrap = styled.div`
+border: 1px solid black;
+height: 100%;
+padding: 10px;
+margin-bottom: 3%;
+`
+
+const ButtonWrap = styled.div`
+display: flex;
+justify-content: right;
+> button {
+    margin-top: 10px;
+    border: none;
+    background-color: white;
+    font-size: 20px;
+    &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+    }
+}
+`
 
 function Writing(): JSX.Element {
     // 글쓰기 할때 useEffect 였는데 글 수정시 useEffect랑 통합하기
@@ -232,59 +259,61 @@ function Writing(): JSX.Element {
 
 
         <ContainerWrap>
-            <select value={selParent} onChange={parentDrop}>
-                <option disabled hidden value=''>대분류</option>
-                <option value='Front'>Front</option>
-                <option value='Back'>Back</option>
-            </select>
-            {selParent ==='front'
-            ?
-            <select value={selChild} onChange={childDrop}>
-                <option disabled hidden value=''>소분류</option>
-                <option value='HTML'>HTML</option>
-                <option value='css'>CSS</option>
-                <option value='javascript'>JavaScript</option>
-                <option value='react'>React</option>
-                <option value='프론트기타'>프론트기타</option>
-            </select>
-            :
-            <select value={selChild} onChange={childDrop}>
-                <option disabled hidden value=''>소분류</option>
-                <option value='php'>php</option>
-                <option value='node.js'>Node.js</option>
-                <option value='java'>Java</option>
-                <option value='python'>Python</option>
-                <option value='server'>server</option>
-                <option value='백엔드기타'>백엔드기타</option>
-            </select>
-            }
-            
-            <input
-                placeholder="title"
-                style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px' }}
-                onChange={onChange}
-                value={contents.title}>
-            </input>
-            <ReactQuill
-                ref={(element) => {
-                    if (element !== null) {
-                        QuillRef.current = element;
-                    }
-                }}
+            <Title>Writing</Title>
+            <WritingWrap>
+                <select value={selParent} onChange={parentDrop}>
+                    <option disabled hidden value=''>대분류</option>
+                    <option value='Front'>Front</option>
+                    <option value='Back'>Back</option>
+                </select>
+                {selParent ==='front'
+                ?
+                <select value={selChild} onChange={childDrop}>
+                    <option disabled hidden value=''>소분류</option>
+                    <option value='HTML'>HTML</option>
+                    <option value='css'>CSS</option>
+                    <option value='javascript'>JavaScript</option>
+                    <option value='react'>React</option>
+                    <option value='프론트기타'>프론트기타</option>
+                </select>
+                :
+                <select value={selChild} onChange={childDrop}>
+                    <option disabled hidden value=''>소분류</option>
+                    <option value='php'>php</option>
+                    <option value='node.js'>Node.js</option>
+                    <option value='java'>Java</option>
+                    <option value='python'>Python</option>
+                    <option value='server'>server</option>
+                    <option value='백엔드기타'>백엔드기타</option>
+                </select>
+                }
+                
+                <input
+                    placeholder="title"
+                    style={{ height: "35px", width: '100%', padding: '15px', margin: '10px 0px 10px 0px' }}
+                    onChange={onChange}
+                    value={contents.title}>
+                </input>
+                <ReactQuill
+                    ref={(element) => {
+                        if (element !== null) {
+                            QuillRef.current = element;
+                        }
+                    }}
 
-                value={contents.main}
-                onChange={(main) => { setContents((prev) => { return { ...prev, main: main } }) }}
-                // onChange={(main) => { setContents({ ...contents , main: main }) }}
+                    value={contents.main}
+                    onChange={(main) => { setContents((prev) => { return { ...prev, main: main } }) }}
+                    // onChange={(main) => { setContents({ ...contents , main: main }) }}
 
-                theme="snow"
-                placeholder="main"
-                modules={modules}
-                formats={formats}
-            />
-            <div>
-
-            </div>
-            <button onClick={clickhandler}>전송</button>
+                    theme="snow"
+                    placeholder="main"
+                    modules={modules}
+                    formats={formats}
+                />
+                <ButtonWrap>
+                   <button onClick={clickhandler}><FontAwesomeIcon icon={faPen} /></button>
+                </ButtonWrap>
+            </WritingWrap>
         </ContainerWrap>
 
     );

@@ -19,6 +19,7 @@ margin-top: 15px;
 display: flex;
 flex-direction: column;
 width: 80%;
+padding-bottom: 6px;
 border-bottom: 1px solid #C4C4C4;
 `
 
