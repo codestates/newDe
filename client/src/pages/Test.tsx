@@ -22,6 +22,7 @@ flex-direction: column;
 background : white;
 width: 100%;
 height: 100%;
+margin-bottom: 50px;
 @media ${(props)=> props.theme.mobile}{
     margin-top: 13%;
 }

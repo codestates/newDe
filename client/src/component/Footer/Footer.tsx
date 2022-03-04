@@ -17,10 +17,10 @@ const Footer = () => {
           </li>
           <li>
             <h3>&middot; Team</h3>
-            <a href="https://github.com">HakJong Song</a>
-            <a href="https://github.com">JunHyuk Kwon</a>
-            <a href="https://github.com">SeungHyeon Lee</a>
-            <a href="https://github.com">HyeongJin Choi</a>
+            <a href="https://github.com/shjthd92">HakJong Song</a>
+            <a href="https://github.com/Kingsenal">JunHyuk Kwon</a>
+            <a href="https://github.com/seunghyeonL">SeungHyeon Lee</a>
+            <a href="https://github.com/choipingu">HyeongJin Choi</a>
           </li>
         </TeamInfoBox>
         <SiteInfoBox>
