@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom' 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const ContainerWrap = styled.div`
@@ -54,13 +54,20 @@ const ChildMenuWrap = styled.li`
 `
 
 function Leftnav (props:any):JSX.Element  {
+    let nowURL = new URL(window.location.href);
     const [targetBoard, setTargetBoard] = useState<any>(['','']);
+    console.log(targetBoard);
+
+    useEffect(()=>{        
+        const parentCategory = nowURL.searchParams.get('parentcategory');
+        const childCategory = nowURL.searchParams.get('childcategory');
+        setTargetBoard([parentCategory, childCategory])
+    },[])
 
     return (
         <ContainerWrap onClick={
-            ()=>{
-                props.setPageChanged(true); 
-                const nowURL = new URL(window.location.href);
+            ()=> {                 
+                nowURL = new URL(window.location.href);
                 const parentCategory = nowURL.searchParams.get('parentcategory');
                 const childCategory = nowURL.searchParams.get('childcategory');
                 setTargetBoard([parentCategory, childCategory])}
