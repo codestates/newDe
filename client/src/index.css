@@ -88,6 +88,8 @@
     line-height: 1.2;
     background-color: white;
     -ms-overflow-style: none;
+    margin: 0;
+    height: 100%;
   }
 
   body::-webkit-scrollbar {
