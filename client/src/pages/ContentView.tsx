@@ -18,7 +18,9 @@ import { faBug } from '@fortawesome/free-solid-svg-icons';
 const MainContainer = styled.div`
 margin-top: 7%;
 width: 100%;
-margin-bottom: 3%;
+@media ${(props)=> props.theme.mobile}{
+    margin-top: 30%;
+}
 `
 
 const PageWrap = styled.div`

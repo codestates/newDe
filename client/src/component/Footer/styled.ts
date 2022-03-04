@@ -6,6 +6,8 @@ export const FooterContainer = styled.footer`
   width: 100%;
   background-color: #ffffff;
   border-top: 1px solid #f2f2f2;
+  height: 100%;
+
 `;
 
 export const FooterWrap = styled.div`
@@ -13,12 +15,16 @@ export const FooterWrap = styled.div`
   max-width: 1200px;
   width: 100%;
   padding: 1.5rem 1rem;
+  position: absolute;
+
+  
 `;
 
 export const TeamInfoBox = styled.ul`
   display: flex;
   flex-direction: column;
   flex: 1;
+  
   li {
     display: flex;
     flex-direction: column;
@@ -54,6 +60,7 @@ export const SiteInfoBox = styled.div`
   justify-content: space-between;
   flex: 1;
   text-align: right;
+  
   h1 {
     font-size: 1.5rem;
     font-weight: 800;
