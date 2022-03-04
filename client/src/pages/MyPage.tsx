@@ -210,7 +210,7 @@ function MyPage() {
                     내가 쓴 글
                 </TitleWrap>
                 <div>
-                    {content.slice(10*(nowpage-1), 10*nowpage).map((el:any,index:number)=>                    
+                    {[...content].reverse().slice(10*(nowpage-1), 10*nowpage).map((el:any,index:number)=>                    
                     <div key={index}>
                         <hr></hr>
                         <div>게시판 : {el.childCategory? el.childCategory: el.parentCategory}</div>

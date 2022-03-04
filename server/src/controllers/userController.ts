@@ -32,7 +32,7 @@ const login = async (req:Request, res:Response) => {
 }
 
 const logout = async (req:Request, res:Response) => {
-    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' })
+    return res.clearCookie('accessToken'/* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */).status(205).json({ message: 'Logout Success' })
 }
 
 const signup = async (req:Request, res:Response) => {
@@ -131,7 +131,7 @@ const deleteUser = async (req:Request, res:Response) => {
     await userRepository.save(targetUser);
     
     return res
-        .clearCookie('accessToken')
+        .clearCookie('accessToken'/* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */)
         .status(200)
         .json({ message: 'Deleted' })
 };
