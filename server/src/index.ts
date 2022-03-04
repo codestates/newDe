@@ -23,6 +23,7 @@ const logger = morgan('dev');
 createConnection()
   .then(() => {
     console.log('Database Connected :)');
+    app.listen(PORT, ()=>console.log(`Server Listening on https://server.newb-d.com:${PORT}`));
   })
   .catch((error) => console.log(error));
   
@@ -53,9 +54,6 @@ app.use("/comment", commentRouter);
 
 
 
-const handleListening = () => console.log(`Server Listening on https://server.newb-d.com:${PORT}`);
-
-app.listen(PORT, handleListening);
 
 
 //haha

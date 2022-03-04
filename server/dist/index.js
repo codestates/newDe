@@ -23,6 +23,7 @@ const logger = (0, morgan_1.default)('dev');
 (0, typeorm_1.createConnection)()
     .then(() => {
     console.log('Database Connected :)');
+    app.listen(PORT, () => console.log(`Server Listening on https://server.newb-d.com:${PORT}`));
 })
     .catch((error) => console.log(error));
 // middleware
@@ -45,7 +46,5 @@ app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);
 app.use("/board", boardRouter_1.default);
 app.use("/comment", commentRouter_1.default);
-const handleListening = () => console.log(`Server Listening on https://server.newb-d.com:${PORT}`);
-app.listen(PORT, handleListening);
 //haha
 //# sourceMappingURL=index.js.map
