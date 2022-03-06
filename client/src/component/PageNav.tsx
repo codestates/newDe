@@ -98,10 +98,19 @@ function PageNav(props: any):JSX.Element {
                         <PageBtn onClick = {btnclickhandler} >1</PageBtn>
                         <SkipSec>...</SkipSec>
                         
-                        <PageBtn onClick = {btnclickhandler} >{props.maxpage-2}</PageBtn>
+                        <PageBtn onClick = {btnclickhandler} >{props.nowpage-2}</PageBtn>
+                        <PageBtn onClick = {btnclickhandler} >{props.nowpage-1}</PageBtn>
+                        <PageBtn onClick = {btnclickhandler} >{props.nowpage}</PageBtn>
+                        {Number(props.nowpage)+1<=Number(props.maxpage) ? <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+1}</PageBtn>: null}
+                        {Number(props.nowpage)+2<=Number(props.maxpage) ? <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+2}</PageBtn>: null}
+
+                        
+                        
+                        
+                        {/* <PageBtn onClick = {btnclickhandler} >{props.maxpage-2}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.maxpage-1}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.maxpage}</PageBtn>
-                        
+                         */}
                     
                     
                 </NavBarContainer>
