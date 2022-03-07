@@ -54,7 +54,12 @@ function App() {
         dispatch(setAdmin(true))
       }
       setIsLoading(false);
-    })    
+    })
+    .catch(el =>{
+      console.log(el.data.message)
+      setIsLoading(false)
+    }  
+    )    
     }
     else setIsLoading(false);
   }, [])
