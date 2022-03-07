@@ -22,10 +22,11 @@ const MyPageWrap = styled.div`
 
 const MyInfo = styled.div`
     margin: 50px 50px 50px 50px;
-
+    
 `
 
 const MyContents = styled.div`
+    
     margin: 50px 50px 50px 50px;
 
 `

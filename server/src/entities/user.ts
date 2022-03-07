@@ -5,21 +5,22 @@ import { ContentLike } from "./contentLike";
 import { ContentReport } from "./contentReport";
 import { CommentReport } from "./commentReport";
 
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: 'text'})
     nickname: string;
 
-    @Column()
+    @Column({type: 'text'})
     email: string;
     
     @Column({default:Date()})
     penalty: string;
 
-    @Column()
+    @Column({type: 'text'})
     password: string;
 
     @Column({default: false})

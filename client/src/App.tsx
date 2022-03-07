@@ -106,7 +106,7 @@ function App() {
             <Route path='/board' element={<Board />} />
             <Route path='/mainboard' element={<MainBoard />} />
             <Route path='/:id' element={<ContentView />} />
-            <Route path='/login' element={<Login loginhandler = {loginHandler} />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/mypage/*' element={<PrivateRoute />}>
               <Route path='' element={<MyPage />} />
             </Route>

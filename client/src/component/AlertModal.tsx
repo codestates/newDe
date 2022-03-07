@@ -57,7 +57,6 @@ function AlertModal (props:any):JSX.Element  {
             <MessageWrap>{props.message}</MessageWrap>
             <ButtonWrap className = 'btn' onClick = {props.modalhandler} >확인</ButtonWrap>
             </ContainerWrap>
-            
         </Background>
         
     )
