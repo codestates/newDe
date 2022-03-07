@@ -2,7 +2,7 @@
 
 <img src ="https://user-images.githubusercontent.com/48780896/153546406-d98e379c-fdb9-4c3e-8611-79cd8fef00d5.png" width = "20%">
 
-
+https://newb-d.com/
 
 
 ## ABOUT
@@ -26,7 +26,31 @@
 
 </p>
 
+## Who We Are...
+
+### 송학종
+#### Front-End 담당 
+<details>
+<summary>What I Make</summary>
+<div markdown="1">
+  - 로그인/회원가입 화면 및 기능
+  - 메인 게시판 & 각 게시판 렌더링
+  - 새로고침시 로그인 유지 기능(쿠키 활용)
+  - 상단 네비게이션 바 
+  - 하단 페이지 네비게이터
+  - 댓글창 및 댓글 작성, 수정기능
+  - 관리자 페이지및 제제 기능
+
+</div>
+</details>
+
+### 최형진
+
+### 권준혁
+
+### 이승현
+
 ## What We Use
 
-![newDsomechange](https://user-images.githubusercontent.com/48780896/153541166-5bbce5a4-75dc-495a-9fb4-cdb12d9b88a7.png)
-*기획 단계로 변경될 수 있습니다. 
+![newDfinal](https://user-images.githubusercontent.com/48780896/157068310-88e1637b-692d-432f-8f9b-befa40c63975.png)
+
