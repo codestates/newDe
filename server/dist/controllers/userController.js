@@ -31,7 +31,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 return res.status(400).json({ date: null, message: 'temporarily banned user' });
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             console.log(token);
-            res.cookie('accessToken', token /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */);
+            res.cookie('accessToken', token);
+            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
             res.status(200).json({ data: userInfo, message: 'Login Success' });
         }
         else {
@@ -41,7 +42,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' });
+    return res.clearCookie('accessToken' /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */).status(205).json({ message: 'Logout Success' });
 });
 exports.logout = logout;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -90,6 +91,7 @@ exports.profile = profile;
 const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nickname, password } = req.body;
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    console.log(verify);
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
@@ -108,7 +110,9 @@ const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.editUser = editUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.headers);
     const verify = yield (0, authorizeToken_1.authorizeToken)(req, res);
+    // console.log(verify)
     const userRepository = (0, typeorm_1.getRepository)(user_1.User);
     if (!verify)
         return res.status(403).json({ message: 'Invalid Accesstoken' });
@@ -118,7 +122,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     targetUser.password = '';
     yield userRepository.save(targetUser);
     return res
-        .clearCookie('accessToken')
+        .clearCookie('accessToken' /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */)
         .status(200)
         .json({ message: 'Deleted' });
 });

@@ -1,29 +1,31 @@
 //게시판 보기 
 import react, { useEffect } from 'react'
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList, PageNav} from '../component';
+import {ContentList, PageNav, LeftNav} from '../component';
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChild, setParent } from '../features/info';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const MainContainer = styled.div`
+margin-top: 7%;
 display: flex;
-flex-direction: column;
-background : #F3F3F3;
-width: 100%;
-height: 100%;
 text-align: center;
-align-items: center;
-justify-content: center;
-margin-top: 100px;
+flex-direction: column;
+width: 100%;
+@media ${(props)=> props.theme.mobile}{
+  margin-top: 30%;
+} 
 .btn {
     text-decoration-line: none;
-    color: #34495E;
     &:hover {
       cursor: pointer;
       outline: none;
@@ -38,59 +40,46 @@ const BoardWrap = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 80%;
+width: 100%;
 
 @media ${(props)=> props.theme.mobile}{
-    width: 100%;
-    height: 100%;
-
+    
 }
 
 
 `
 
 const BoardName = styled.div`
+width: 55%;
 display: flex;
-width : 80%;
+align-items: center;
 text-align: left;
-
-font-size: 1.5rem;
-margin: 2%;
-margin-top: 5%;
+font-size: 30px;
+@media ${(props)=> props.theme.mobile}{
+  font-size: 27px;
+} 
 `
 
 const ChildBoard = styled.div`
 display: flex;
 flex-direction: column;
-width: 90%;
+width: 100%;
 margin-top: 1%;
 align-items: center;
 text-align: center;
-margin-bottom: 5%;
+margin-bottom: 2%;
 `
 
 const ContentWrap = styled.div`
 display: flex;
 justify-content: center;
-width: 90%;
+width: 55%;
 align-items: center;
-margin: 0.5% 0.5% 0.5% 0.5%;
-`
-
-const Contenttitle = styled.div`
-width: 70%;
-font-weight: bold;
-text-align: left;`
-
-
-const Contentusersec = styled.div`
-width: 10%;
-font-weight: bold;
-`
-
-const Contentlike = styled.div`
-width: 10%;
-font-weight: bold;
+margin: 0.5%;
+@media ${(props)=> props.theme.mobile}{
+  width: 70%;
+  margin-left: 25%;
+} 
 `
 
 
@@ -98,7 +87,7 @@ const PageNavWrap = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-
+outline: none;
 `
 
 const PageSec = styled.button`
@@ -106,7 +95,15 @@ background: green;
 margin: 5% ;
 `
 
-const WritingBtn = styled.button`
+const WritingBtn = styled.div`
+  text-decoration-line: none;
+  outline: none;
+  color: black;
+  font-size: 26px;
+  &:hover {
+    cursor: pointer;
+    color: black;
+  }
 `
 
 const NameSec = styled.div`
@@ -115,20 +112,48 @@ font-weight: bold;
 `
 
 const SearchingWrap = styled.div`
+width: 40%;
 display: flex;
-width: 50%;
-margin: 3%;
+align-items: center;
+justify-content: flex-end;
+@media ${(props)=> props.theme.mobile}{
+  width: 100px;
+  justify-content: space-between;
+} 
+
 `
 
 const InputWrap = styled.input`
-margin: 2%;
-width: 80%;
-background-color: seashell;
 
+  border: 2px solid black;
+  border-radius: 15px;
+  background: none;
+  font-size: 16px;
+  font-weight: 400;
+  outline: 0;
+  @media ${(props)=> props.theme.mobile}{
+   width: 140px;
+}  
+ 
 `
 
 const SearchBtn = styled.button`
-margin: 1%;
+  background: none;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  color: black;
+  @media ${(props)=> props.theme.mobile}{
+    margin-left: 7px;
+} 
+  &:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+  }
 `
 function Board(props: any):JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
@@ -141,14 +166,13 @@ const config = {
   };
 
 const dispatch = useAppDispatch()
+
 const nowURL = new URL(window.location.href); //URL값 따오기 
-// console.log(nowURL)
+
 const ParentCategory = nowURL.searchParams.get('parentcategory');
 const ChildCategory = nowURL.searchParams.get('childcategory'); //각각의 카테고리를 얻었음 
-// console.log(!!ChildCategory)
+// console.log(ParentCategory)
 
-dispatch(setParent(ParentCategory))
-dispatch(setChild(ChildCategory))
 const [loading, setLoading] = useState(false);
 const [contentlist, setList] = useState([]); 
 const [nowpage, setPage] = useState(1); //페이지
@@ -156,12 +180,14 @@ const [searching, setSearchWord] = useState('') //검색어
 const [inputInfo, setInputInfo] = useState('')
 const [maxpage, setMax] = useState(1)
 
+const [pageChanged, setPageChanged] = useState(false);
+
 //이걸 이용  서버에서 글 목록을 가져오고 -> 그 글 목록을 렌더링 ,useEffect 사용하면 될까 
 
 
 const datatoList = contentlist.map((el:any)=>{
     return (<ContentWrap key = {el.id}>
-        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} />
+        <ContentList id = {el.id} title = {el.title} like = {el.like} user = {el.user.nickname} date = {el.createdAt.slice(0,10)} childCategory = {el.childCategory} />
     </ContentWrap>)
     })
 
@@ -169,25 +195,13 @@ const datatoList = contentlist.map((el:any)=>{
 
 
 const getListData = async () =>{
-    //URL값 따오기 
-// console.log(nowURL)
-
-    
-    
-    
-    
     const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
-    // console.log(listData.data.pageCount)
+    // console.log(listData.data)
     try{
         setList(listData.data.data)
         setMax(listData.data.pageCount)
-        
-        
     }
-    catch{console.log("error!")}
-    
-    
-    
+    catch{console.log("error!")} 
 }
 
 
@@ -205,51 +219,42 @@ const handlePage = (el:number) =>{
     // console.log(nowpage)
 
 }
+dispatch(setParent(ParentCategory))
+dispatch(setChild(ChildCategory))
+
+const pagehandler = () => {
+    setPageChanged(true)
+}
 
 useEffect(()=>{
     setLoading(true);
-    
+    setPageChanged(false);
     getListData();
-    setLoading(false)
-    
+    setLoading(false)    
 
-},[ParentCategory, ChildCategory, searching, nowpage])
+},[pageChanged, searching, nowpage])
 
 
 
 
     return (
         <MainContainer>
+            <LeftNav setPageChanged={pagehandler}/>
     
 
         <BoardWrap>
             <BoardName>
                 <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
-                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null) : null}
-                {/* {ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' >글쓰기</Link></WritingBtn> : null } */}
-                
-
+                <SearchingWrap> 
+                    <InputWrap type = 'search' onChange = {handleInput} /> 
+                    <SearchBtn onClick = {handleSubmit}><FontAwesomeIcon className='icon' icon={faSearch} size='2x' /></SearchBtn> 
+                </SearchingWrap>
+                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' ><FontAwesomeIcon className='icon' icon={faEdit} /></Link></WritingBtn> : null) : null}
             </BoardName>
             <ChildBoard>
-                <ContentWrap>
-                    <Contenttitle>제목</Contenttitle>
-                    <Contentusersec>글쓴이</Contentusersec>
-                    <Contentlike>추천</Contentlike>
-                    
-
-
-                </ContentWrap>
-                
-                {datatoList}
-                
+                {datatoList}               
             </ChildBoard>
-
-            
-
-
-
         </BoardWrap>
-        <SearchingWrap> <InputWrap type = 'search' onChange = {handleInput} /> <SearchBtn onClick = {handleSubmit}>검색</SearchBtn> </SearchingWrap>
         <PageNavWrap>
             <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler= {handlePage}/>            
         </PageNavWrap>

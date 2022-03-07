@@ -23,12 +23,19 @@ const Navi = styled.nav`
   z-index: 1;
   background-color: white;
   font-size: 15px;
+  @media ${(props)=> props.theme.mobile}{
+    width: 100%;
+}
 `
 const Logo = styled.img`
   margin-left: 30px;
   margin-right: 30px;
   width: 70px;
   height: 40px;
+  @media ${(props)=> props.theme.mobile}{
+    width: 80%;
+    margin-left: 10px;
+}
 `
 
 const Col = styled.div`
@@ -56,11 +63,14 @@ const Item = styled.li`
   justify-content: center;
   flex-direction: column;
   font-family: 'Do Hyeon', sans-serif;
-  font-size: 20px;
+  font-size: 21px;
   &:hover {
     cursor: pointer;
     color: gray
   }
+  @media ${(props)=> props.theme.mobile}{
+    font-size: 18px;
+}
 `;
 
 const Circle = styled.span`
@@ -82,8 +92,9 @@ interface Iprops {
 
 function Nav (props:Iprops):JSX.Element  {
     const homeMatch = useMatch("mainboard")
-    const roadMatch = useMatch("roadmap")
+    const testMatch = useMatch("test")
     const mypageMatch = useMatch("mypage")
+
     
     // console.log(props.modalhandler)
     const dispatch = useAppDispatch()
@@ -117,11 +128,11 @@ function Nav (props:Iprops):JSX.Element  {
     return (
         <Navi>
             <Col>
-                <AiOutlineMenu onClick = {props.modalhandler} className='btn' />
+                {/* <AiOutlineMenu onClick = {props.modalhandler} className='btn' size={24} /> */}
                 <Link to = "/"><Logo src= "images/name.png"></Logo></Link>
                 <Items>
                     <Item><Link to = "/mainboard">Community {homeMatch && <Circle /> }</Link></Item>
-                    <Item><Link to = "/roadmap">RoadMap {roadMatch && <Circle />}</Link></Item>
+                    <Item><Link to = "/test">Test {testMatch && <Circle />}</Link></Item>
                 </Items>
             </Col>
             {isLogin 

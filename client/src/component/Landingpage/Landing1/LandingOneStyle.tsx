@@ -8,27 +8,30 @@ import 'swiper/css/pagination';
 import 'swiper/css/bundle';
 
 export const SwiperContainer = styled.div`
-  font-family: "Noto Sans KR",sans-serif;
-  background-color: #ffffff;
+  background: linear-gradient(transparent, transparent, #F5EAE5 );
   width: 100vw;
   height: 100%;
   text-align: center;
-
+  @media ${(props)=> props.theme.mobile}{
+    width: 100%;
+    height: 70%;
+    
+} 
   > .subtitle {
-    font-family: 'Do Hyeon', sans-serif;
     font-size: 50px;
     color: black;
     margin: 40px 0 0 0;
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 400px) {
       margin: 0 0 0 0;
-      font-size: 15px;
+      font-size: 20px;
+      
     }
   }
   
   > .title-container {
     margin-top: 180px;
-    @media screen and (max-width: 500px) {
-      margin-top: 150px;
+    @media screen and (max-width: 400px) {
+      margin-top: 10px;
     }
   }
   > div > h1 {
@@ -38,8 +41,7 @@ export const SwiperContainer = styled.div`
     line-height: 24px;
     margin-top: 30px;
     margin-bottom: 30px;
-    font-family: 'Black Han Sans', sans-serif;
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 400px) {
       font-size: 50px;
       margin-bottom: 0px;
     }
@@ -51,7 +53,10 @@ export const StyledSwiper = styled(Swiper)`
   width: 100%;
   padding-top: 80px;
   padding-bottom: 200px;
-
+  @media ${(props)=> props.theme.mobile}{
+    padding-left: 35px;
+    
+} 
 `;
 
 export const SwiperWrapper = styled.div`
@@ -66,6 +71,11 @@ export const SwiperWrapper = styled.div`
   width: 100%;
   padding-top: 50px;
   padding-bottom: 200px;
+  @media ${(props)=> props.theme.mobile}{
+    width: 50%;
+    height: 80%;
+    
+} 
 
   > .swiper-slide {
 
@@ -76,6 +86,7 @@ export const SwiperWrapper = styled.div`
     background: #fff;
     padding: 0%;
     -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0006 );
+    
     }
 
     > .imgBx {

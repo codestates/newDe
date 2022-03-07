@@ -8,7 +8,7 @@ export class Comment {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: 'mediumtext'})
     main: string;
 
     @Column({default:0})

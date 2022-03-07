@@ -128,6 +128,7 @@ const allContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     payload = payload.filter((el, idx) => {
         return Math.floor(idx / 10) + 1 === Number(page);
     });
+    console.log(payload);
     return res.status(200).json({ data: payload, pageCount, message: 'ok' });
 });
 exports.allContent = allContent;

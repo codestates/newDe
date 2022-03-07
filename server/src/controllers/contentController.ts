@@ -132,6 +132,7 @@ const allContent = async (req:Request, res:Response) => {
     payload = payload.filter((el:object, idx:number) => {
         return Math.floor(idx/10)+1 === Number(page);
     })    
+    console.log(payload)
 
     return res.status(200).json({data : payload, pageCount, message : 'ok'}); 
 

@@ -8,45 +8,65 @@ import axios from 'axios';
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { apiURL } from '../url';
-import {WriteComment} from '../component';
+import {WriteComment, CommentDeleteModal} from '../component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const CommentContainer = styled.div`
+margin-top: 15px;
 display: flex;
 flex-direction: column;
+width: 80%;
+padding-bottom: 6px;
+border-bottom: 1px solid #C4C4C4;
+`
 
-width: 95%;
-background: skyblue;
-margin: 1%;
+const InfoWrap = styled.div`
+width: 100%;
+ display: flex;
+ > span {
+     font-size: 20px;
+     width: 15%;
+     color: gray;
+ }
 `
 
 const CommentBtn = styled.button`
-width: 50%;
-background-color: gainsboro;
-margin: 1%;
+width: 100%;
+border: none;
+background-color: white;
+font-size: 20px;
+&:hover,:focus {
+      cursor: pointer;
+      outline: none;
+      transform: scale(1.05);
+    }
 `
 
 const UpperWrap = styled.div`
-display: flex;
-background: mintcream;
-
-margin: 1%;
-width: 95%;
-
-
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ width: 100%;
 `
 const ButtonSec = styled.div`
 display: flex;
-width: 20%;
+width: 10%;
 `
 
 const UserPart = styled.div`
-width: 80%;
-background: coral;`
+width: 10%;
+font-size: 20px;
+`
 
 const CommentContent = styled.div`
-background: tomato;
 width: 95%;
-margin: 1%;
+margin: 5px 0 5px 0;
+font-size: 15px;
+word-wrap: break-word;
+font-family: "NotoSans-DemiLight";
 `
 //props로 댓글 내용, 글쓴이등 가져와 
 function Comment(props: any):JSX.Element {
@@ -58,6 +78,7 @@ function Comment(props: any):JSX.Element {
     const isAdmin = useAppSelector((state: RootState)=> state.info.admin )
 
     const [updated, setUpdated] =useState(false )
+    const [modalopened, setmodal] = useState(false)
 
     const config = {
         headers: {
@@ -72,10 +93,10 @@ function Comment(props: any):JSX.Element {
     }
 
     const deleteHandler = () => {
-
-        axios.delete(`${apiURL}/comment/${props.id}`, config)
-            .then(el=>alert("삭제되었습니다"))
-            window.location.reload();
+        setmodal(true)
+        // axios.delete(`${apiURL}/comment/${props.id}`, config)
+        //     .then(el=>alert("삭제되었습니다"))
+        //     window.location.reload();
             
     }
     
@@ -84,38 +105,35 @@ function Comment(props: any):JSX.Element {
         setUpdated(true)
 
     }
+    const deletehandler = () => {
+        setmodal(false)
+    }
     return (
         <CommentContainer>
-
+            {modalopened ? <CommentDeleteModal modalhandler = {deletehandler} path = {props.id}  />: null}
             {updated ? 
             <WriteComment contentid = {props.contentid} ismodify = {true} content = {props.main} commentid= {props.id}/> 
             : 
             <div>
             <UpperWrap>
-                <UserPart>{props.nickname}</UserPart>
+                <InfoWrap>
+                    <UserPart>{props.nickname}</UserPart>
+                    <span>{props.createdAt}</span>
+                </InfoWrap>
                 {isLogin ? (usernickname === props.nickname || isAdmin === true ?
                 <ButtonSec>
-                <CommentBtn onClick = {modifyHandler}>수정</CommentBtn>
-                <CommentBtn onClick = {deleteHandler}>삭제</CommentBtn>
+                    <CommentBtn onClick = {modifyHandler}><FontAwesomeIcon icon={faPen} /></CommentBtn>
+                    <CommentBtn onClick = {deleteHandler}><FontAwesomeIcon icon={faTrash} /></CommentBtn>
                 </ButtonSec>
                 : 
-                <ButtonSec><CommentBtn onClick = {reportHandler}>신고</CommentBtn></ButtonSec>
+                <ButtonSec><CommentBtn onClick = {reportHandler}><FontAwesomeIcon icon={faBug}/></CommentBtn></ButtonSec>
                 ) : null }
-                
-            
-
             </UpperWrap>
             <CommentContent>{props.main}</CommentContent>
             </div>
         }
-            
-        
         </CommentContainer>
-
-
-
-    )
-        
+    )        
 }
 
 export default Comment

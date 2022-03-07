@@ -9,10 +9,10 @@ export class Content {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: 'text'})
     title: string;
 
-    @Column()
+    @Column({type: 'mediumtext'})
     main: string;    
 
     @Column({default:0})
@@ -21,10 +21,10 @@ export class Content {
     @Column({default:0})
     report: number;
 
-    @Column({default:null})
+    @Column({default:null,type:'text'})
     parentCategory: string;
 
-    @Column({default:null})
+    @Column({default:null,type:'text'})
     childCategory: string;
 
     @CreateDateColumn()

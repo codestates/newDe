@@ -22,7 +22,8 @@ const login = async (req:Request, res:Response) => {
             if(new Date(userInfo.penalty).getTime() - Date.now() > 0) return res.status(400).json({date:null, message: 'temporarily banned user'})
             const token = await generateToken(userInfo);
             console.log(token);
-            res.cookie('accessToken', token, {domain: 'newb-d.com', sameSite: 'none', secure: true});
+            res.cookie('accessToken', token); 
+            //{domain: 'newb-d.com', sameSite: 'none', secure: true}
             res.status(200).json({ data : userInfo, message: 'Login Success'})
         } else {
             res.status(404).send('invalid user');
@@ -31,7 +32,7 @@ const login = async (req:Request, res:Response) => {
 }
 
 const logout = async (req:Request, res:Response) => {
-    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' })
+    return res.clearCookie('accessToken'/* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */).status(205).json({ message: 'Logout Success' })
 }
 
 const signup = async (req:Request, res:Response) => {
@@ -90,6 +91,7 @@ const profile = async (req:Request, res:Response) => {
 const editUser = async (req:Request, res:Response) => {
     const { nickname, password } = req.body;
     const verify = await authorizeToken(req, res)
+    console.log(verify)
     const userRepository = getRepository(User)
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
@@ -113,7 +115,9 @@ const editUser = async (req:Request, res:Response) => {
 };
 
 const deleteUser = async (req:Request, res:Response) => {
+    console.log(req.headers)
     const verify = await authorizeToken(req, res);
+    // console.log(verify)
     const userRepository = getRepository(User);
 
     if(!verify) return res.status(403).json({ message: 'Invalid Accesstoken' })
@@ -127,7 +131,7 @@ const deleteUser = async (req:Request, res:Response) => {
     await userRepository.save(targetUser);
     
     return res
-        .clearCookie('accessToken')
+        .clearCookie('accessToken'/* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */)
         .status(200)
         .json({ message: 'Deleted' })
 };

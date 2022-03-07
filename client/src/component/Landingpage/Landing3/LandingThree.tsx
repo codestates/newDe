@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 
+
 const SectionContainer = styled.div`
   position: relative;
   background-color: black;
   /* border: 10px solid black; */
   width: 100%;
   height: 100%;
+  
+
 `
 const Title = styled.div`
     position: absolute;
@@ -24,6 +27,10 @@ const TitleText = styled.h1`
     color: white;
     text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
         0px -5px 35px rgba(255, 255, 255, 0.3);
+        @media ${(props)=> props.theme.mobile}{
+    height: 50%;
+    font-size: 25px;
+} 
 `
 
 const BtnWrap = styled.div`
@@ -31,6 +38,10 @@ const BtnWrap = styled.div`
     left: 50%;
     bottom: 25%;
     transform: translate(-50%, 25%);
+    @media ${(props)=> props.theme.mobile}{
+    font-size: 10px;
+    width: 120%;
+} 
 
     .btn {
       background-color: black;
@@ -44,19 +55,24 @@ const BtnWrap = styled.div`
       color: #000;
       transition: #fff 1s ease-in-out;
       background-color: #fff;
+      cursor: pointer;
       }
     }
 `
 
 export const Landing3 = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
     return(
       <>
         <SectionContainer>
            <Title>
-               <TitleText>
+               <TitleText
+                 data-aos="fade-up"
+                 data-aos-delay="50"
+                 data-aos-duration="1300"
+                 data-aos-easing="ease-out">
                  당신에게 맞는 성향을 추천해드립니다 !
                  <br />
                  지금 바로 테스트해보세요 !  
@@ -64,7 +80,11 @@ export const Landing3 = () => {
            </Title>
            <BtnWrap>
                <button
-                 onClick={() => navigate('/roadmap')}
+                 data-aos="fade" 
+                 data-aos-delay="50"
+                 data-aos-duration="1300"
+                 data-aos-easing="ease-in-out"
+                 onClick={() => navigate('/test')}
                  className='btn'
                >
                    테스트 하러 가기 
