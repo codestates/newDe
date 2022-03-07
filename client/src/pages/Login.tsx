@@ -8,6 +8,7 @@ import { useAppSelector, useAppDispatch } from '../store/hooks'
 import axios from 'axios';
 import { apiURL } from '../url'
 import { setLogin, setOauth, setAdmin, setNickname } from '../features/info';
+import { AlertModal} from '../component';
 
 
 //배경
@@ -116,90 +117,96 @@ const KaKaoButton = styled.button`
 
 
 
-function Login (props: any):JSX.Element {    
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      };
+function Login() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-    const [inputInfo, setInputInfo] = useState({
-        email: '',
-        password: ''
-    })
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    withCredentials: true
+  };
 
-    const handleInput = (event:react.ChangeEvent<HTMLInputElement>) => {
-        
-        if(event.target.type === 'email'){
-            setInputInfo({
-                ...inputInfo, 
-                email: event.target.value, 
-                
-            })
-        }
-        if(event.target.type === 'password'){
-            setInputInfo({
-                ...inputInfo, 
-                password: event.target.value
-            })
-        }
-    
+  const [inputInfo, setInputInfo] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
+
+    if (event.target.type === 'email') {
+      setInputInfo({
+        ...inputInfo,
+        email: event.target.value,
+
+      })
+    }
+    if (event.target.type === 'password') {
+      setInputInfo({
+        ...inputInfo,
+        password: event.target.value
+      })
     }
 
-    const loginSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-        // console.log(inputInfo)
-        const loginresult = await axios.post(
-            `${apiURL}/login`, 
-            {email: inputInfo.email, password: inputInfo.password}, 
-            config).then(el=>{
-                dispatch(setLogin(true))
-                dispatch(setNickname(el.data.data.nickname))
-                if(el.data.data.admin){
-                    dispatch(setAdmin(true))
-                }
-                
-                navigate('/mypage')
-            })
-            
-        }
-        
-        const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) =>{
-                window.location.assign(`${apiURL}/kakao`)
-                dispatch(setOauth(true))
-                
-                
+  }
 
-        // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
-        }
-
-    const handleSignUpSubmit = () =>{
-        navigate('/signup')
-        
+  const loginSubmit = async () => {
+    try {
+      await axios.post(
+        `${apiURL}/login`,
+        { email: inputInfo.email, password: inputInfo.password },
+        config).then(el => {
+          dispatch(setLogin(true))
+          dispatch(setNickname(el.data.data.nickname))
+          if (el.data.data.admin) {
+            dispatch(setAdmin(true))
+          }
+          navigate('/mypage')
+        })
+    } catch (err) {
+      alert('아이디 또는 비밀번호가 틀립니다')
     }
-    
+
+  }
+
+  const kakaologinSubmit = async (event: react.MouseEvent<HTMLButtonElement>) => {
+    window.location.assign(`${apiURL}/kakao`)
+    dispatch(setOauth(true))
 
 
-    return  (
-      <LoginWrap>
-        <LoginContainer>
-          <img src='images/logodd.png' alt='logo' className='img' />
-          <InputWrap>
-            <LoginInput type='email' placeholder='email' onChange={handleInput} />
-            <LoginInput type='password' placeholder='password' onChange={handleInput} />
-          </InputWrap>
-          <br />
-          <button className='signup' onClick={handleSignUpSubmit}>아직 계정이 없습니까?</button>
-          <LoginButton className='loginBtn' onClick={loginSubmit}>Login</LoginButton>
-          <FloatingText>──────   또는   ──────</FloatingText>
-          <KaKaoButton className='githubBtn' onClick={kakaologinSubmit}><img src='/images/kakao.png' alt='logo' className='cacao' /></KaKaoButton>
-        </LoginContainer>
-      </LoginWrap>         
-    )
-        
+
+    // 프론트에서 API정보를 보여주고 싶지 않기 때문에 서버로 보냄
+  }
+
+  const handleSignUpSubmit = () => {
+    navigate('/signup')
+  }
+  const handleClickEnter = (e: any) => {
+    if (e.key === 'Enter') {
+      loginSubmit();
+    }
+  };
+
+
+
+  return (
+    <LoginWrap>
+      <LoginContainer>
+        <img src='images/logodd.png' alt='logo' className='img' />
+        <InputWrap>
+          <LoginInput type='email' placeholder='email' onChange={handleInput} />
+          <LoginInput type='password' placeholder='password' onChange={handleInput} onKeyPress={handleClickEnter} />
+        </InputWrap>
+        <br />
+        <button className='signup' onClick={handleSignUpSubmit}>아직 계정이 없습니까?</button>
+        <LoginButton className='loginBtn' onClick={loginSubmit}>Login</LoginButton>
+        <FloatingText>──────   또는   ──────</FloatingText>
+        <KaKaoButton className='githubBtn' onClick={kakaologinSubmit}><img src='/images/kakao.png' alt='logo' className='cacao' /></KaKaoButton>
+      </LoginContainer>
+    </LoginWrap>
+  )
+
 }
 
 export default Login
