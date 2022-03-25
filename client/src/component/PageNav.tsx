@@ -26,7 +26,14 @@ const PageBtn = styled.button`
 const SkipSec = styled.div`
 margin: 7px 7px 0 7px;
 `
-function PageNav(props: any):JSX.Element {
+
+interface PageNavprops {
+    nowpage: number
+    maxpage: number
+    pagehandler : (el:number)=> void
+
+}
+function PageNav(props: PageNavprops):JSX.Element {
 
     //props.maxpage에 따라서 네비게이션 바 구분
     //maxpage가 1일 경우 : 페이지 네비게이션 바 필요없음
@@ -81,8 +88,8 @@ function PageNav(props: any):JSX.Element {
                     {props.nowpage-2>0 ? <PageBtn onClick = {btnclickhandler} >{props.nowpage-2}</PageBtn>: null}
                     {props.nowpage-1>0 ? <PageBtn onClick = {btnclickhandler} >{props.nowpage-1}</PageBtn>: null}
                     <PageBtn onClick = {btnclickhandler} >{props.nowpage}</PageBtn>
-                    <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+1}</PageBtn>
-                    <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+2}</PageBtn>
+                    <PageBtn onClick = {btnclickhandler} >{props.nowpage+1}</PageBtn>
+                    <PageBtn onClick = {btnclickhandler} >{props.nowpage+2}</PageBtn>
                     <SkipSec>...</SkipSec>
                     <PageBtn onClick = {btnclickhandler} >{props.maxpage}</PageBtn>
                     
@@ -101,8 +108,8 @@ function PageNav(props: any):JSX.Element {
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage-2}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage-1}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage}</PageBtn>
-                        {Number(props.nowpage)+1<=Number(props.maxpage) ? <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+1}</PageBtn>: null}
-                        {Number(props.nowpage)+2<=Number(props.maxpage) ? <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+2}</PageBtn>: null}
+                        {props.nowpage+1<=props.maxpage ? <PageBtn onClick = {btnclickhandler} >{props.nowpage+1}</PageBtn>: null}
+                        {props.nowpage+2<=props.maxpage ? <PageBtn onClick = {btnclickhandler} >{props.nowpage+2}</PageBtn>: null}
 
                         
                         
@@ -126,8 +133,8 @@ function PageNav(props: any):JSX.Element {
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage-2}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage-1}</PageBtn>
                         <PageBtn onClick = {btnclickhandler} >{props.nowpage}</PageBtn>
-                        <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+1}</PageBtn>
-                        <PageBtn onClick = {btnclickhandler} >{Number(props.nowpage)+2}</PageBtn>
+                        <PageBtn onClick = {btnclickhandler} >{props.nowpage+1}</PageBtn>
+                        <PageBtn onClick = {btnclickhandler} >{props.nowpage+2}</PageBtn>
                         <SkipSec>...</SkipSec>
                         <PageBtn onClick = {btnclickhandler} >{props.maxpage}</PageBtn>
                         
