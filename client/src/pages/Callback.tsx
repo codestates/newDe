@@ -8,10 +8,17 @@ import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { useState } from 'react';
 import { setLogin } from '../features/info';
+import { AlertModal} from '../component';
 
-function Callback(props:any):JSX.Element {
+function Callback():JSX.Element {
+    const week = ['일', '월', '화', '수', '목', '금', '토']
 
     const [loading, setLoading] = useState(false);
+    const [alertOpened, setAlert] = useState('false')
+    const [alertMessage, setMessage] = useState('')
+    function alerthandler () {
+        setAlert('returned')
+    }
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -32,20 +39,27 @@ function Callback(props:any):JSX.Element {
 
         if(isbanned){
             
-            const timebanned = isbanned.split(' '); //['Thu', 'Mar', '03', '2022', '13:56:43', 'GMT+0900', '(Korean', 'Standard', 'Time']
-            
+            // const timebanned = isbanned.split(' '); //['Thu', 'Mar', '03', '2022', '13:56:43', 'GMT+0900', '(Korean', 'Standard', 'Time']
+            const timebanned = new Date(isbanned)
+            // console.log(timebanned)
             // console.log(timearr)
-            const [dayofweek, month, day, year, time] = timebanned
-            alert(`${year}년 ${month}월 ${day}일 ${dayofweek}요일 ${time} 까지 차단되었습니다.`)
-            navigate('/')
+            // const [dayofweek, month, day, year, time] = timebanned
+            setMessage(`${timebanned.getFullYear()}년 ${timebanned.getMonth()+1}월 ${timebanned.getDate()}일 ${week[timebanned.getDay()]}요일까지 차단된 계정입니다.`)
+            setAlert('true')
+            // navigate('/')
+            if(alertOpened === 'returned'){
+                navigate('/')
+            }
+            // setTimeout(()=> navigate('/'), 1000)
         }
         
         
-    }, [])
+    }, [alertOpened])
 
     return (
         <div>
             {loading ? <Loader type="spin" color="#999999" /> : '콜백화면입니다.'}
+            {alertOpened === 'true' ? <AlertModal message = {alertMessage} modalhandler = {alerthandler} />: null}
         </div>
     )        
 }
