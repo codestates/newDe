@@ -56,7 +56,7 @@ const ChildMenuWrap = styled.li`
 function Leftnav (props:any):JSX.Element  {
     let nowURL = new URL(window.location.href);
     const [targetBoard, setTargetBoard] = useState<any>(['','']);
-    console.log(targetBoard);
+    // console.log(targetBoard);
 
     useEffect(()=>{        
         const parentCategory = nowURL.searchParams.get('parentcategory');

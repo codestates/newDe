@@ -222,7 +222,7 @@ function MyPage() {
                     </div>)}
                 </div>   
                 <PageNavWrap>
-                    <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler = {handlePage} /> 
+                    <PageNav maxpage = {Number(maxpage)} nowpage = {Number(nowpage)} pagehandler = {handlePage} /> 
                 </PageNavWrap>
                 
             </MyContents>   

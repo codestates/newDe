@@ -126,7 +126,14 @@ const allContent = async (req:Request, res:Response) => {
     payload.reverse();
     
     //pagenation
-    const pageCount = Math.floor(payload.length/10)+1;
+    let pageCount = 1 
+    if(payload.length%10 === 0 ){ //페이지가 10으로 나누어 떨어질 경우 +1을 해줄 필요가 없음 
+        pageCount = payload.length/10
+    }
+    else {
+        pageCount = Math.floor(payload.length/10)+1;
+    }
+    
 
     if(pageCount < Number(page) || Number(page) < 1) return res.status(404).json({message : 'page query out of range'});
     payload = payload.filter((el:object, idx:number) => {

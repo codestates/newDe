@@ -64,9 +64,9 @@ function PageNav(props: PageNavprops):JSX.Element {
     //그 이외의 경우 1 ... nowpage-2 nowpage-1 nowpage nowpage +1 nowpage +2 ... maxpage 버튼을 만들어주자 
     // console.log(props)
 
-    const btnclickhandler = (event:any) =>{
-        // console.log(event.target.textContent)
-        props.pagehandler(event.target.textContent)
+    const btnclickhandler = (event:React.MouseEvent<HTMLButtonElement>) =>{
+        console.log((event.target as HTMLLIElement).textContent)
+        props.pagehandler(Number((event.target as HTMLLIElement).textContent))
 
     }
   
