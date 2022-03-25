@@ -224,6 +224,7 @@ dispatch(setChild(ChildCategory))
 
 const pagehandler = () => {
     setPageChanged(true)
+    setPage(1)
 }
 
 useEffect(()=>{
@@ -256,7 +257,7 @@ useEffect(()=>{
             </ChildBoard>
         </BoardWrap>
         <PageNavWrap>
-            <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler= {handlePage}/>            
+            <PageNav maxpage = {Number(maxpage)} nowpage = {Number(nowpage)} pagehandler= {handlePage}/>            
         </PageNavWrap>
         </MainContainer>
     )
