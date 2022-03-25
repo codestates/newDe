@@ -302,8 +302,8 @@ function Writing(): JSX.Element {
                     }}
 
                     value={contents.main}
-                    onChange={(main) => { setContents((prev) => { return { ...prev, main: main } }) }}
-                    // onChange={(main) => { setContents({ ...contents , main: main }) }}
+                    // onChange={(main) => { setContents((prev) => { return { ...prev, main: main } }) }}
+                    onChange={(main) => { setContents({ ...contents , main: main }) }}
 
                     theme="snow"
                     placeholder="main"

@@ -42,7 +42,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.clearCookie('accessToken').status(205).json({ message: 'Logout Success' });
+    return res.clearCookie('accessToken' /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */).status(205).json({ message: 'Logout Success' });
 });
 exports.logout = logout;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -122,7 +122,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     targetUser.password = '';
     yield userRepository.save(targetUser);
     return res
-        .clearCookie('accessToken')
+        .clearCookie('accessToken' /* , {domain: 'newb-d.com', sameSite: 'none', secure: true} */)
         .status(200)
         .json({ message: 'Deleted' });
 });
