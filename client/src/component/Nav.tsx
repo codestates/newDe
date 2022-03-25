@@ -85,12 +85,9 @@ const Circle = styled.span`
   background-color: ${(props) => props.theme.red};
 `;
 
-interface Iprops {
-    modalhandler: any;
-    modalcloser: any;
-}
 
-function Nav (props:Iprops):JSX.Element  {
+
+function Nav ():JSX.Element  {
     const homeMatch = useMatch("mainboard")
     const testMatch = useMatch("test")
     const mypageMatch = useMatch("mypage")
