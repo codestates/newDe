@@ -102,7 +102,7 @@ function MyPage() {
         headers: { "Content-type": "application/json" },
         withCredentials: true
     }
-    const onChange = (e: any) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value)
     }
     async function passwordCheck() {
