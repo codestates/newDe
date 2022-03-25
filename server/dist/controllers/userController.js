@@ -28,7 +28,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         if (userInfo) {
             if (new Date(userInfo.penalty).getTime() - Date.now() > 0)
-                return res.status(400).json({ date: null, message: 'temporarily banned user' });
+                return res.status(400).json({ data: userInfo, message: 'temporarily banned user' });
             const token = yield (0, generateToken_1.generateToken)(userInfo);
             console.log(token);
             res.cookie('accessToken', token);

@@ -118,7 +118,7 @@ function App() {
             </Route>    
 
             <Route path='/roadmap' element={<RoadMap />} />
-            <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
+            <Route path='/callback' element={<Callback />} />
             <Route path='/admin' element={<AdminPrivate />}>
               <Route path='' element={<Admin />} />
             </Route>
