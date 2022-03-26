@@ -102,7 +102,7 @@ function MyPage() {
         headers: { "Content-type": "application/json" },
         withCredentials: true
     }
-    const onChange = (e: any) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value)
     }
     async function passwordCheck() {
@@ -222,7 +222,7 @@ function MyPage() {
                     </div>)}
                 </div>   
                 <PageNavWrap>
-                    <PageNav maxpage = {maxpage} nowpage = {nowpage} pagehandler = {handlePage} /> 
+                    <PageNav maxpage = {Number(maxpage)} nowpage = {Number(nowpage)} pagehandler = {handlePage} /> 
                 </PageNavWrap>
                 
             </MyContents>   

@@ -47,10 +47,13 @@ margin-top: 5%;
 
 `
 
+interface alertProps {
+    message: string
+    modalhandler: () => void
+}
 
 
-
-function AlertModal (props:any):JSX.Element  {
+function AlertModal (props:alertProps):JSX.Element  {
     return (
         <Background >
             <ContainerWrap>

@@ -9,7 +9,7 @@ export class Content {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'text'})
+    @Column({})
     title: string;
 
     @Column({type: 'mediumtext'})
@@ -21,10 +21,10 @@ export class Content {
     @Column({default:0})
     report: number;
 
-    @Column({default:null,type:'text'})
+    @Column({default:null})
     parentCategory: string;
 
-    @Column({default:null,type:'text'})
+    @Column({default:null})
     childCategory: string;
 
     @CreateDateColumn()

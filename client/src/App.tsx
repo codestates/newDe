@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Board, ContentView, Landing, Login, MainBoard, MyPage, MyPageEdit, RoadMap, SignUp, Writing, Callback, Admin, Test } from './pages'
-import { Nav, BoardModal, AlertModal, Footer } from './component';
+import { Nav, AlertModal, Footer } from './component';
 import { ThemeProvider } from 'styled-components'
 import styled from 'styled-components';
 import theme from './style/theme';
 import { Cookies } from 'react-cookie';
-import react, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { RootState } from './store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
 import { setLogin, setOauth, setAdmin, setNickname } from './features/info';
@@ -66,14 +66,6 @@ function App() {
 
 
 
-  const [isModalOpened, setModal] = useState(false)
-  function modalHandler() {
-    setModal(!isModalOpened)
-  }
-  function modalCloser() {
-
-    setModal(false)
-  }
 
   function loginHandler() {
     dispatch(setLogin(true))
@@ -104,7 +96,7 @@ function App() {
 
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Nav modalhandler={modalHandler} modalcloser={modalCloser} />
+          <Nav />
           <ContentWrap>
             
           <Routes>
@@ -126,7 +118,7 @@ function App() {
             </Route>    
 
             <Route path='/roadmap' element={<RoadMap />} />
-            <Route path='/callback' element={<Callback loginhandler = {loginHandler} />} />
+            <Route path='/callback' element={<Callback />} />
             <Route path='/admin' element={<AdminPrivate />}>
               <Route path='' element={<Admin />} />
             </Route>
@@ -135,7 +127,7 @@ function App() {
             {/* <Route path='/admin' element={<Admin />} /> */}
             
           </Routes>
-          {isModalOpened ? <BoardModal modalHandler = {modalHandler} /> : null} 
+          
           {/* 가장 위에 렌더링 되어야므로 마지막에 렌더링  */}
           {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null}
           </ContentWrap>

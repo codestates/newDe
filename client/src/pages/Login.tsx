@@ -120,18 +120,20 @@ const KaKaoButton = styled.button`
 function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const week = ['일', '월', '화', '수', '목', '금', '토']
   const config = {
     headers: {
       'Content-Type': 'application/json'
     },
     withCredentials: true
   };
-
+  
   const [inputInfo, setInputInfo] = useState({
     email: '',
     password: ''
   })
+  const [alertOpened, setAlert] = useState(false)
+  const [alertMessage, setMessage] = useState('')
 
   const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
 
@@ -150,10 +152,14 @@ function Login() {
     }
 
   }
+  function alerthandler () {
+    setAlert(false)
+  }
+  
 
-  const loginSubmit = async () => {
-    try {
-      await axios.post(
+  const loginSubmit = () => {
+    
+      axios.post(
         `${apiURL}/login`,
         { email: inputInfo.email, password: inputInfo.password },
         config).then(el => {
@@ -164,9 +170,16 @@ function Login() {
           }
           navigate('/mypage')
         })
-    } catch (err) {
-      alert('아이디 또는 비밀번호가 틀립니다')
-    }
+    .catch ((err) => {
+      // console.log(err.response.data.data)
+      if(err.response.data.message='temporarily banned user'){
+        let penaltytime = new Date(err.response.data.data.penalty)
+        setMessage(`${penaltytime.getFullYear()}년 ${penaltytime.getMonth()+1}월 ${penaltytime.getDate()}일 ${week[penaltytime.getDay()]}요일 까지 차단된 계정입니다.`)
+        setAlert(true)
+      }
+      else{alert('아이디 또는 비밀번호가 틀립니다')}
+      
+    })
 
   }
 
@@ -204,6 +217,7 @@ function Login() {
         <FloatingText>──────   또는   ──────</FloatingText>
         <KaKaoButton className='githubBtn' onClick={kakaologinSubmit}><img src='/images/kakao.png' alt='logo' className='cacao' /></KaKaoButton>
       </LoginContainer>
+      {alertOpened ? <AlertModal message = {alertMessage} modalhandler = {alerthandler} />: null}
     </LoginWrap>
   )
 
