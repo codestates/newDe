@@ -1,5 +1,4 @@
 //메인 게시판
-import react from 'react'
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -71,10 +70,10 @@ font-family: "NotoSans-DemiLight";
 //props로 댓글 내용, 글쓴이등 가져와 
 
 interface commentprops {
-    id: string
+    id: number
     main: string
     nickname: string
-    contentid: string
+    contentid: number
     createdAt: string
 
 

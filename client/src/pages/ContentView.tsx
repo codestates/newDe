@@ -117,6 +117,15 @@ font-size: 20px;
       color: red;
     }
 `
+interface eldata {
+    id: number
+    main: string
+    user: userinter
+    created_at: string
+}
+interface userinter {
+    nickname: string
+}
 
 function ContentView ():JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
@@ -172,10 +181,10 @@ const getComment = async () => {
     }, [like])
     
     
-    const datatoComment = commentlist.map((el:any)=>{
+    const datatoComment = commentlist.map((el:eldata)=>{
         return (
             <CommentWrap key = {el.id}>
-                <Comment id = {String(el.id)} main = {el.main} nickname={el.user.nickname} contentid = {path} createdAt={el.created_at.slice(0,10)} />
+                <Comment id = {el.id} main = {el.main} nickname={el.user.nickname} contentid = {Number(path)} createdAt={el.created_at.slice(0,10)} />
             </CommentWrap>
         )
     })
@@ -248,7 +257,7 @@ const getComment = async () => {
                     <LikeBtn onClick = {likehandler}><FontAwesomeIcon icon={faHeart}/> {content.like}</LikeBtn>
                 </ContentWrap>
                 <WritingBox>
-                {isLogin ? <WriteComment contentid = {path} ismodify = {false} content = {''} commentid = {''}/> :null}
+                {isLogin ? <WriteComment contentid = {Number(path)} ismodify = {false} content = {''} commentid = {0}/> :null}
                 </WritingBox>
                     {datatoComment}
                 </PageWrap> }
