@@ -69,7 +69,17 @@ word-wrap: break-word;
 font-family: "NotoSans-DemiLight";
 `
 //props로 댓글 내용, 글쓴이등 가져와 
-function Comment(props: any):JSX.Element {
+
+interface commentprops {
+    id: string
+    main: string
+    nickname: string
+    contentid: string
+    createdAt: string
+
+
+}
+function Comment(props: commentprops):JSX.Element {
     const isLogin = useAppSelector((state: RootState) => state.info.login)
     // const isLogin = true;
     const usernickname = useAppSelector((state: RootState) => state.info.nickname)
