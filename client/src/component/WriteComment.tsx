@@ -34,10 +34,10 @@ font-size: 30px;
 `
 
 interface writingprops {
-    contentid: string;
+    contentid: number;
     ismodify: boolean;
     content : string;
-    commentid: string;
+    commentid: number;
 }
 
 
