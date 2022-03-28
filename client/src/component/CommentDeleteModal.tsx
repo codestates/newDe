@@ -62,11 +62,14 @@ margin : 5%;
 
 
 `
+interface deletemodalprops {
+    path: number
+    modalhandler : ()=>void
+}
 
 
 
-
-function CommentDeleteModal (props:any):JSX.Element  {
+function CommentDeleteModal (props:deletemodalprops):JSX.Element  {
     const navigate = useNavigate()
     const config = {
         headers: {

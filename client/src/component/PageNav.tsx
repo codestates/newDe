@@ -65,7 +65,7 @@ function PageNav(props: PageNavprops):JSX.Element {
     // console.log(props)
 
     const btnclickhandler = (event:React.MouseEvent<HTMLButtonElement>) =>{
-        console.log((event.target as HTMLLIElement).textContent)
+        // console.log((event.target as HTMLLIElement).textContent)
         props.pagehandler(Number((event.target as HTMLLIElement).textContent))
 
     }

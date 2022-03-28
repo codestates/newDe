@@ -171,7 +171,7 @@ function MyPage() {
         }
     }, [maxpage])
 
-    console.log(content);
+    // console.log(content);
 
     if (loading) return <Loader type="spin" color="#999999" />
     return (

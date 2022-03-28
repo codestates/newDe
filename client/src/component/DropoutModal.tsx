@@ -66,10 +66,12 @@ background-color: red;
 
 `
 
+interface dropoutprops {
+    modalhandler: ()=>void
+}
 
 
-
-function DropoutModal (props:any):JSX.Element  {
+function DropoutModal (props:dropoutprops):JSX.Element  {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const config = {
@@ -81,7 +83,7 @@ function DropoutModal (props:any):JSX.Element  {
     const DeleteBtnHandler = () => {
         
         axios.patch(`${apiURL}/user/delete`,{}, config)
-        .then(el => {
+        .then(() => {
             navigate('/')
             
             dispatch(setOauth(false))  

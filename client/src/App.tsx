@@ -55,8 +55,8 @@ function App() {
       }
       setIsLoading(false);
     })
-    .catch(el =>{
-      console.log(el.data.message)
+    .catch(() =>{
+      // console.log(el.response)
       setIsLoading(false)
     }  
     )    
@@ -67,9 +67,7 @@ function App() {
 
 
 
-  function loginHandler() {
-    dispatch(setLogin(true))
-  }
+  
   function alerthandler () {
     setAlert(false)
   }
