@@ -1,4 +1,4 @@
-import React from 'react';
+
 import ReactLoading from 'react-loading';
 
 interface LoaderProps {
@@ -8,6 +8,7 @@ interface LoaderProps {
 
 
 function Loader({ type, color }:LoaderProps) {
+    console.log(typeof type)
     return (
     <div className= "contentWrap" >
         <div style={ { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" } }>
