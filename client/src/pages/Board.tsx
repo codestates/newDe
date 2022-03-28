@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import {ContentList, PageNav, LeftNav} from '../component';
+import {ContentList, PageNav, LeftNav, NoContentPage, Loader } from '../component';
 import { apiURL } from '../url'
 import { RootState } from '../store'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
@@ -12,6 +12,7 @@ import { setChild, setParent } from '../features/info';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 
 
 
@@ -243,26 +244,38 @@ useEffect(()=>{
 
 
     return (
+      
         <MainContainer>
-            <LeftNav setPageChanged={pagehandler}/>
-    
+          {loading ? <Loader type="spin" color="#999999" /> : 
+          <div>
 
-        <BoardWrap>
-            <BoardName>
-                <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
-                <SearchingWrap> 
-                    <InputWrap type = 'search' onChange = {handleInput} /> 
-                    <SearchBtn onClick = {handleSubmit}><FontAwesomeIcon className='icon' icon={faSearch} size='2x' /></SearchBtn> 
-                </SearchingWrap>
-                {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' ><FontAwesomeIcon className='icon' icon={faEdit} /></Link></WritingBtn> : null) : null}
-            </BoardName>
-            <ChildBoard>
-                {datatoList}               
-            </ChildBoard>
-        </BoardWrap>
-        <PageNavWrap>
-            <PageNav maxpage = {Number(maxpage)} nowpage = {Number(nowpage)} pagehandler= {handlePage}/>            
-        </PageNavWrap>
+            <LeftNav setPageChanged={pagehandler}/>
+                <BoardWrap>
+                    <BoardName>
+                        <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
+                        <SearchingWrap> 
+                            <InputWrap type = 'search' onChange = {handleInput} /> 
+                            <SearchBtn onClick = {handleSubmit}><FontAwesomeIcon className='icon' icon={faSearch} size='2x' /></SearchBtn> 
+                        </SearchingWrap>
+                        {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' ><FontAwesomeIcon className='icon' icon={faEdit} /></Link></WritingBtn> : null) : null}
+                    </BoardName>
+                    {contentlist.length === 0 ? <NoContentPage /> : 
+                      <ChildBoard>
+                        {datatoList}               
+                    
+                      </ChildBoard>
+                    }
+                    </BoardWrap>
+                    
+                
+                <PageNavWrap>
+                    <PageNav maxpage = {Number(maxpage)} nowpage = {Number(nowpage)} pagehandler= {handlePage}/>            
+                </PageNavWrap>
+          </div>
+          
+          
+          }
+            
         </MainContainer>
     )
     

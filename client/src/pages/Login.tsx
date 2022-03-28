@@ -195,7 +195,7 @@ function Login() {
   const handleSignUpSubmit = () => {
     navigate('/signup')
   }
-  const handleClickEnter = (e: any) => {
+  const handleClickEnter = (e: react.KeyboardEvent) => {
     if (e.key === 'Enter') {
       loginSubmit();
     }
