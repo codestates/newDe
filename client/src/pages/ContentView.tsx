@@ -207,6 +207,10 @@ const getComment = async () => {
         })
     }
 
+    const pagehandler = ()=> {
+
+    }
+
     const handleModify = () =>{      
         const url = window.location.href;  
         const contentId = url.split('/')[url.split('/').length-1];
@@ -231,8 +235,8 @@ const getComment = async () => {
         
         <MainContainer>
         {alertOpened ? <AlertModal message = {modalMessage} modalhandler = {alerthandler} />: null} 
-        {deleteModal ? <DeleteAlert modalhandler = {deletehandler} path = {path}  />: null}
-            <LeftNav />
+        {deleteModal ? <DeleteAlert modalhandler = {deletehandler} path = {Number(path)}  />: null}
+            <LeftNav setPageChanged={pagehandler}/>
             {loading ? null : 
                 <PageWrap>
                 <ContentWrap>

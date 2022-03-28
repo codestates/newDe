@@ -63,10 +63,14 @@ margin : 5%;
 
 `
 
+interface deletealertprops {
+    path: number
+    modalhandler : ()=>void
+}
 
 
 
-function DeleteAlert (props:any):JSX.Element  {
+function DeleteAlert (props:deletealertprops):JSX.Element  {
     const navigate = useNavigate()
     const config = {
         headers: {

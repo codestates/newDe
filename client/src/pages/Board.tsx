@@ -194,14 +194,18 @@ const datatoList = contentlist.map((el:any)=>{
     
 
 
-const getListData = async () =>{
-    const listData = await axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
+const getListData = () =>{
+    axios.get(`${apiURL}/board?page=${nowpage}&parentCategory=${ParentCategory}&${ChildCategory ? `childCategory=${ChildCategory}` :''}&searching=${searching}` )
     // console.log(listData.data)
-    try{
-        setList(listData.data.data)
-        setMax(listData.data.pageCount)
-    }
-    catch{console.log("error!")} 
+    .then((el)=>{
+      setList(el.data.data)
+      setMax(el.data.pageCount)
+    })
+    .catch((err)=>{
+      setList([])
+      setMax(1)
+      // console.log(err.response.data)
+    })
 }
 
 

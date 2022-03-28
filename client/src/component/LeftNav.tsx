@@ -53,7 +53,12 @@ const ChildMenuWrap = styled.li`
 } 
 `
 
-function Leftnav (props:any):JSX.Element  {
+interface leftprops {
+    setPageChanged : ()=>void
+
+}
+
+function Leftnav (props:leftprops):JSX.Element  {
     let nowURL = new URL(window.location.href);
     const [targetBoard, setTargetBoard] = useState<any>(['','']);
     // console.log(targetBoard);
