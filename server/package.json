@@ -8,7 +8,7 @@
     "build": "tsc -p .",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./dist/index.js",
+    "start": "pm2 start ./dist/index.js --watch",
     "dev": "tsc-watch --onSuccess \"nodemon ./dist/index.js\"",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
