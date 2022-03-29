@@ -31,7 +31,7 @@ app.use(express_1.default.json()); //body parser(json)
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.urlencoded({ extended: false }));
 // app.use(express.static(__dirname+'/../src/imageStorage'));
-app.use(express_1.default.static('./src/imageStorage'));
+app.use(express_1.default.static('src/imageStorage'));
 // app.use(express.static('.'));
 app.use(logger);
 app.use((0, cors_1.default)({
