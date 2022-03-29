@@ -1,5 +1,5 @@
 //게시판 보기 
-import react, { useEffect } from 'react'
+import react, { useEffect, useRef } from 'react'
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -166,6 +166,8 @@ const config = {
     withCredentials: true
   };
 
+const inputRef = useRef<any>(null)
+
 const dispatch = useAppDispatch()
 
 const nowURL = new URL(window.location.href); //URL값 따오기 
@@ -217,6 +219,7 @@ const handleInput = (event: react.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit = () =>{
     // console.log(inputInfo)
     setSearchWord(inputInfo)
+    inputRef.current.value = ''
 }
 
 const handlePage = (el:number) =>{
@@ -230,6 +233,7 @@ dispatch(setChild(ChildCategory))
 const pagehandler = () => {
     setPageChanged(true)
     setPage(1)
+    setSearchWord('')
 }
 
 useEffect(()=>{
@@ -254,7 +258,7 @@ useEffect(()=>{
                     <BoardName>
                         <NameSec>{ChildCategory ? ChildCategory : ParentCategory } </NameSec>
                         <SearchingWrap> 
-                            <InputWrap type = 'search' onChange = {handleInput} /> 
+                            <InputWrap type = 'search' onChange = {handleInput} ref={inputRef} /> 
                             <SearchBtn onClick = {handleSubmit}><FontAwesomeIcon className='icon' icon={faSearch} size='2x' /></SearchBtn> 
                         </SearchingWrap>
                         {isLogin ? (ChildCategory ? <WritingBtn><Link to = '/writing' className = 'btn' ><FontAwesomeIcon className='icon' icon={faEdit} /></Link></WritingBtn> : null) : null}
