@@ -1,8 +1,7 @@
 //게시판 보기 
-import react, { useEffect, useRef } from 'react'
+import react, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 import axios from 'axios';
 import {ContentList, PageNav, LeftNav, NoContentPage, Loader } from '../component';
 import { apiURL } from '../url'
