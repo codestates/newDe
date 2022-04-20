@@ -172,12 +172,15 @@ function Login() {
         })
     .catch ((err) => {
       // console.log(err.response.data.data)
-      if(err.response.data.message='temporarily banned user'){
+      if(err.response.data.message==='temporarily banned user'){
         let penaltytime = new Date(err.response.data.data.penalty)
         setMessage(`${penaltytime.getFullYear()}년 ${penaltytime.getMonth()+1}월 ${penaltytime.getDate()}일 ${week[penaltytime.getDay()]}요일 까지 차단된 계정입니다.`)
         setAlert(true)
       }
-      else{alert('아이디 또는 비밀번호가 틀립니다')}
+      else{
+        setMessage('아이디 또는 비밀번호를 확인하세요.')
+        setAlert(true)
+      }
       
     })
 
